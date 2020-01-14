@@ -15,3 +15,20 @@ int main(void)
         // main routine
     #endif
 }
+
+static inline void testsRoutines( void )
+{
+#if (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_DIRECTION_TEST)
+
+    testRawMotorDirectionControlRoutine( );
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_RAW_CONTROL_TEST)
+
+    testRawMotorControlRoutine( );
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_PRC_CONTROL_TEST)
+
+    testMotorControlRoutine( );
+
+#endif
+}

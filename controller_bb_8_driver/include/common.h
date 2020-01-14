@@ -13,11 +13,12 @@ extern "C" {
 #endif
 
 #define     PROGRAM_ROUTINE_MASTER                      0
-/***    JUST FOR EXAMPLE (TEMPORARY)           ***/
-#define     PROGRAM_ROUTINE_TEST                        1
+#define     PROGRAM_MOTOR_DIRECTION_TEST                1
+#define     PROGRAM_MOTOR_RAW_CONTROL_TEST              2
+#define     PROGRAM_MOTOR_PRC_CONTROL_TEST              3
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROUTINE_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_DIRECTION_TEST
 
 
 /*============================================================================*/
