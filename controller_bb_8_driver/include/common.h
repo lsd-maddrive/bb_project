@@ -13,12 +13,15 @@ extern "C" {
 #endif
 
 #define     PROGRAM_ROUTINE_MASTER                      0
+//  LLD MOTOR TESTS
 #define     PROGRAM_MOTOR_DIRECTION_TEST                1
 #define     PROGRAM_MOTOR_RAW_CONTROL_TEST              2
 #define     PROGRAM_MOTOR_PRC_CONTROL_TEST              3
+//  LLD ENCODER TESTS
+#define     PROGRAM_ENCODER_TEST                        4
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_DIRECTION_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ENCODER_TEST
 
 
 /*============================================================================*/
@@ -26,7 +29,7 @@ extern "C" {
 /*============================================================================*/
 
 #define CLIP_VALUE(x, min, max) (((int32_t)x) < (min) ? (min) :      \
-                                 (x) > (max) ? (max) : (x))
+                                 ((int32_t)x) > ((int32_t)max) ? (max) : (x))
 
 /*============================================================================*/
 /* LLD LIMITS                                                                 */
@@ -35,8 +38,8 @@ extern "C" {
 #define LLD_MOTOR_MAX_PRC       100 
 #define LLD_MOTOR_MIN_PRC       (-100)
 
-#define LLD_DUTY_MAX            2000
-#define LLD_DUTY_MIN            1000
+#define LLD_DUTY_MAX            20000
+#define LLD_DUTY_MIN            0
 
 /*============================================================================*/
 /* DEBUG                                                                      */

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_LLD_CONTROL_H_
 #define INCLUDE_LLD_CONTROL_H_
 
-typedef int8_t lldControlValue_t;
+typedef int32_t lldControlValue_t;
 
 typedef enum motor_dir {
     FORWARD     = 1, 

@@ -37,8 +37,8 @@ void testRawMotorDirectionControlRoutine( void )
     }
 }
 
-#define MOTOR_FORWARD
-// #define MOTOR_BACKWARD
+// #define MOTOR_FORWARD
+#define MOTOR_BACKWARD
 
 /*
  * @brief   Test raw motor control 
@@ -59,16 +59,13 @@ void testRawMotorControlRoutine( void )
     while( true )
     {
         char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE ); 
-        char test = ''; 
         switch( rcv_data )
         {
             case 'a':
-                test = 'a';
                 test_duty += test_duty_delta; 
                 break; 
 
             case 's':
-                test = 's'; 
                 test_duty -= test_duty_delta;
                 break; 
 
@@ -79,19 +76,18 @@ void testRawMotorControlRoutine( void )
             default:
                 break;
         }
-
+        test_duty = CLIP_VALUE( test_duty, 0, 20000 );
 #ifdef MOTOR_FORWARD
         lldControlSetRawMotorPower( 1, test_duty, FORWARD );
-        dbgprintf("FORWARD DS: (%d)/n/r", test_duty)
+        dbgprintf("FORWARD DS: (%d)\n\r", test_duty);
 #endif 
 
 #ifdef MOTOR_BACKWARD
         lldControlSetRawMotorPower( 1, test_duty, BACKWARD );
-        dbgprintf("BACKWARD DS: (%d)/n/r", test_duty)
+        dbgprintf("BACKWARD DS: (%d)\n\r", test_duty);
 #endif 
-
-        dbgprintf("(%c)\n\r", test); 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 500 ) );
+ 
+        time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
     }
 }
 
@@ -122,7 +118,7 @@ void testMotorControlRoutine( void )
                 break; 
             
             case 's':
-                test_duty_prc -= test_duty_prc:
+                test_duty_prc -= test_delta_prc;
                 break;
 
             case ' ':
@@ -132,10 +128,10 @@ void testMotorControlRoutine( void )
             default:
                 break; 
         }
-
+        test_duty_prc = CLIP_VALUE( test_duty_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
         lldControlSetMotorPower( 1, test_duty_prc );
         dbgprintf( "POWER: (%d)\n\r", test_duty_prc );
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 500 ) );
+        time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
     }
 }

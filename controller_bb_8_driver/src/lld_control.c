@@ -144,13 +144,13 @@ void lldControlSetMotorPower( uint8_t motor_num, lldControlValue_t inputPrc )
     inputPrc = CLIP_VALUE( inputPrc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
     motor_num = CLIP_VALUE( motor_num, 1, 3 ); 
 
-    uint32_t duty = inputPrc * motor_k + motor_b; 
+    uint32_t duty = abs(inputPrc) * motor_k + motor_b; 
 
     if( inputPrc >= 0 )    // forward (clock-wise) rotation 
     {
         lldControlSetRawMotorPower( motor_num, duty, FORWARD );
     }
-    else                // backward (counterclock-wise) rotation
+    else if( inputPrc <= 0 )                // backward (counterclock-wise) rotation
     {
         lldControlSetRawMotorPower( motor_num, duty, BACKWARD );
     }

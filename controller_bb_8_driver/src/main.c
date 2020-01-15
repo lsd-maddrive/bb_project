@@ -2,20 +2,6 @@
 #include <tests.h>
 #include <chprintf.h>
 
-int main(void)
-{
-    chSysInit();
-    halInit();
-
-    #if (MAIN_PROGRAM_ROUTINE != PROGRAM_ROUTINE_MASTER)
-
-        testsRoutines();
-
-    #else
-        // main routine
-    #endif
-}
-
 static inline void testsRoutines( void )
 {
 #if (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_DIRECTION_TEST)
@@ -30,5 +16,23 @@ static inline void testsRoutines( void )
 
     testMotorControlRoutine( );
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ENCODER_TEST )
+
+    testEncoderRoutine( ); 
+
 #endif
+}
+
+int main(void)
+{
+    chSysInit();
+    halInit();
+
+    #if (MAIN_PROGRAM_ROUTINE != PROGRAM_ROUTINE_MASTER)
+
+        testsRoutines();
+
+    #else
+        // main routine
+    #endif
 }

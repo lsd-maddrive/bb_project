@@ -31,6 +31,16 @@ void testRawMotorControlRoutine( void );
  */
 void testMotorControlRoutine( void );
 
+/*============================================================================*/
+/* Encoder Tests                                                              */
+/*============================================================================*/
 
+/**
+ * @brief   Test common encoder routine 
+ * @note    Print number of ticks, (int)revs and state of direction
+ *          0   - clockwise 
+ *          1   - counterclockwise  
+ */
+void testEncoderRoutine( void );
 
 #endif /* INCLUDE_TESTS_H_ */
