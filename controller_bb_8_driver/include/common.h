@@ -21,7 +21,7 @@ extern "C" {
 #define     PROGRAM_ENCODER_TEST                        4
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ENCODER_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_PRC_CONTROL_TEST
 
 
 /*============================================================================*/
