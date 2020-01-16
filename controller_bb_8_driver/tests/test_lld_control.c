@@ -76,7 +76,7 @@ void testRawMotorControlRoutine( void )
             default:
                 break;
         }
-        test_duty = CLIP_VALUE( test_duty, 0, 20000 );
+        test_duty = CLIP_VALUE( test_duty, 0, PWM1_PERIOD );
 #ifdef MOTOR_FORWARD
         lldControlSetRawMotorPower( 1, test_duty, FORWARD );
         dbgprintf("FORWARD DS: (%d)\n\r", test_duty);

@@ -1,6 +1,10 @@
 #ifndef INCLUDE_LLD_CONTROL_H_
 #define INCLUDE_LLD_CONTROL_H_
 
+#define PWM1_FREQ       1000000
+#define PWM1_PERIOD     10000
+#define LLD_DUTY_MIN    0
+
 typedef int32_t lldControlValue_t;
 
 typedef enum motor_dir {

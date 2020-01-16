@@ -21,7 +21,7 @@ extern "C" {
 #define     PROGRAM_ENCODER_TEST                        4
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_PRC_CONTROL_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ENCODER_TEST
 
 
 /*============================================================================*/
@@ -38,8 +38,6 @@ extern "C" {
 #define LLD_MOTOR_MAX_PRC       100 
 #define LLD_MOTOR_MIN_PRC       (-100)
 
-#define LLD_DUTY_MAX            20000
-#define LLD_DUTY_MIN            0
 
 /*============================================================================*/
 /* DEBUG                                                                      */

@@ -30,12 +30,12 @@ static void extcb_base(EXTDriver *extp, expchannel_t channel)
     /***    To define direction of encoder rotation  ***/
     if( palReadLine( ENCODER_WHITE_LINE ) == 0 )
     {
-        enc_tick_cntr    += 1;
+        enc_tick_cntr    -= 1;
         enc_dir_state    = 1;       // counterclockwise
     }
     else
     {
-        enc_tick_cntr    -= 1;
+        enc_tick_cntr    += 1;
         enc_dir_state    = 0;       // clockwise
     }
 

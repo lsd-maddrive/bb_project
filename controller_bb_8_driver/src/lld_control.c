@@ -1,10 +1,6 @@
 #include <tests.h>
 #include <lld_control.h> 
 
-#define PWM1_FREQ    1000000
-// PWM Period 50 Hz 
-#define PWM1_PERIOD  20000
-
 /*============================================================================*/
 /* PWM CONFIGURATION PINS                                                     */
 /*============================================================================*/
@@ -72,7 +68,7 @@ void lldControlInit( void )
     palSetLineMode( MOTOR2_PWM_LINE_B, PAL_MODE_ALTERNATE(1) ); 
 
     motor_b = LLD_DUTY_MIN; 
-    motor_k = (LLD_DUTY_MAX - motor_b) / 100;
+    motor_k = (PWM1_PERIOD - motor_b) / 100;
 
     pwmStart( pwmDriver, &pwm1conf ); 
 }
