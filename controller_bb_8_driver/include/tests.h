@@ -43,4 +43,13 @@ void testMotorControlRoutine( void );
  */
 void testEncoderRoutine( void );
 
+/*============================================================================*/
+/* Odometry Tests                                                             */
+/*============================================================================*/
+
+/*
+ * @brief   Test motor speed 
+ */
+void testMotorSpeed( void );
+
 #endif /* INCLUDE_TESTS_H_ */

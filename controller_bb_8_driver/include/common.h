@@ -19,9 +19,11 @@ extern "C" {
 #define     PROGRAM_MOTOR_PRC_CONTROL_TEST              3
 //  LLD ENCODER TESTS
 #define     PROGRAM_ENCODER_TEST                        4
+//  ODOMETRY TESTS
+#define     PROGRAM_MOTOR_SPEED_TEST                    5
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ENCODER_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_PRC_CONTROL_TEST
 
 
 /*============================================================================*/

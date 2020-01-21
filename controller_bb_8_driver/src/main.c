@@ -1,5 +1,5 @@
-#include <common.h>
-#include <tests.h>
+#include "common.h"
+#include "tests.h"
 #include <chprintf.h>
 
 static inline void testsRoutines( void )
