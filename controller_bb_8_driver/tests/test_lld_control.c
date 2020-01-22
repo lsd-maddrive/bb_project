@@ -103,8 +103,11 @@ void testMotorControlRoutine( void )
     debug_stream_init( ); 
     lldControlInit( );
 
-    lldControlValue_t   test_duty_prc   = 0; 
-    lldControlValue_t   test_delta_prc  = 10;
+    lldControlValue_t   test_duty1_prc   = 0; 
+    lldControlValue_t   test_duty2_prc   = 0; 
+    lldControlValue_t   test_duty3_prc   = 0; 
+
+    lldControlValue_t   test_delta_prc   = 5;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
@@ -113,24 +116,50 @@ void testMotorControlRoutine( void )
 
         switch( rcv_data )
         {
-            case 'a':
-                test_duty_prc += test_delta_prc;
+            case 'q':   // Motor 1
+                test_duty1_prc += test_delta_prc;
                 break; 
             
-            case 's':
-                test_duty_prc -= test_delta_prc;
+            case 'w':   // Motor 1
+                test_duty1_prc -= test_delta_prc;
                 break;
 
+            case 'a':   // Motor 2
+                test_duty2_prc += test_delta_prc;
+                break; 
+            
+            case 's':   // Motor 2
+                test_duty2_prc -= test_delta_prc;
+                break;
+            
+            case 'z':   // Motor 3
+                test_duty3_prc  += test_delta_prc;
+                break; 
+            
+            case 'x':   // Motor 3
+                test_duty3_prc  -= test_delta_prc;
+                break; 
+
             case ' ':
-                test_duty_prc = 0;
+                test_duty1_prc  = 0;
+                test_duty2_prc  = 0;
+                test_duty3_prc  = 0; 
                 break; 
             
             default:
                 break; 
         }
-        test_duty_prc = CLIP_VALUE( test_duty_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
-        lldControlSetMotorPower( 1, test_duty_prc );
-        dbgprintf( "POWER: (%d)\n\r", test_duty_prc );
+        test_duty1_prc = CLIP_VALUE( test_duty1_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
+        lldControlSetMotorPower( 1, test_duty1_prc );
+        
+        test_duty2_prc = CLIP_VALUE( test_duty2_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
+        lldControlSetMotorPower( 2, test_duty2_prc );
+
+        test_duty3_prc = CLIP_VALUE( test_duty3_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
+        lldControlSetMotorPower( 3, test_duty3_prc );
+        
+        dbgprintf( "M1: (%d)\tM2: (%d)\tM3: (%d)\n\r", 
+            test_duty1_prc, test_duty2_prc, test_duty3_prc );
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
     }
