@@ -45,6 +45,7 @@ static PWMDriver    *pwm2Driver = &PWMD2;
 /*============================================================================*/
 /* PWM CONFIGURATION STRUCTURES                                               */
 /*============================================================================*/
+
 // Motor 1 (Backward) && Motor 2 
 PWMConfig pwm1conf = {
     .frequency = PWM1_FREQ,
@@ -155,6 +156,9 @@ void lldControlSetRawMotorPower( uint8_t motor_num, uint32_t duty, lldMotorDirec
         {
             case 1:
                 pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_B ); 
+                // systime_t   time = chVTGetSystemTimeX( );
+                // time = chThdSleepUntilWindowed( time, time + MS2ST( PWM_DELAY_US ) );
+                // chThdSleepMicroseconds( US2ST(PWM_DELAY_US) );
                 pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_F, duty ); 
                 break;
 

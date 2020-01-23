@@ -107,7 +107,7 @@ void testMotorControlRoutine( void )
     lldControlValue_t   test_duty2_prc   = 0; 
     lldControlValue_t   test_duty3_prc   = 0; 
 
-    lldControlValue_t   test_delta_prc   = 5;
+    lldControlValue_t   test_delta_prc   = 10;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
