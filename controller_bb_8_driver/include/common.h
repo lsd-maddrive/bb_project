@@ -23,7 +23,7 @@ extern "C" {
 #define     PROGRAM_MOTOR_SPEED_TEST                    5
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_PRC_CONTROL_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_DIRECTION_TEST
 
 
 /*============================================================================*/
