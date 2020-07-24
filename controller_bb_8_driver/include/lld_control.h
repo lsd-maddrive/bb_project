@@ -1,8 +1,9 @@
 #ifndef INCLUDE_LLD_CONTROL_H_
 #define INCLUDE_LLD_CONTROL_H_
 
-#define PWM_FREQ       1000000
-#define PWM_PERIOD     10000   // 100 Hz
+#define PWM_FREQ        1000000
+#define PWM_PERIOD      10000   // 100 Hz
+#define DEAD_TIME_MKS   10      // time in mks
 #define LLD_DUTY_MIN    0
 
 typedef int32_t lldControlValue_t;
@@ -11,6 +12,17 @@ typedef enum motor_dir {
     FORWARD     = 1, 
     BACKWARD    = 0
 } lldMotorDirection_t; 
+
+
+/**
+ * @brief   Disable all used pwd channels
+ */
+void lldDisableAllChannels( void );
+
+/**
+ * @brief   Configure all lines to be used for PWM
+ */
+void lldConfigureLineMode( void );
 
 /**
  * @brief   Initialize periphery connected to driver control

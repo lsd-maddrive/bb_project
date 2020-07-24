@@ -87,7 +87,7 @@ static PWMDriver    *pwm4Driver = &PWMD4;
 
 PWMConfig pwm1conf = {
     .frequency = PWM_FREQ,
-    .period    = PWM1_PERIOD, 
+    .period    = PWM_PERIOD,
     .callback  = NULL,
     .channels  = {
                   {.mode = PWM_OUTPUT_DISABLED,    .callback = NULL},
@@ -102,7 +102,7 @@ PWMConfig pwm1conf = {
 
 PWMConfig pwm2conf = {
     .frequency = PWM_FREQ,
-    .period    = PWM1_PERIOD, 
+    .period    = PWM_PERIOD,
     .callback  = NULL,
     .channels  = {
                   {.mode = MOTOR2_PA0_ACTIVE,     .callback = NULL},
@@ -117,7 +117,7 @@ PWMConfig pwm2conf = {
 
 PWMConfig pwm3conf = {
     .frequency = PWM_FREQ,
-    .period    = PWM1_PERIOD, 
+    .period    = PWM_PERIOD,
     .callback  = NULL,
     .channels  = {
                   {.mode = MOTOR3_PC6_ACTIVE,     .callback = NULL},
@@ -132,7 +132,7 @@ PWMConfig pwm3conf = {
 
 PWMConfig pwm4conf = {
     .frequency = PWM_FREQ,
-    .period    = PWM1_PERIOD, 
+    .period    = PWM_PERIOD,
     .callback  = NULL,
     .channels  = {
                   {.mode = MOTOR3_PB6_ACTIVE,     .callback = NULL},
@@ -200,6 +200,8 @@ static bool isInitialized   = false;
 static float motor_b        = 0; 
 static float motor_k        = 0; 
 
+static float dead_mks       = 0;
+
 /**
  * @brief   Initialize periphery connected to driver control
  * @note    Stable for repeated calls
@@ -214,6 +216,8 @@ void lldControlInit( void )
 
     motor_b = LLD_DUTY_MIN; 
     motor_k = ( PWM_PERIOD - motor_b ) / 100;
+
+    dead_mks = ( DEAD_TIME_MKS * 0.000001 ) / PWM_FREQ;
 
     pwmStart( pwm1Driver, &pwm1conf ); 
     pwmStart( pwm2Driver, &pwm2conf );
@@ -235,8 +239,9 @@ void lldControlInit( void )
  */
 void lldControlSetRawMotorPower( uint8_t motor_num, uint32_t duty, lldMotorDirection_t dir )
 {
-    duty = CLIP_VALUE( duty, 0, PWM1_PERIOD ); 
+    duty = CLIP_VALUE( duty, 0, PWM_PERIOD );
     motor_num = CLIP_VALUE( motor_num, 1, 3 ); 
+    uint32_t rev_duty = PWM_PERIOD - duty - dead_mks;
 
     if( dir == FORWARD )
     {
@@ -245,19 +250,19 @@ void lldControlSetRawMotorPower( uint8_t motor_num, uint32_t duty, lldMotorDirec
             case 1:
                 pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_HIN1, duty );
                 // FIX T * (1 - D) - 10 mks !!!! 
-                // pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_LIN1, duty ); 
+                pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_LIN1, rev_duty );
                 pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 ); 
                 pwmEnableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2, duty ); 
                 break;
 
             case 2: 
-                pwmDisableChannel( pwm1Driver, MOTOR2_PWM1CH_B );
-                pwmEnableChannel( pwm1Driver, MOTOR2_PWM1CH_F, duty ); 
+//                pwmDisableChannel( pwm1Driver, MOTOR2_PWM1CH_B );
+//                pwmEnableChannel( pwm1Driver, MOTOR2_PWM1CH_F, duty );
                 break; 
             
             case 3: 
-                pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_B );
-                pwmEnableChannel( pwm2Driver, MOTOR3_PWM2CH_F, duty ); 
+//                pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_B );
+//                pwmEnableChannel( pwm2Driver, MOTOR3_PWM2CH_F, duty );
                 break; 
 
             default:
@@ -269,18 +274,18 @@ void lldControlSetRawMotorPower( uint8_t motor_num, uint32_t duty, lldMotorDirec
         switch( motor_num )
         {
             case 1:
-                pwmDisableChannel( pwm4Driver, MOTOR1_PWM4CH_F ); 
-                pwmEnableChannel( pwm1Driver, MOTOR1_PWM1CH_B, duty ); 
+//                pwmDisableChannel( pwm4Driver, MOTOR1_PWM4CH_F );
+//                pwmEnableChannel( pwm1Driver, MOTOR1_PWM1CH_B, duty );
                 break;
 
             case 2: 
-                pwmDisableChannel( pwm1Driver, MOTOR2_PWM1CH_F );
-                pwmEnableChannel( pwm1Driver, MOTOR2_PWM1CH_B, duty ); 
+//                pwmDisableChannel( pwm1Driver, MOTOR2_PWM1CH_F );
+//                pwmEnableChannel( pwm1Driver, MOTOR2_PWM1CH_B, duty );
                 break; 
 
             case 3: 
-                pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_F );
-                pwmEnableChannel( pwm2Driver, MOTOR3_PWM2CH_B, duty ); 
+//                pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_F );
+//                pwmEnableChannel( pwm2Driver, MOTOR3_PWM2CH_B, duty );
                 break; 
 
             default:

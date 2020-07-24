@@ -17,7 +17,7 @@ void testRawMotorDirectionControlRoutine( void );
  * @brief   Test raw motor control 
  * @note    Duty cycle could be changed [0, 20000]
  *          Stable for incorrect value of duty cycle 
- *          Direction is controled via defines 
+ *          Direction is controlled via defines
  *          MOTOR_FORWARD || MOTOR_BACKWARD 
  */
 void testRawMotorControlRoutine( void );
