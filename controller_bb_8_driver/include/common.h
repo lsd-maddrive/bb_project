@@ -49,6 +49,19 @@ void debug_stream_init( void );
 void dbgprintf( const char* format, ... );
 
 
+/*============================================================================*/
+/* Common units                                                            */
+/*============================================================================*/
+
+// For future development
+/**
+ * @brief   Initialize EXT driver with empty config
+ * @note    Safe to call any times, it checks state of previous call
+ * @note    Must be called before EXT driver work
+ */
+//void commonExtDriverInit ( void );
+
+
 #ifdef __cplusplus
 }
 #endif

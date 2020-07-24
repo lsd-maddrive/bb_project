@@ -79,7 +79,8 @@ static PWMDriver    *pwm1Driver = &PWMD1;
 static PWMDriver    *pwm2Driver = &PWMD2;
 static PWMDriver    *pwm3Driver = &PWMD3;
 static PWMDriver    *pwm4Driver = &PWMD4; 
- 
+
+static virtual_timer_t     manual_pwm_vt;
 
 /*============================================================================*/
 /* PWM CONFIGURATION STRUCTURES                                               */
@@ -137,7 +138,7 @@ PWMConfig pwm4conf = {
     .channels  = {
                   {.mode = MOTOR3_PB6_ACTIVE,     .callback = NULL},
                   {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL},
-                  {.mode = MOTOR1_PD14_ACTIVE,     .callback = NULL},
+                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL},
                   {.mode = MOTOR1_PD15_ACTIVE,      .callback = NULL}
                 },
     .cr2        = 0,
@@ -150,6 +151,87 @@ PWMConfig pwm4conf = {
 /* LOW-LEVEL FUCTIONS FOR DRIVE CONTROL                                       */
 /*============================================================================*/
 
+static lldMotorDirection_t direction = UNKNOWN;
+
+/**
+ * @brief   Get specified by user direction of motor rotation
+ */
+lldMotorDirection_t lldGetMotorDirection( void )
+{
+    if( direction != UNKNOWN )
+      return direction;
+    else
+      return -1; // Error
+}
+
+static uint32_t real_raw_duty   = 0;
+static float    dead_ticks      = 0;
+
+/**
+ * @brief   Get duty cycle for manual PWM in us
+ */
+float lldGetReverseDutyUS( void )
+{
+    return (PWM_PERIOD - real_raw_duty - 2 * dead_ticks);
+}
+
+static uint32_t intr_counter = 0;
+
+// Timer Interrupt each 1 mks (us)
+static void manual_pwm_vt_cb( void *arg )
+{
+    // just to avoid warning
+    arg = arg;
+
+    // get direction FORWARD or BACKWARD
+    lldMotorDirection_t dir = lldGetMotorDirection();
+    if( dir == FORWARD )
+    {
+      if( palReadLine(MOTOR1_PWM_LINE_HIN1) == PAL_LOW )
+      {
+        palSetLine(LINE_LED3);
+          if( intr_counter < DEAD_TIME_MKS )
+          {
+              intr_counter += 1;
+
+          }
+          else if( intr_counter >= DEAD_TIME_MKS && intr_counter <= lldGetReverseDutyUS() )
+          {
+//              palSetLine(MOTOR1_PWM_LINE_LIN1);
+//              palSetLine(PAL_LINE(GPIOA, 7));
+              intr_counter += 1;
+          }
+          else
+          {
+//              dbgprintf("%d ", intr_counter);
+              palSetLine(LINE_LED1);
+              intr_counter = 0;
+//              palClearLine(MOTOR1_PWM_LINE_LIN1);
+//              palClearLine(PAL_LINE(GPIOA, 7));
+//              palClearLine(LINE_LED2);
+          }
+
+      }
+//      else
+//      {
+//        dbgprintf("HIGH");
+//      }
+//        palClearLine(LINE_LED2);
+
+    }
+    else if( dir == BACKWARD )
+    {
+
+    }
+
+    // restart timer
+    chSysLockFromISR();
+    chVTSetI(&manual_pwm_vt, US2ST( VT_PERIOD_MKS ), manual_pwm_vt_cb, NULL);
+    chSysUnlockFromISR();
+}
+
+
+
 /**
  * @brief   Disable all used pwd channels 
  */
@@ -157,7 +239,7 @@ void lldDisableAllChannels( void )
 {
     // Motor 1
     pwmDisableChannel( pwm4Driver, MOTOR1_PWM4CH_HIN1 ); 
-    pwmDisableChannel( pwm4Driver, MOTOR1_PWM4CH_LIN1 ); 
+//    pwmDisableChannel( pwm4Driver, MOTOR1_PWM4CH_LIN1 );
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 ); 
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2 ); 
     //Motor 2 
@@ -179,7 +261,8 @@ void lldConfigureLineMode( void )
 {
     // Motor 1
     palSetLineMode( MOTOR1_PWM_LINE_HIN1, PAL_MODE_ALTERNATE(2) );
-    palSetLineMode( MOTOR1_PWM_LINE_LIN1, PAL_MODE_ALTERNATE(2) );
+//    palSetLineMode( MOTOR1_PWM_LINE_LIN1, PAL_MODE_OUTPUT_PUSHPULL );
+//    palSetLineMode( MOTOR1_PWM_LINE_LIN1, PAL_MODE_ALTERNATE(2) );
     palSetLineMode( MOTOR1_PWM_LINE_HIN2, PAL_MODE_ALTERNATE(1) );
     palSetLineMode( MOTOR1_PWM_LINE_LIN2, PAL_MODE_ALTERNATE(1) );
     // Motor 2
@@ -200,7 +283,6 @@ static bool isInitialized   = false;
 static float motor_b        = 0; 
 static float motor_k        = 0; 
 
-static float dead_mks       = 0;
 
 /**
  * @brief   Initialize periphery connected to driver control
@@ -212,23 +294,30 @@ void lldControlInit( void )
         return; 
     
     /*** PWM pins configuration ***/
-    lldConfigureLineMode();
+//    lldConfigureLineMode();
 
     motor_b = LLD_DUTY_MIN; 
     motor_k = ( PWM_PERIOD - motor_b ) / 100;
 
-    dead_mks = ( DEAD_TIME_MKS * 0.000001 ) / PWM_FREQ;
+    dead_ticks = DEAD_TIME_MKS * 0.000001 * PWM_FREQ;
 
-    pwmStart( pwm1Driver, &pwm1conf ); 
-    pwmStart( pwm2Driver, &pwm2conf );
-    pwmStart( pwm3Driver, &pwm3conf );
-    pwmStart( pwm4Driver, &pwm4conf );
+//    pwmStart( pwm1Driver, &pwm1conf );
+//    pwmStart( pwm2Driver, &pwm2conf );
+//    pwmStart( pwm3Driver, &pwm3conf );
+//    pwmStart( pwm4Driver, &pwm4conf );
     
+    chVTObjectInit(&manual_pwm_vt);
+    chVTSet( &manual_pwm_vt, US2ST( VT_PERIOD_MKS ), manual_pwm_vt_cb, NULL );
+
     // to avoid noise in contacts
-    lldDisableAllChannels();
+//    lldDisableAllChannels();
+
+    palClearPad(GPIOF, 12);
 
     isInitialized = true; 
 }
+
+
 
 /**
  * @brief   Set power (in ticks) for motor
@@ -241,16 +330,21 @@ void lldControlSetRawMotorPower( uint8_t motor_num, uint32_t duty, lldMotorDirec
 {
     duty = CLIP_VALUE( duty, 0, PWM_PERIOD );
     motor_num = CLIP_VALUE( motor_num, 1, 3 ); 
-    uint32_t rev_duty = PWM_PERIOD - duty - dead_mks;
+//    uint32_t rev_duty = PWM_PERIOD - duty - dead_mks;
+
 
     if( dir == FORWARD )
     {
         switch( motor_num )
         {
             case 1:
+                // for manual pwm only
+                direction = dir;
+                real_raw_duty = duty;
+
                 pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_HIN1, duty );
                 // FIX T * (1 - D) - 10 mks !!!! 
-                pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_LIN1, rev_duty );
+//                pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_LIN1, rev_duty );
                 pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 ); 
                 pwmEnableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2, duty ); 
                 break;

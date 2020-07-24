@@ -3,16 +3,28 @@
 
 #define PWM_FREQ        1000000
 #define PWM_PERIOD      10000   // 100 Hz
-#define DEAD_TIME_MKS   10      // time in mks
+#define DEAD_TIME_MKS   5       // time in mks
+#define VT_PERIOD_MKS   1       // 1 mks
 #define LLD_DUTY_MIN    0
 
 typedef int32_t lldControlValue_t;
 
 typedef enum motor_dir {
     FORWARD     = 1, 
-    BACKWARD    = 0
+    BACKWARD    = 0,
+    UNKNOWN     = 100
 } lldMotorDirection_t; 
 
+
+/**
+ * @brief   Get specified by user direction of motor rotation
+ */
+lldMotorDirection_t lldGetMotorDirection( void );
+
+/**
+ * @brief   Get duty cycle for manual PWM in us
+ */
+float lldGetReverseDutyUS( void );
 
 /**
  * @brief   Disable all used pwd channels

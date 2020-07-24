@@ -7,7 +7,7 @@
  */
 void testRawMotorDirectionControlRoutine( void )
 {
-    debug_stream_init( ); 
+//    debug_stream_init( );
     lldControlInit( );
 
     lldMotorDirection_t test_dir    = FORWARD; 
@@ -16,22 +16,22 @@ void testRawMotorDirectionControlRoutine( void )
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE ); 
+        char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE );
         switch( rcv_data )
         {
             case 'a':
-                test_dir = FORWARD; 
-                break; 
+                test_dir = FORWARD;
+                break;
 
             case 's':
-                test_dir = BACKWARD; 
-                break; 
-            
+                test_dir = BACKWARD;
+                break;
+
             default:
                 break;
         }
         lldControlSetRawMotorPower(1, test_duty, test_dir );
-        dbgprintf( "DIR: (%d)\n\r", test_dir ); 
+//        dbgprintf( "DIR: (%d)\n\r", test_dir );
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 500 ) );
     }
