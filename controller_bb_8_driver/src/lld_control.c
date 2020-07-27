@@ -76,7 +76,7 @@
 
 
 static PWMDriver    *pwm1Driver = &PWMD1; 
-static PWMDriver    *pwm2Driver = &PWMD2;
+//static PWMDriver    *pwm2Driver = &PWMD2;
 static PWMDriver    *pwm3Driver = &PWMD3;
 static PWMDriver    *pwm4Driver = &PWMD4; 
 
@@ -101,19 +101,19 @@ PWMConfig pwm1conf = {
 };
 
 
-PWMConfig pwm2conf = {
-    .frequency = PWM_FREQ,
-    .period    = PWM_PERIOD,
-    .callback  = NULL,
-    .channels  = {
-                  {.mode = MOTOR2_PA0_ACTIVE,     .callback = NULL},
-                  {.mode = MOTOR3_PB3_ACTIVE,      .callback = NULL},
-                  {.mode = MOTOR2_PB10_ACTIVE,      .callback = NULL},
-                  {.mode = MOTOR2_PB11_ACTIVE,     .callback = NULL}
-                },
-    .cr2        = 0,
-    .dier       = 0
-};
+//PWMConfig pwm2conf = {
+//    .frequency = PWM_FREQ,
+//    .period    = PWM_PERIOD,
+//    .callback  = NULL,
+//    .channels  = {
+//                  {.mode = MOTOR2_PA0_ACTIVE,     .callback = NULL},
+//                  {.mode = MOTOR3_PB3_ACTIVE,      .callback = NULL},
+//                  {.mode = MOTOR2_PB10_ACTIVE,      .callback = NULL},
+//                  {.mode = MOTOR2_PB11_ACTIVE,     .callback = NULL}
+//                },
+//    .cr2        = 0,
+//    .dier       = 0
+//};
 
 
 PWMConfig pwm3conf = {
@@ -169,10 +169,11 @@ static float    dead_ticks      = 0;
 
 /**
  * @brief   Get duty cycle for manual PWM in us
+ * @TODO: FIX!
  */
 float lldGetReverseDutyUS( void )
 {
-    return (PWM_PERIOD - real_raw_duty - 2 * dead_ticks);
+    return (PWM_PERIOD - real_raw_duty - 2 * dead_ticks) / 2;
 }
 
 static uint32_t intr_counter = 0;
@@ -187,42 +188,39 @@ static void manual_pwm_vt_cb( void *arg )
     lldMotorDirection_t dir = lldGetMotorDirection();
     if( dir == FORWARD )
     {
-      if( palReadLine(MOTOR1_PWM_LINE_HIN1) == PAL_LOW )
-      {
-        palSetLine(LINE_LED3);
-          if( intr_counter < DEAD_TIME_MKS )
-          {
-              intr_counter += 1;
+        if( palReadLine(MOTOR1_PWM_LINE_HIN1) == PAL_LOW )
+        {
+            if( intr_counter < DEAD_TIME_MKS )
+            {
+                intr_counter += 1;
+                palClearLine(MOTOR1_PWM_LINE_LIN1);
+            }
+            else if( intr_counter >= DEAD_TIME_MKS && intr_counter <= lldGetReverseDutyUS() )
+            {
+              palToggleLine( LINE_LED2 );
+                palSetLine(MOTOR1_PWM_LINE_LIN1);
+                intr_counter += 1;
+//                dbgprintf("%d ", intr_counter);
+            }
+            else
+            {
+                palToggleLine( LINE_LED3 );
 
-          }
-          else if( intr_counter >= DEAD_TIME_MKS && intr_counter <= lldGetReverseDutyUS() )
-          {
-//              palSetLine(MOTOR1_PWM_LINE_LIN1);
-//              palSetLine(PAL_LINE(GPIOA, 7));
-              intr_counter += 1;
-          }
-          else
-          {
-//              dbgprintf("%d ", intr_counter);
-              palSetLine(LINE_LED1);
-              intr_counter = 0;
-//              palClearLine(MOTOR1_PWM_LINE_LIN1);
-//              palClearLine(PAL_LINE(GPIOA, 7));
-//              palClearLine(LINE_LED2);
-          }
-
-      }
-//      else
-//      {
-//        dbgprintf("HIGH");
-//      }
-//        palClearLine(LINE_LED2);
-
+                intr_counter = 0;
+                palClearLine(MOTOR1_PWM_LINE_LIN1);
+            }
+        }
+        else
+        {
+//          dbgprintf("%d ", intr_counter);
+          palClearLine(MOTOR1_PWM_LINE_LIN1);
+          intr_counter = 0;
+        }
     }
-    else if( dir == BACKWARD )
-    {
-
-    }
+//    else if( dir == BACKWARD )
+//    {
+//
+//    }
 
     // restart timer
     chSysLockFromISR();
@@ -243,15 +241,15 @@ void lldDisableAllChannels( void )
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 ); 
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2 ); 
     //Motor 2 
-    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_HIN1 ); 
-    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_LIN1 ); 
-    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_HIN2 ); 
+//    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_HIN1 );
+//    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_LIN1 );
+//    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_HIN2 );
     pwmDisableChannel( pwm1Driver, MOTOR2_PWM1CH_LIN2 );
     //Motor 3
     pwmDisableChannel( pwm3Driver, MOTOR3_PWM3CH_HIN1 );
     pwmDisableChannel( pwm4Driver, MOTOR3_PWM4CH_LIN1 );
     pwmDisableChannel( pwm3Driver, MOTOR3_PWM3CH_HIN2 );
-    pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_LIN2 );
+//    pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_LIN2 );
 }
 
 /**
@@ -261,7 +259,7 @@ void lldConfigureLineMode( void )
 {
     // Motor 1
     palSetLineMode( MOTOR1_PWM_LINE_HIN1, PAL_MODE_ALTERNATE(2) );
-//    palSetLineMode( MOTOR1_PWM_LINE_LIN1, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetLineMode( MOTOR1_PWM_LINE_LIN1, PAL_MODE_OUTPUT_PUSHPULL );
 //    palSetLineMode( MOTOR1_PWM_LINE_LIN1, PAL_MODE_ALTERNATE(2) );
     palSetLineMode( MOTOR1_PWM_LINE_HIN2, PAL_MODE_ALTERNATE(1) );
     palSetLineMode( MOTOR1_PWM_LINE_LIN2, PAL_MODE_ALTERNATE(1) );
@@ -276,6 +274,38 @@ void lldConfigureLineMode( void )
     palSetLineMode( MOTOR3_PWM_LINE_HIN2, PAL_MODE_ALTERNATE(2) );
     palSetLineMode( MOTOR3_PWM_LINE_LIN2, PAL_MODE_ALTERNATE(1) );
 }
+
+
+
+
+static void manual_pwm_gpt_cb(GPTDriver *gptp )
+{
+      gptp = gptp;
+
+      palToggleLine(MOTOR1_PWM_LINE_LIN1);
+      // get direction FORWARD or BACKWARD
+      lldMotorDirection_t dir = lldGetMotorDirection();
+      if( dir == FORWARD )
+     {
+         if( palReadLine(MOTOR1_PWM_LINE_HIN1) == PAL_LOW )
+         {
+             palSetLine( MOTOR1_PWM_LINE_LIN1 );
+         }
+         else
+         {
+           palClearLine( MOTOR1_PWM_LINE_LIN1 );
+         }
+     }
+
+}
+
+GPTConfig gpt2conf = {
+    .frequency    = 5000000,
+    .callback     = manual_pwm_gpt_cb,
+    .cr2          = 0,
+    .dier         = 0
+};
+
 
 
 static bool isInitialized   = false; 
@@ -301,16 +331,23 @@ void lldControlInit( void )
 
     dead_ticks = DEAD_TIME_MKS * 0.000001 * PWM_FREQ;
 
+    lldConfigureLineMode();
+
+    GPTDriver *manualPWMDriver    = &GPTD2;
+
+//    gptStart( manualPWMDriver, &gpt2conf );
+//    gptStartContinuous( manualPWMDriver, 4 );
+
 //    pwmStart( pwm1Driver, &pwm1conf );
-//    pwmStart( pwm2Driver, &pwm2conf );
+//    pwmStart( pwm2Driver, &pwm2conf ); // FIX!!!!
 //    pwmStart( pwm3Driver, &pwm3conf );
-//    pwmStart( pwm4Driver, &pwm4conf );
+    pwmStart( pwm4Driver, &pwm4conf );
     
     chVTObjectInit(&manual_pwm_vt);
     chVTSet( &manual_pwm_vt, US2ST( VT_PERIOD_MKS ), manual_pwm_vt_cb, NULL );
 
     // to avoid noise in contacts
-//    lldDisableAllChannels();
+    lldDisableAllChannels();
 
     palClearPad(GPIOF, 12);
 

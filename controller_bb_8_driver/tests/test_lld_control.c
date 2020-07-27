@@ -7,8 +7,8 @@
  */
 void testRawMotorDirectionControlRoutine( void )
 {
-//    debug_stream_init( );
-    lldControlInit( );
+    debug_stream_init( );
+    lldControlInit();
 
     lldMotorDirection_t test_dir    = FORWARD; 
     uint32_t            test_duty   = 5000;  

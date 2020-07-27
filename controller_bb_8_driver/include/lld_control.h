@@ -3,7 +3,7 @@
 
 #define PWM_FREQ        1000000
 #define PWM_PERIOD      10000   // 100 Hz
-#define DEAD_TIME_MKS   5       // time in mks
+#define DEAD_TIME_MKS   2       // time in mks
 #define VT_PERIOD_MKS   1       // 1 mks
 #define LLD_DUTY_MIN    0
 
