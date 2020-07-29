@@ -30,7 +30,7 @@ void testRawMotorDirectionControlRoutine( void )
             default:
                 break;
         }
-        lldControlSetRawMotorPower(1, test_duty, test_dir );
+//        lldControlSetRawMotorPower(1, test_duty, test_dir );
 //        dbgprintf( "DIR: (%d)\n\r", test_dir );
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 500 ) );
