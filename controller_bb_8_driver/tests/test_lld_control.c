@@ -39,14 +39,14 @@ void testRawMotorDirectionControlRoutine( void )
     }
 }
 
-// #define MOTOR_FORWARD
-#define MOTOR_BACKWARD
+ #define MOTOR_FORWARD
+//#define MOTOR_BACKWARD
 
 /*
  * @brief   Test raw motor control 
  * @note    Duty cycle could be changed [0, 20000]
  *          Stable for incorrect value of duty cycle 
- *          Direction is controled via defines 
+ *          Direction is controlled via defines
  *          MOTOR_FORWARD || MOTOR_BACKWARD 
  */
 void testRawMotorControlRoutine( void )
@@ -54,7 +54,10 @@ void testRawMotorControlRoutine( void )
     debug_stream_init( ); 
     lldControlInit( );
 
-    uint32_t test_duty  = 0; 
+    uint32_t test_duty1  = 0;
+    uint32_t test_duty2  = 0;
+    uint32_t test_duty3  = 0;
+
     uint32_t test_duty_delta = 500;
 
     systime_t   time = chVTGetSystemTimeX( );
@@ -63,30 +66,56 @@ void testRawMotorControlRoutine( void )
         char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE ); 
         switch( rcv_data )
         {
+            case 'q':
+                test_duty1 += test_duty_delta;
+                break;
+
+            case 'w':
+                test_duty1 -= test_duty_delta;
+                break;
+
             case 'a':
-                test_duty += test_duty_delta; 
+                test_duty2 += test_duty_delta;
                 break; 
 
             case 's':
-                test_duty -= test_duty_delta;
+                test_duty2 -= test_duty_delta;
+                break;
+
+            case 'z':
+                test_duty3 += test_duty_delta;
                 break; 
 
+            case 'x':
+                test_duty3 -= test_duty_delta;
+                break;
+
             case ' ':
-                test_duty = 0; 
+                test_duty1 = 0;
+                test_duty2 = 0;
+                test_duty3 = 0;
                 break;
             
             default:
                 break;
         }
-        test_duty = CLIP_VALUE( test_duty, 0, PWM_PERIOD );
+        test_duty1 = CLIP_VALUE( test_duty1, 0, PWM_PERIOD );
+        test_duty2 = CLIP_VALUE( test_duty2, 0, PWM_PERIOD );
+        test_duty3 = CLIP_VALUE( test_duty3, 0, PWM_PERIOD );
 #ifdef MOTOR_FORWARD
-        lldControlSetRawMotorPower( 1, test_duty, FORWARD );
-        dbgprintf("FORWARD DS: (%d)\n\r", test_duty);
+        lldControlSetRawMotorPower( 1, test_duty1, FORWARD );
+        lldControlSetRawMotorPower( 2, test_duty2, FORWARD );
+        lldControlSetRawMotorPower( 3, test_duty3, FORWARD );
+        dbgprintf("F D1:%d\tD2:%d\tD3:%d\n\r",
+                  test_duty1, test_duty2, test_duty3);
 #endif 
 
 #ifdef MOTOR_BACKWARD
-        lldControlSetRawMotorPower( 1, test_duty, BACKWARD );
-        dbgprintf("BACKWARD DS: (%d)\n\r", test_duty);
+        lldControlSetRawMotorPower( 1, test_duty1, BACKWARD );
+        lldControlSetRawMotorPower( 2, test_duty2, BACKWARD );
+        lldControlSetRawMotorPower( 3, test_duty3, BACKWARD );
+        dbgprintf("B D1:%d\tD2:%d\tD3:%d\n\r",
+                  test_duty1, test_duty2, test_duty3);
 #endif 
  
         time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );

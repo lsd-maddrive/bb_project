@@ -9,8 +9,7 @@ typedef int32_t lldControlValue_t;
 
 typedef enum motor_dir {
     FORWARD     = 1, 
-    BACKWARD    = 0//,
-//    UNKNOWN     = 100
+    BACKWARD    = 0
 } lldMotorDirection_t; 
 
 

@@ -106,21 +106,21 @@ void lldDisableAllChannels( void )
 {
     // Motor 1
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN1 );
-    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN1 ); // not working
+    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN1 );  // not working
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 ); 
-    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2 ); // not working
+    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2 );  // not working
 
     //Motor 2 
     pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN1 );
-    pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_LIN1 );
+    pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_LIN1 );  // not working
     pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN2 );
-    pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_LIN2 );
+    pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_LIN2 );  // not working
 
     //Motor 3
     pwmDisableChannel( pwm8Driver, MOTOR3_PWM8CH_HIN1 );
-    pwmDisableChannel( pwm8Driver, MOTOR3_PWM8CH_LIN1 );
+    pwmDisableChannel( pwm8Driver, MOTOR3_PWM8CH_LIN1 );  // not working
     pwmDisableChannel( pwm1Driver, MOTOR3_PWM1CH_HIN2 );
-    pwmDisableChannel( pwm1Driver, MOTOR3_PWM1CH_LIN2 );
+    pwmDisableChannel( pwm1Driver, MOTOR3_PWM1CH_LIN2 );  // not working
 }
 
 /**
@@ -250,11 +250,11 @@ void lldControlSetMotorPower( uint8_t motor_num, lldControlValue_t inputPrc )
 
     uint32_t duty = abs(inputPrc) * motor_k + motor_b; 
 
-    if( inputPrc >= 0 )    // forward (clock-wise) rotation 
+    if( inputPrc >= 0 )       // forward (clock-wise) rotation
     {
         lldControlSetRawMotorPower( motor_num, duty, FORWARD );
     }
-    else if( inputPrc <= 0 )                // backward (counterclock-wise) rotation
+    else if( inputPrc <= 0 )  // backward (counterclock-wise) rotation
     {
         lldControlSetRawMotorPower( motor_num, duty, BACKWARD );
     }
