@@ -5,17 +5,13 @@
 /* PWM CONFIGURATION PINS                                                     */
 /*============================================================================*/
 
-/**************** MOTOR 1 ********************/
-/**************** PWM1 + PWM4 ****************/
-
+/**************** MOTOR 1 (PWM 1) ********************/
 #define MOTOR1_PWM1CH_HIN1      1
 #define MOTOR1_PE11_ACTIVE      PWM_OUTPUT_ACTIVE_HIGH
 #define MOTOR1_PE11_DISABLE     PWM_OUTPUT_DISABLED
 #define MOTOR1_PWM_LINE_HIN1    PAL_LINE(GPIOE, 11)
 
-#define MOTOR1_PWM1CH_LIN1      1   // N
-//#define MOTOR1_PE10_ACTIVE      PWM_OUTPUT_ACTIVE_HIGH //PWM_OUTPUT_ACTIVE_LOW
-//#define MOTOR1_PE10_DISABLE     PWM_OUTPUT_DISABLED
+#define MOTOR1_PWM1CH_LIN1      1  // N
 #define MOTOR1_PWM_LINE_LIN1    PAL_LINE(GPIOE, 10)
 
 #define MOTOR1_PWM1CH_HIN2      2
@@ -23,63 +19,46 @@
 #define MOTOR1_PE13_DISABLE     PWM_OUTPUT_DISABLED
 #define MOTOR1_PWM_LINE_HIN2    PAL_LINE(GPIOE, 13)
 
-#define MOTOR1_PWM1CH_LIN2      2   // N
-//#define MOTOR1_PE12_ACTIVE      PWM_OUTPUT_ACTIVE_HIGH
-//#define MOTOR1_PE12_DISABLE     PWM_OUTPUT_DISABLED
+#define MOTOR1_PWM1CH_LIN2      2  // N
 #define MOTOR1_PWM_LINE_LIN2    PAL_LINE(GPIOE, 12)
 
-/**************** MOTOR 2 ********************/
-/**************** PWM1 + PWM2 ****************/
-// TODO: FIX
-#define MOTOR2_PWM2CH_HIN1      2
-#define MOTOR2_PB10_ACTIVE      PWM_OUTPUT_ACTIVE_HIGH
-#define MOTOR2_PB10_DISABLE     PWM_OUTPUT_DISABLED
-#define MOTOR2_PWM_LINE_HIN1    PAL_LINE(GPIOB, 10)
+/**************** MOTOR 2 (PWM 8) ********************/
+#define MOTOR2_PWM8CH_HIN1      0
+#define MOTOR2_PC6_ACTIVE       PWM_OUTPUT_ACTIVE_HIGH
+#define MOTOR2_PC6_DISABLE      PWM_OUTPUT_DISABLED
+#define MOTOR2_PWM_LINE_HIN1    PAL_LINE(GPIOC, 6)
 
-#define MOTOR2_PWM2CH_LIN1      0
-#define MOTOR2_PA0_ACTIVE      PWM_OUTPUT_ACTIVE_HIGH
-#define MOTOR2_PA0_DISABLE     PWM_OUTPUT_DISABLED
-#define MOTOR2_PWM_LINE_LIN1    PAL_LINE(GPIOA, 0)
+#define MOTOR2_PWM8CH_LIN1      0  // N
+#define MOTOR2_PWM_LINE_LIN1    PAL_LINE(GPIOA, 5)
 
-#define MOTOR2_PWM2CH_HIN2      3
-#define MOTOR2_PB11_ACTIVE      PWM_OUTPUT_ACTIVE_HIGH
-#define MOTOR2_PB11_DISABLE     PWM_OUTPUT_DISABLED
-#define MOTOR2_PWM_LINE_HIN2    PAL_LINE(GPIOB, 11)
+#define MOTOR2_PWM8CH_HIN2      1
+#define MOTOR2_PC7_ACTIVE       PWM_OUTPUT_ACTIVE_HIGH
+#define MOTOR2_PC7_DISABLE      PWM_OUTPUT_DISABLED
+#define MOTOR2_PWM_LINE_HIN2    PAL_LINE(GPIOC, 7)
 
-#define MOTOR2_PWM1CH_LIN2      3
-#define MOTOR2_PE14_ACTIVE      PWM_OUTPUT_ACTIVE_HIGH
-#define MOTOR2_PE14_DISABLE     PWM_OUTPUT_DISABLED
-#define MOTOR2_PWM_LINE_LIN2    PAL_LINE(GPIOE, 14)
+#define MOTOR2_PWM8CH_LIN2      1  // N
+#define MOTOR2_PWM_LINE_LIN2    PAL_LINE(GPIOB, 0)
 
-/**************** MOTOR 3 ********************/
-/**************** PWM2 + PWM3 + PWM4 *********/
-// TODO: FIX
-#define MOTOR3_PWM3CH_HIN1      1
-#define MOTOR3_PC7_ACTIVE       PWM_OUTPUT_ACTIVE_HIGH
-#define MOTOR3_PC7_DISABLE      PWM_OUTPUT_DISABLED
-#define MOTOR3_PWM_LINE_HIN1    PAL_LINE(GPIOC, 7)
+/**************** MOTOR 3 (PWM1 + PWM8) ********************/
+#define MOTOR3_PWM8CH_HIN1      2
+#define MOTOR3_PC8_ACTIVE       PWM_OUTPUT_ACTIVE_HIGH
+#define MOTOR3_PC8_DISABLE      PWM_OUTPUT_DISABLED
+#define MOTOR3_PWM_LINE_HIN1    PAL_LINE(GPIOC, 8)
 
-#define MOTOR3_PWM4CH_LIN1      0
-#define MOTOR3_PB6_ACTIVE       PWM_OUTPUT_ACTIVE_HIGH
-#define MOTOR3_PB6_DISABLE      PWM_OUTPUT_DISABLED
-#define MOTOR3_PWM_LINE_LIN1    PAL_LINE(GPIOB, 6)
+#define MOTOR3_PWM8CH_LIN1      2  // N
+#define MOTOR3_PWM_LINE_LIN1    PAL_LINE(GPIOB, 1)
 
-#define MOTOR3_PWM3CH_HIN2      0
-#define MOTOR3_PC6_ACTIVE       PWM_OUTPUT_ACTIVE_HIGH
-#define MOTOR3_PC6_DISABLE      PWM_OUTPUT_DISABLED
-#define MOTOR3_PWM_LINE_HIN2    PAL_LINE(GPIOC, 6)
+#define MOTOR3_PWM1CH_HIN2      0
+#define MOTOR3_PE9_ACTIVE       PWM_OUTPUT_ACTIVE_HIGH
+#define MOTOR3_PE9_DISABLE      PWM_OUTPUT_DISABLED
+#define MOTOR3_PWM_LINE_HIN2    PAL_LINE(GPIOE, 9)
 
-#define MOTOR3_PWM2CH_LIN2      1
-#define MOTOR3_PB3_ACTIVE       PWM_OUTPUT_ACTIVE_HIGH
-#define MOTOR3_PB3_DISABLE      PWM_OUTPUT_DISABLED
-#define MOTOR3_PWM_LINE_LIN2    PAL_LINE(GPIOB, 3)
+#define MOTOR3_PWM1CH_LIN2      0  // N
+#define MOTOR3_PWM_LINE_LIN2    PAL_LINE(GPIOE, 8)
 
 
-static PWMDriver    *pwm1Driver = &PWMD1; 
-//static PWMDriver    *pwm2Driver = &PWMD2;
-//static PWMDriver    *pwm3Driver = &PWMD3;
-//static PWMDriver    *pwm4Driver = &PWMD4;
-
+static PWMDriver    *pwm1Driver = &PWMD1;
+static PWMDriver    *pwm8Driver = &PWMD8;
 
 /*============================================================================*/
 /* PWM CONFIGURATION STRUCTURES                                               */
@@ -90,9 +69,9 @@ PWMConfig pwm1conf = {
     .period    = PWM_PERIOD,
     .callback  = NULL,
     .channels  = {
-                  {.mode = PWM_OUTPUT_DISABLED,    .callback = NULL},
-                  {.mode = MOTOR1_PE11_ACTIVE | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_HIGH,     .callback = NULL},
-                  {.mode = MOTOR1_PE13_ACTIVE | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_HIGH,     .callback = NULL},
+                  {.mode = MOTOR3_PE9_ACTIVE  | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_HIGH,    .callback = NULL},
+                  {.mode = MOTOR1_PE11_ACTIVE | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_HIGH,    .callback = NULL},
+                  {.mode = MOTOR1_PE13_ACTIVE | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_HIGH,    .callback = NULL},
                   {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL}
                 },
     .cr2        = 0,
@@ -101,103 +80,47 @@ PWMConfig pwm1conf = {
 };
 
 
-//PWMConfig pwm2conf = {
-//    .frequency = PWM_FREQ,
-//    .period    = PWM_PERIOD,
-//    .callback  = NULL,
-//    .channels  = {
-//                  {.mode = MOTOR2_PA0_ACTIVE,     .callback = NULL},
-//                  {.mode = MOTOR3_PB3_ACTIVE,      .callback = NULL},
-//                  {.mode = MOTOR2_PB10_ACTIVE,      .callback = NULL},
-//                  {.mode = MOTOR2_PB11_ACTIVE,     .callback = NULL}
-//                },
-//    .cr2        = 0,
-//    .dier       = 0
-//};
-//
-//
-//PWMConfig pwm3conf = {
-//    .frequency = PWM_FREQ,
-//    .period    = PWM_PERIOD,
-//    .callback  = NULL,
-//    .channels  = {
-//                  {.mode = MOTOR3_PC6_ACTIVE,     .callback = NULL},
-//                  {.mode = MOTOR3_PC7_ACTIVE,      .callback = NULL},
-//                  {.mode = PWM_OUTPUT_DISABLED,      .callback = NULL},
-//                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL}
-//                },
-//    .cr2        = 0,
-//    .dier       = 0
-//};
-//
-//
-//PWMConfig pwm4conf = {
-//    .frequency = PWM_FREQ,
-//    .period    = PWM_PERIOD,
-//    .callback  = NULL,
-//    .channels  = {
-//                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL},
-//                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL},
-//                  {.mode = MOTOR1_PD14_ACTIVE | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_LOW,     .callback = NULL},
-//                  {.mode = PWM_OUTPUT_DISABLED,      .callback = NULL}
-//                },
-//    .cr2        = 0,
-//    .bdtr       = 500,    // break && dead-time
-//    .dier       = 0
-//};
-
-
+PWMConfig pwm8conf = {
+    .frequency = PWM_FREQ,
+    .period    = PWM_PERIOD,
+    .callback  = NULL,
+    .channels  = {
+                  {.mode = MOTOR2_PC6_ACTIVE | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_HIGH,    .callback = NULL},
+                  {.mode = MOTOR2_PC7_ACTIVE | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_HIGH,    .callback = NULL},
+                  {.mode = MOTOR3_PC8_ACTIVE | PWM_COMPLEMENTARY_OUTPUT_ACTIVE_HIGH,    .callback = NULL},
+                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL}
+                },
+    .cr2        = 0,
+    .bdtr       = 500,    // break && dead-time HOW TO CONTROL YOU?????
+    .dier       = 0
+};
 
 /*============================================================================*/
 /* LOW-LEVEL FUCTIONS FOR DRIVE CONTROL                                       */
 /*============================================================================*/
 
-static lldMotorDirection_t direction = UNKNOWN;
-
 /**
- * @brief   Get specified by user direction of motor rotation
- */
-lldMotorDirection_t lldGetMotorDirection( void )
-{
-    if( direction != UNKNOWN )
-      return direction;
-    else
-      return -1; // Error
-}
-
-static uint32_t real_raw_duty   = 0;
-static float    dead_ticks      = 0;
-
-/**
- * @brief   Get duty cycle for manual PWM in us
- * @TODO: FIX!
- */
-float lldGetReverseDutyUS( void )
-{
-    return (PWM_PERIOD - real_raw_duty - 2 * dead_ticks) / 2;
-}
-
-
-/**
- * @brief   Disable all used pwd channels 
+ * @brief   Disable all used PWM channels
  */
 void lldDisableAllChannels( void )
 {
     // Motor 1
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN1 );
-    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN1 );
+    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN1 ); // not working
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 ); 
-    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2 );
+    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2 ); // not working
+
     //Motor 2 
-//    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_HIN1 );
-//    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_LIN1 );
-//    pwmDisableChannel( pwm2Driver, MOTOR2_PWM2CH_HIN2 );
-//    pwmDisableChannel( pwm1Driver, MOTOR2_PWM1CH_LIN2 );
-//    //Motor 3
-//    pwmDisableChannel( pwm3Driver, MOTOR3_PWM3CH_HIN1 );
-//    pwmDisableChannel( pwm4Driver, MOTOR3_PWM4CH_LIN1 );
-//    pwmDisableChannel( pwm3Driver, MOTOR3_PWM3CH_HIN2 );
-//    pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_LIN2 );
+    pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN1 );
+    pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_LIN1 );
+    pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN2 );
+    pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_LIN2 );
+
+    //Motor 3
+    pwmDisableChannel( pwm8Driver, MOTOR3_PWM8CH_HIN1 );
+    pwmDisableChannel( pwm8Driver, MOTOR3_PWM8CH_LIN1 );
+    pwmDisableChannel( pwm1Driver, MOTOR3_PWM1CH_HIN2 );
+    pwmDisableChannel( pwm1Driver, MOTOR3_PWM1CH_LIN2 );
 }
 
 /**
@@ -210,16 +133,18 @@ void lldConfigureLineMode( void )
     palSetLineMode( MOTOR1_PWM_LINE_LIN1, PAL_MODE_ALTERNATE(1) );
     palSetLineMode( MOTOR1_PWM_LINE_HIN2, PAL_MODE_ALTERNATE(1) );
     palSetLineMode( MOTOR1_PWM_LINE_LIN2, PAL_MODE_ALTERNATE(1) );
+
     // Motor 2
-//    palSetLineMode( MOTOR2_PWM_LINE_HIN1, PAL_MODE_ALTERNATE(1) );
-//    palSetLineMode( MOTOR2_PWM_LINE_LIN1, PAL_MODE_ALTERNATE(1) );
-//    palSetLineMode( MOTOR2_PWM_LINE_HIN2, PAL_MODE_ALTERNATE(1) );
-//    palSetLineMode( MOTOR2_PWM_LINE_LIN2, PAL_MODE_ALTERNATE(1) );
-//    // Motor 3
-//    palSetLineMode( MOTOR3_PWM_LINE_HIN1, PAL_MODE_ALTERNATE(2) );
-//    palSetLineMode( MOTOR3_PWM_LINE_LIN1, PAL_MODE_ALTERNATE(2) );
-//    palSetLineMode( MOTOR3_PWM_LINE_HIN2, PAL_MODE_ALTERNATE(2) );
-//    palSetLineMode( MOTOR3_PWM_LINE_LIN2, PAL_MODE_ALTERNATE(1) );
+    palSetLineMode( MOTOR2_PWM_LINE_HIN1, PAL_MODE_ALTERNATE(3) );
+    palSetLineMode( MOTOR2_PWM_LINE_LIN1, PAL_MODE_ALTERNATE(3) );
+    palSetLineMode( MOTOR2_PWM_LINE_HIN2, PAL_MODE_ALTERNATE(3) );
+    palSetLineMode( MOTOR2_PWM_LINE_LIN2, PAL_MODE_ALTERNATE(3) );
+
+    // Motor 3
+    palSetLineMode( MOTOR3_PWM_LINE_HIN1, PAL_MODE_ALTERNATE(3) );
+    palSetLineMode( MOTOR3_PWM_LINE_LIN1, PAL_MODE_ALTERNATE(3) );
+    palSetLineMode( MOTOR3_PWM_LINE_HIN2, PAL_MODE_ALTERNATE(1) );
+    palSetLineMode( MOTOR3_PWM_LINE_LIN2, PAL_MODE_ALTERNATE(1) );
 }
 
 
@@ -238,30 +163,20 @@ void lldControlInit( void )
     if( isInitialized )
         return; 
     
-    /*** PWM pins configuration ***/
-    lldConfigureLineMode();
-
     motor_b = LLD_DUTY_MIN; 
     motor_k = ( PWM_PERIOD - motor_b ) / 100;
 
-    dead_ticks = DEAD_TIME_MKS * 0.000001 * PWM_FREQ;
-
+    /*** PWM pins configuration ***/
     lldConfigureLineMode();
-//    palSetLineMode(PAL_LINE(GPIOE, 10), PAL_MODE_ALTERNATE(1));
-
-
 
     pwmStart( pwm1Driver, &pwm1conf );
-//    pwmStart( pwm2Driver, &pwm2conf ); // FIX!!!!
-//    pwmStart( pwm3Driver, &pwm3conf );
-//    pwmStart( pwm4Driver, &pwm4conf );
+    pwmStart( pwm8Driver, &pwm8conf );
     
     // to avoid noise in contacts
     lldDisableAllChannels();
 
     isInitialized = true; 
 }
-
 
 
 /**
@@ -275,58 +190,48 @@ void lldControlSetRawMotorPower( uint8_t motor_num, uint32_t duty, lldMotorDirec
 {
     duty = CLIP_VALUE( duty, 0, PWM_PERIOD );
     motor_num = CLIP_VALUE( motor_num, 1, 3 ); 
-//    uint32_t rev_duty = PWM_PERIOD - duty - dead_mks;
-
 
     if( dir == FORWARD )
     {
         switch( motor_num )
         {
             case 1:
-                // for manual pwm only
-                direction = dir;
-                real_raw_duty = duty;
-
-//                pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_HIN1, duty );
-                pwmEnableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN1, duty );
-                // FIX T * (1 - D) - 10 mks !!!! 
-//                pwmEnableChannel( pwm4Driver, MOTOR1_PWM4CH_LIN1, rev_duty );
-//                pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 );
-                pwmEnableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2, duty );
+                pwmEnableChannel ( pwm1Driver, MOTOR1_PWM1CH_HIN1, duty );
+                pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 );
                 break;
 
-            case 2: 
-//                pwmDisableChannel( pwm1Driver, MOTOR2_PWM1CH_B );
-//                pwmEnableChannel( pwm1Driver, MOTOR2_PWM1CH_F, duty );
+            case 2:
+                pwmEnableChannel ( pwm8Driver, MOTOR2_PWM8CH_HIN1, duty );
+                pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN2 );
                 break; 
-            
+
             case 3: 
-//                pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_B );
-//                pwmEnableChannel( pwm2Driver, MOTOR3_PWM2CH_F, duty );
+                pwmEnableChannel ( pwm8Driver, MOTOR3_PWM8CH_HIN1, duty );
+                pwmDisableChannel( pwm1Driver, MOTOR3_PWM1CH_HIN2 );
                 break; 
 
             default:
                 break;
         }
     }
-    else
+    else if( dir == BACKWARD )
     {
         switch( motor_num )
         {
             case 1:
-//                pwmDisableChannel( pwm4Driver, MOTOR1_PWM4CH_F );
-//                pwmEnableChannel( pwm1Driver, MOTOR1_PWM1CH_B, duty );
+                pwmEnableChannel ( pwm1Driver, MOTOR1_PWM1CH_HIN2, duty );
+                pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN1 );
                 break;
 
-            case 2: 
-//                pwmDisableChannel( pwm1Driver, MOTOR2_PWM1CH_F );
-//                pwmEnableChannel( pwm1Driver, MOTOR2_PWM1CH_B, duty );
+            case 2:
+                pwmEnableChannel ( pwm8Driver, MOTOR2_PWM8CH_HIN2, duty );
+                pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN1 );
                 break; 
 
             case 3: 
-//                pwmDisableChannel( pwm2Driver, MOTOR3_PWM2CH_F );
-//                pwmEnableChannel( pwm2Driver, MOTOR3_PWM2CH_B, duty );
-                break; 
+                pwmEnableChannel ( pwm1Driver, MOTOR3_PWM1CH_HIN2, duty );
+                pwmDisableChannel( pwm8Driver, MOTOR3_PWM8CH_HIN1 );
+                break;
 
             default:
                 break;
