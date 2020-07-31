@@ -20,7 +20,7 @@ static void odom_update_vt_cb( void *arg )
 {
     arg = arg; 
 
-    encoderCurrentRevsNumber    = lldGetEncoderRevs( ); 
+    encoderCurrentRevsNumber    = lldGetEncoderRevs( 1 );
 
     odometryEncoderRevPerSec    = (encoderCurrentRevsNumber - encoderPreviousRevsNumber) * MS_2_SEC; 
 

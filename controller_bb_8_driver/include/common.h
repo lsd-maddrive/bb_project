@@ -53,6 +53,8 @@ void dbgprintf( const char* format, ... );
 /* Common units                                                            */
 /*============================================================================*/
 
+typedef uint8_t     motorNumberValue_t;
+
 /**
  * @brief   Initialize EXT driver with empty config
  * @note    Safe to call any times, it checks state of previous call

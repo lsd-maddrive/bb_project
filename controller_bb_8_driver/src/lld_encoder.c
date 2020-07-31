@@ -49,6 +49,7 @@ bool                    enc3_dir_state   = 0;
 // Motor 1
 static void extcb_base1(EXTDriver *extp, expchannel_t channel)
 {
+     palToggleLine( LINE_LED1 );
     (void)extp;
     (void)channel;
 
@@ -161,7 +162,6 @@ void lldEncoderInit( void )
         .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
         .cb = extcb_base1
     };
-    
     extSetChannelMode( &EXTD1, ENC1_BASE, &base1_conf );
 
     // Motor 2
@@ -169,7 +169,6 @@ void lldEncoderInit( void )
         .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
         .cb = extcb_base2
     };
-
     extSetChannelMode( &EXTD1, ENC2_BASE, &base2_conf );
 
     // Motor 3
@@ -177,7 +176,6 @@ void lldEncoderInit( void )
         .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
         .cb = extcb_base3
     };
-
     extSetChannelMode( &EXTD1, ENC3_BASE, &base3_conf );
 
     isInitialized = true;
@@ -190,9 +188,19 @@ void lldEncoderInit( void )
  *          [0; ENC_MAX_TICK_NUM]
  *          after ENC_MAX_TICK_NUM it resets
  */
-encoderTicksValue_t lldGetEncoderTicks( void )
+encoderTicksValue_t lldGetEncoderTicks( motorNumberValue_t number )
 {
-    return enc1_tick_cntr;
+    number = CLIP_VALUE(number, 1, 3);
+
+    if( number == 1 )
+      return enc1_tick_cntr;
+    else if( number == 2 )
+      return enc2_tick_cntr;
+    else if( number == 3 )
+      return enc3_tick_cntr;
+
+    // must be Impossible
+    return 0;
 }
 
 /**
@@ -200,9 +208,19 @@ encoderTicksValue_t lldGetEncoderTicks( void )
  * @return  clockwise           -> 0
  *          counterclockwise    -> 1
  */
-bool lldGetEncoderDirection( void )
+bool lldGetEncoderDirection( motorNumberValue_t number )
 {
-    return enc1_dir_state;
+    number = CLIP_VALUE(number, 1, 3);
+
+    if( number == 1 )
+      return enc1_dir_state;
+    else if( number == 2)
+      return enc2_dir_state;
+    else if( number == 3 )
+      return enc3_dir_state;
+
+    // must be Impossible
+    return 0;
 }
 
 /**
@@ -210,17 +228,44 @@ bool lldGetEncoderDirection( void )
  * @note    1 revolution = MAX_TICK_NUM ticks
  * @return  Encoder revolutions number depends on direction of rotation
  */
-encoderRevsValue_t lldGetEncoderRevs( void )
+encoderRevsValue_t lldGetEncoderRevs( motorNumberValue_t number )
 {
-    return ( enc1_revs_cntr + enc1_tick_cntr / (float)ENC_MAX_TICK_NUM );
+    number = CLIP_VALUE(number, 1, 3);
+
+    if( number == 1 )
+      return ( enc1_revs_cntr + enc1_tick_cntr / (float)ENC_MAX_TICK_NUM );
+    else if( number == 2 )
+      return ( enc2_revs_cntr + enc2_tick_cntr / (float)ENC_MAX_TICK_NUM );
+    else if( number == 3 )
+      return ( enc3_revs_cntr + enc3_tick_cntr / (float)ENC_MAX_TICK_NUM );
+
+    // must be Impossible
+    return 0;
 }
 
 /*
  * @brief   Reset all variable for lld-encoder unit
  */
-void lldEncoderReset( void )
+void lldEncoderReset( motorNumberValue_t number )
 {
-    enc1_tick_cntr       = 0;
-    enc1_revs_cntr       = 0;
-    enc1_dir_state       = 0;
+    number = CLIP_VALUE(number, 1, 3);
+
+    if( number == 1 )
+    {
+        enc1_tick_cntr       = 0;
+        enc1_revs_cntr       = 0;
+        enc1_dir_state       = 0;
+    }
+    else if( number == 2 )
+    {
+        enc2_tick_cntr       = 0;
+        enc2_revs_cntr       = 0;
+        enc2_dir_state       = 0;
+    }
+    else if( number == 3 )
+    {
+        enc3_tick_cntr       = 0;
+        enc3_revs_cntr       = 0;
+        enc3_dir_state       = 0;
+    }
 }
