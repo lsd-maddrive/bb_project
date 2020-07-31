@@ -29,7 +29,21 @@ PWM1   | PE_9 | output (channel 1) | HIN2
 PWM1   | PE_8 | output (channel 1N)| LIN2
 
 ## Драйвер обработки энкодера 
+
+### Motor 1 
 Driver | Pins | Input/Output | Base EXT channel
 :-----:|:----:|:------------:|:--------:
 EXT1   | PD_5 | input | YES
 EXT1   | PD_4 | input | NO
+
+### Motor 2 
+Driver | Pins | Input/Output | Base EXT channel
+:-----:|:----:|:------------:|:--------:
+EXT1   | PD_7 | input | YES
+EXT1   | PD_6 | input | NO
+
+### Motor 3 
+Driver | Pins | Input/Output | Base EXT channel
+:-----:|:----:|:------------:|:--------:
+EXT1   | PD_3 | input | YES
+EXT1   | PE_2 | input | NO

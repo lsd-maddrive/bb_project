@@ -102,10 +102,12 @@ void testRawMotorControlRoutine( void )
         test_duty1 = CLIP_VALUE( test_duty1, 0, PWM_PERIOD );
         test_duty2 = CLIP_VALUE( test_duty2, 0, PWM_PERIOD );
         test_duty3 = CLIP_VALUE( test_duty3, 0, PWM_PERIOD );
+
 #ifdef MOTOR_FORWARD
         lldControlSetRawMotorPower( 1, test_duty1, FORWARD );
         lldControlSetRawMotorPower( 2, test_duty2, FORWARD );
         lldControlSetRawMotorPower( 3, test_duty3, FORWARD );
+
         dbgprintf("F D1:%d\tD2:%d\tD3:%d\n\r",
                   test_duty1, test_duty2, test_duty3);
 #endif 

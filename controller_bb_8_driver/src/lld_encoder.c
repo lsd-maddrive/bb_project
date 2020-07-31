@@ -7,49 +7,138 @@
 /* LINE CONFIGURATION                                                         */
 /*============================================================================*/
 
-#define ENCODER_GREEN_LINE  PAL_LINE( GPIOD, 5 )
-#define ENCODER_WHITE_LINE  PAL_LINE( GPIOD, 4 )
+/**************** MOTOR 1 ********************/
+#define ENC1_GREEN_LINE  PAL_LINE( GPIOD, 5 )
+#define ENC1_WHITE_LINE  PAL_LINE( GPIOD, 4 )
+#define ENC1_BASE        5
+
+/**************** MOTOR 2 ********************/
+#define ENC2_GREEN_LINE  PAL_LINE( GPIOD, 7 )
+#define ENC2_WHITE_LINE  PAL_LINE( GPIOD, 6 )
+#define ENC2_BASE        7
+
+/**************** MOTOR 3 ********************/
+#define ENC3_GREEN_LINE  PAL_LINE( GPIOD, 3 )
+#define ENC3_WHITE_LINE  PAL_LINE( GPIOE, 2 )
+#define ENC3_BASE        3
 
 /*============================================================================*/
 /* Variable CONFIGURATION                                                     */
 /*============================================================================*/
 
-encoderTicksValue_t     enc_tick_cntr   = 0; 
-encoderRevsValue_t      enc_revs_cntr   = 0; 
-bool                    enc_dir_state   = 0;
+/**************** MOTOR 1 ********************/
+encoderTicksValue_t     enc1_tick_cntr   = 0;
+encoderRevsValue_t      enc1_revs_cntr   = 0;
+bool                    enc1_dir_state   = 0;
+
+/**************** MOTOR 2 ********************/
+encoderTicksValue_t     enc2_tick_cntr   = 0;
+encoderRevsValue_t      enc2_revs_cntr   = 0;
+bool                    enc2_dir_state   = 0;
+
+/**************** MOTOR 3 ********************/
+encoderTicksValue_t     enc3_tick_cntr   = 0;
+encoderRevsValue_t      enc3_revs_cntr   = 0;
+bool                    enc3_dir_state   = 0;
 
 
 /*============================================================================*/
 /* Base channel processing                                                    */
 /*============================================================================*/
-static void extcb_base(EXTDriver *extp, expchannel_t channel)
+
+// Motor 1
+static void extcb_base1(EXTDriver *extp, expchannel_t channel)
 {
     (void)extp;
     (void)channel;
 
     /***    To define direction of encoder rotation  ***/
-    if( palReadLine( ENCODER_WHITE_LINE ) == 0 )
+    if( palReadLine( ENC1_WHITE_LINE ) == 0 )
     {
-        enc_tick_cntr    -= 1;
-        enc_dir_state    = 1;       // counterclockwise
+        enc1_tick_cntr    -= 1;
+        enc1_dir_state    = 1;       // counterclockwise
     }
     else
     {
-        enc_tick_cntr    += 1;
-        enc_dir_state    = 0;       // clockwise
+        enc1_tick_cntr    += 1;
+        enc1_dir_state    = 0;       // clockwise
     }
 
     /***    Reset counter when it reaches the MAX value  ***/
     /***    Count encoder revolutions                    ***/
-    if( enc_tick_cntr == (ENC_MAX_TICK_NUM - 1) )
+    if( enc1_tick_cntr == (ENC_MAX_TICK_NUM - 1) )
     {
-        enc_revs_cntr   += 1;
-        enc_tick_cntr    = 0;
+        enc1_revs_cntr   += 1;
+        enc1_tick_cntr    = 0;
     }
-    else if( enc_tick_cntr == (-ENC_MAX_TICK_NUM + 1) )
+    else if( enc1_tick_cntr == (-ENC_MAX_TICK_NUM + 1) )
     {
-        enc_revs_cntr   -= 1;
-        enc_tick_cntr    = 0;
+        enc1_revs_cntr   -= 1;
+        enc1_tick_cntr    = 0;
+    }
+}
+
+// Motor 2
+static void extcb_base2(EXTDriver *extp, expchannel_t channel)
+{
+    (void)extp;
+    (void)channel;
+
+    /***    To define direction of encoder rotation  ***/
+    if( palReadLine( ENC2_WHITE_LINE ) == 0 )
+    {
+        enc2_tick_cntr    -= 1;
+        enc2_dir_state    = 1;       // counterclockwise
+    }
+    else
+    {
+        enc2_tick_cntr    += 1;
+        enc2_dir_state    = 0;       // clockwise
+    }
+
+    /***    Reset counter when it reaches the MAX value  ***/
+    /***    Count encoder revolutions                    ***/
+    if( enc2_tick_cntr == (ENC_MAX_TICK_NUM - 1) )
+    {
+        enc2_revs_cntr   += 1;
+        enc2_tick_cntr    = 0;
+    }
+    else if( enc2_tick_cntr == (-ENC_MAX_TICK_NUM + 1) )
+    {
+        enc2_revs_cntr   -= 1;
+        enc2_tick_cntr    = 0;
+    }
+}
+
+// Motor 3
+static void extcb_base3(EXTDriver *extp, expchannel_t channel)
+{
+    (void)extp;
+    (void)channel;
+
+    /***    To define direction of encoder rotation  ***/
+    if( palReadLine( ENC3_WHITE_LINE ) == 0 )
+    {
+        enc3_tick_cntr    -= 1;
+        enc3_dir_state    = 1;       // counterclockwise
+    }
+    else
+    {
+        enc3_tick_cntr    += 1;
+        enc3_dir_state    = 0;       // clockwise
+    }
+
+    /***    Reset counter when it reaches the MAX value  ***/
+    /***    Count encoder revolutions                    ***/
+    if( enc3_tick_cntr == (ENC_MAX_TICK_NUM - 1) )
+    {
+        enc3_revs_cntr   += 1;
+        enc3_tick_cntr    = 0;
+    }
+    else if( enc3_tick_cntr == (-ENC_MAX_TICK_NUM + 1) )
+    {
+        enc3_revs_cntr   -= 1;
+        enc3_tick_cntr    = 0;
     }
 }
 
@@ -65,19 +154,31 @@ void lldEncoderInit( void )
     if( isInitialized )
         return; 
 
-    EXTChannelConfig base_conf = {
+    commonExtDriverInit();
+
+    // Motor 1
+    EXTChannelConfig base1_conf = {
         .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
-        .cb = extcb_base
+        .cb = extcb_base1
     };
     
-    static EXTConfig extcfg;
-    for ( expchannel_t ch = 0; ch < EXT_MAX_CHANNELS; ch++ )
-    {
-        extcfg.channels[ch].mode  = EXT_CH_MODE_DISABLED;
-        extcfg.channels[ch].cb    = NULL;
-    }
-    extStart( &EXTD1, &extcfg );
-    extSetChannelMode( &EXTD1, 5, &base_conf );
+    extSetChannelMode( &EXTD1, ENC1_BASE, &base1_conf );
+
+    // Motor 2
+    EXTChannelConfig base2_conf = {
+        .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
+        .cb = extcb_base2
+    };
+
+    extSetChannelMode( &EXTD1, ENC2_BASE, &base2_conf );
+
+    // Motor 3
+    EXTChannelConfig base3_conf = {
+        .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
+        .cb = extcb_base3
+    };
+
+    extSetChannelMode( &EXTD1, ENC3_BASE, &base3_conf );
 
     isInitialized = true;
 }
@@ -91,7 +192,7 @@ void lldEncoderInit( void )
  */
 encoderTicksValue_t lldGetEncoderTicks( void )
 {
-    return enc_tick_cntr;
+    return enc1_tick_cntr;
 }
 
 /**
@@ -101,7 +202,7 @@ encoderTicksValue_t lldGetEncoderTicks( void )
  */
 bool lldGetEncoderDirection( void )
 {
-    return enc_dir_state;
+    return enc1_dir_state;
 }
 
 /**
@@ -111,7 +212,7 @@ bool lldGetEncoderDirection( void )
  */
 encoderRevsValue_t lldGetEncoderRevs( void )
 {
-    return ( enc_revs_cntr + enc_tick_cntr / (float)ENC_MAX_TICK_NUM );
+    return ( enc1_revs_cntr + enc1_tick_cntr / (float)ENC_MAX_TICK_NUM );
 }
 
 /*
@@ -119,7 +220,7 @@ encoderRevsValue_t lldGetEncoderRevs( void )
  */
 void lldEncoderReset( void )
 {
-    enc_tick_cntr       = 0;
-    enc_revs_cntr       = 0;
-    enc_dir_state       = 0;
+    enc1_tick_cntr       = 0;
+    enc1_revs_cntr       = 0;
+    enc1_dir_state       = 0;
 }
