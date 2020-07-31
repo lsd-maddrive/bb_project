@@ -16,6 +16,6 @@ void odometryInit( void );
  * @args    Units of speed 
  *              [REVS_PER_SEC]    - revolutions per second 
  */
-float odometryGetEncoderSpeed ( odometrySpeedUnit_t unit );
+float odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t unit );
 
 #endif 
