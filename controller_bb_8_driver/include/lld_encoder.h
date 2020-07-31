@@ -4,6 +4,7 @@
 typedef int32_t     encoderTicksValue_t; 
 typedef float       encoderRevsValue_t;
 
+
 /**
  * @brief   Initialize periphery connected to encoder
  * @note    Stable for repeated calls
@@ -17,25 +18,25 @@ void lldEncoderInit( void );
  *          [0; ENC_MAX_TICK_NUM]
  *          after ENC_MAX_TICK_NUM it resets
  */
-encoderTicksValue_t lldGetEncoderTicks( void );
+encoderTicksValue_t lldGetEncoderTicks( motorNumberValue_t number );
 
 /**
  * @brief   Get direction of encoder rotation
  * @return  clockwise           -> 0
  *          counterclockwise    -> 1
  */
-bool lldGetEncoderDirection( void );
+bool lldGetEncoderDirection( motorNumberValue_t number );
 
 /**
  * @brief   Get number of encoder revolutions [float]
  * @note    1 revolution = MAX_TICK_NUM ticks
  * @return  Encoder revolutions number depends on direction of rotation
  */
-encoderRevsValue_t lldGetEncoderRevs( void );
+encoderRevsValue_t lldGetEncoderRevs( motorNumberValue_t number );
 
 /*
  * @brief   Reset all variable for lld-encoder unit
  */
-void lldEncoderReset( void );
+void lldEncoderReset( motorNumberValue_t number );
 
 #endif 

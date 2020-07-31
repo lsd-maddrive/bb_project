@@ -36,12 +36,12 @@ void lldControlInit( void );
  *          duty            duty cycle [ticks]
  *          dir             direction of rotation [FORWARD, BACKWARD]
  */
-void lldControlSetRawMotorPower( uint8_t motor_num, uint32_t duty, lldMotorDirection_t dir );
+void lldControlSetRawMotorPower( motorNumberValue_t motor_num, uint32_t duty, lldMotorDirection_t dir );
 
 /**
  * @brief   Set power for motor
  * @param   inputPrc   Motor power value [-100 100]
  */
-void lldControlSetMotorPower( uint8_t motor_num, lldControlValue_t inputPrc );
+void lldControlSetMotorPower( motorNumberValue_t motor_num, lldControlValue_t inputPrc );
 
 #endif 

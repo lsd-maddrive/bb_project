@@ -15,56 +15,111 @@ void testEncoderRoutine( void )
 {
     debug_stream_init( );
     lldEncoderInit( );
+
 #ifdef WITH_MOTOR
     lldControlInit( );
-    lldControlValue_t   test_duty_prc   = 0; 
-    lldControlValue_t   test_delta_prc  = 10; 
-#endif 
 
-    encoderTicksValue_t test_ticks  = 0; 
-    encoderRevsValue_t  test_revs   = 0; 
-    bool                test_dir    = 0; 
+    lldControlValue_t   test_duty1_prc    = 0;
+    lldControlValue_t   test_duty2_prc    = 0;
+    lldControlValue_t   test_duty3_prc    = 0;
+    lldControlValue_t   test_delta_prc    = 10;
+#endif 
+    // Motor 1
+    encoderTicksValue_t test_ticks1  = 0;
+    encoderRevsValue_t  test_revs1   = 0;
+    bool                test_dir1    = 0;
+
+    // Motor 2
+    encoderTicksValue_t test_ticks2  = 0;
+    encoderRevsValue_t  test_revs2   = 0;
+    bool                test_dir2    = 0;
+
+    // Motor 3
+    encoderTicksValue_t test_ticks3  = 0;
+    encoderRevsValue_t  test_revs3   = 0;
+    bool                test_dir3    = 0;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        test_ticks  = lldGetEncoderTicks( );
-        test_revs   = lldGetEncoderRevs( ); 
-        test_dir    = lldGetEncoderDirection( ); 
+        test_ticks1  = lldGetEncoderTicks( 1 );
+        test_revs1   = lldGetEncoderRevs( 1 );
+        test_dir1    = lldGetEncoderDirection( 1 );
+
+        test_ticks2  = lldGetEncoderTicks( 2 );
+        test_revs2   = lldGetEncoderRevs( 2 );
+        test_dir2    = lldGetEncoderDirection( 2 );
+
+        test_ticks3  = lldGetEncoderTicks( 3 );
+        test_revs3   = lldGetEncoderRevs( 3 );
+        test_dir3    = lldGetEncoderDirection( 3 );
 
 #ifdef WITH_MOTOR
         char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE ); 
 
         switch( rcv_data )
         {
-            case 'a':
-                test_duty_prc += test_delta_prc;
+            case 'q':   // Motor 1
+                test_duty1_prc += test_delta_prc;
+                break;
+
+            case 'w':   // Motor 1
+                test_duty1_prc -= test_delta_prc;
+                break;
+
+            case 'a':   // Motor 2
+                test_duty2_prc += test_delta_prc;
                 break; 
             
-            case 's':
-                test_duty_prc -= test_delta_prc;
+            case 's':   // Motor 2
+                test_duty2_prc -= test_delta_prc;
+                break;
+
+            case 'z':   // Motor 3
+                test_duty3_prc  += test_delta_prc;
+                break;
+
+            case 'x':   // Motor 3
+                test_duty3_prc  -= test_delta_prc;
                 break;
 
             case ' ':
-                test_duty_prc = 0;
+                test_duty1_prc  = 0;
+                test_duty2_prc  = 0;
+                test_duty3_prc  = 0;
                 break; 
             
             default:
                 break; 
         }
-        test_duty_prc = CLIP_VALUE( test_duty_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
-        lldControlSetMotorPower( 1, test_duty_prc );
+        test_duty1_prc = CLIP_VALUE( test_duty1_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
+        lldControlSetMotorPower( 1, test_duty1_prc );
 
-        dbgprintf( "Power: (%d)\tTicks: (%d)\tRevs: (%d)\tDir: (%d)\n\r",
-                    test_duty_prc, test_ticks, (int32_t)test_revs, test_dir ); 
+        test_duty2_prc = CLIP_VALUE( test_duty2_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
+        lldControlSetMotorPower( 2, test_duty2_prc );
+
+        test_duty3_prc = CLIP_VALUE( test_duty3_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
+        lldControlSetMotorPower( 3, test_duty3_prc );
+
+        dbgprintf( "Power: %d\n\r"
+                   "T1: %d\tT2: %d\tT3: %d\n\r"
+                   "R1: %d\tR2: %d\tR3: %d\n\r"
+                   "D1: %d\tD2: %d\tD3: %d\n\r",
+                   test_ticks1, test_ticks2, test_ticks3,
+                   (int32_t)test_revs1, (int32_t)test_revs2, (int32_t)test_revs3,
+                   test_dir1, test_dir2, test_dir3 );
 #endif
 
 #ifndef WITH_MOTOR
-        dbgprintf( "Ticks: (%d)\tRevs: (%d)\tDir: (%d)\n\r",
-                    test_ticks, (int32_t)test_revs, test_dir ); 
+        dbgprintf( "T1: %d\tT2: %d\tT3: %d\n\r"
+                   "R1: %d\tR2: %d\tR3: %d\n\r"
+                   "D1: %d\tD2: %d\tD3: %d\n\r",
+                   test_ticks1, test_ticks2, test_ticks3,
+                   (int32_t)test_revs1, (int32_t)test_revs2, (int32_t)test_revs3,
+                   test_dir1, test_dir2, test_dir3 );
 #endif 
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
+        time = chThdSleepUntilWindowed( time, time + MS2ST( 600 ) );
     }
 }
 
