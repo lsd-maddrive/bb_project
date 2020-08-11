@@ -2,6 +2,13 @@
 
 ## Tickless mode => GPT5 
 
+## Отладка UART
+
+Driver | Pins | Input/Output 
+:-----:|:----:|:------------:
+SD6    | PG14 | TX
+SD6    | PG9  | RX 
+
 ## Драйвер управления приводами движения 
 
 ### Motor 1 

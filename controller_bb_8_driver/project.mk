@@ -5,7 +5,8 @@ PROJECT_MODULES = 	src/lld_control.c	\
 				  
 PROJECT_TESTS   =	tests/test_lld_control.c	\
 					tests/test_lld_encoder.c	\
-					tests/test_odometry.c
+					tests/test_odometry.c		\
+					tests/test_frequency.c
 				  		
 PROJECT_CSRC    = src/main.c src/common.c src/debug.c \
 					$(PROJECT_MODULES) $(PROJECT_TESTS)

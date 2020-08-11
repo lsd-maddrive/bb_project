@@ -31,6 +31,11 @@ void testRawMotorControlRoutine( void );
  */
 void testMotorControlRoutine( void );
 
+/**
+ * @brief   Find out the correct frequency for motors
+ */
+void testMatlabFrequency( void );
+
 /*============================================================================*/
 /* Encoder Tests                                                              */
 /*============================================================================*/

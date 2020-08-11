@@ -20,6 +20,10 @@ static inline void testsRoutines( void )
 
     testEncoderRoutine( ); 
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_MATLAB_FREQ_TEST )
+
+    testMatlabFrequency();
+
 #endif
 }
 

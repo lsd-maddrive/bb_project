@@ -17,13 +17,14 @@ extern "C" {
 #define     PROGRAM_MOTOR_DIRECTION_TEST                1
 #define     PROGRAM_MOTOR_RAW_CONTROL_TEST              2
 #define     PROGRAM_MOTOR_PRC_CONTROL_TEST              3
+#define     PROGRAM_MOTOR_MATLAB_FREQ_TEST              4
 //  LLD ENCODER TESTS
-#define     PROGRAM_ENCODER_TEST                        4
+#define     PROGRAM_ENCODER_TEST                        5
 //  ODOMETRY TESTS
-#define     PROGRAM_MOTOR_SPEED_TEST                    5
+#define     PROGRAM_MOTOR_SPEED_TEST                    6
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_SPEED_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_MATLAB_FREQ_TEST
 
 
 /*============================================================================*/
