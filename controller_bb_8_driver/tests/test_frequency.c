@@ -21,9 +21,11 @@ void testMatlabFrequency( void )
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
-    float       test_motor1_speed    = 0;
-    int16_t     matlab_motor1_speed  = 0;
-    uint8_t     matlab_start_flag    = 0;
+    lldControlValue_t   test_duty1_prc      = 0;
+    lldControlValue_t   test_delta_prc      = 10;
+    float               test_motor1_speed   = 0;
+    int16_t             matlab_motor1_speed = 0;
+    uint8_t             matlab_start_flag   = 0;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
@@ -36,9 +38,21 @@ void testMatlabFrequency( void )
                 matlab_start_flag = 1;
                 break;
 
+            case 'f':   // increase duty cycle
+                test_duty1_prc += test_delta_prc;
+                break;
+
+            case 'd':   // decrease duty cycle
+                test_duty1_prc -= test_delta_prc;
+                break;
+
+
             default:
                 break;
         }
+
+        test_duty1_prc = CLIP_VALUE( test_duty1_prc, 20, 80 );
+        lldControlSetMotorPower( 1, test_duty1_prc );
 
         test_motor1_speed    = odometryGetEncoderSpeed( 1, REVS_PER_SEC );
 
