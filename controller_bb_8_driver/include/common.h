@@ -24,7 +24,7 @@ extern "C" {
 #define     PROGRAM_MOTOR_SPEED_TEST                    6
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_PRC_CONTROL_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_MATLAB_FREQ_TEST
 
 
 /*============================================================================*/

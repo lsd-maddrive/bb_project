@@ -56,12 +56,12 @@ static void extcb_base1(EXTDriver *extp, expchannel_t channel)
     /***    To define direction of encoder rotation  ***/
     if( palReadLine( ENC1_WHITE_LINE ) == 0 )
     {
-        enc1_tick_cntr    -= 1;
+        enc1_tick_cntr    += 1;
         enc1_dir_state    = 1;       // counterclockwise
     }
     else
     {
-        enc1_tick_cntr    += 1;
+        enc1_tick_cntr    -= 1;
         enc1_dir_state    = 0;       // clockwise
     }
 
@@ -88,12 +88,12 @@ static void extcb_base2(EXTDriver *extp, expchannel_t channel)
     /***    To define direction of encoder rotation  ***/
     if( palReadLine( ENC2_WHITE_LINE ) == 0 )
     {
-        enc2_tick_cntr    -= 1;
+        enc2_tick_cntr    += 1;
         enc2_dir_state    = 1;       // counterclockwise
     }
     else
     {
-        enc2_tick_cntr    += 1;
+        enc2_tick_cntr    -= 1;
         enc2_dir_state    = 0;       // clockwise
     }
 
@@ -120,12 +120,12 @@ static void extcb_base3(EXTDriver *extp, expchannel_t channel)
     /***    To define direction of encoder rotation  ***/
     if( palReadLine( ENC3_WHITE_LINE ) == 0 )
     {
-        enc3_tick_cntr    -= 1;
+        enc3_tick_cntr    += 1;
         enc3_dir_state    = 1;       // counterclockwise
     }
     else
     {
-        enc3_tick_cntr    += 1;
+        enc3_tick_cntr    -= 1;
         enc3_dir_state    = 0;       // clockwise
     }
 

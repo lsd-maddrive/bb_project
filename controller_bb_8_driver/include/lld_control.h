@@ -2,7 +2,7 @@
 #define INCLUDE_LLD_CONTROL_H_
 
 #define PWM_FREQ        1000000
-#define PWM_PERIOD      10000   // 100 Hz
+#define PWM_PERIOD      1000   // 1 kHz
 #define LLD_DUTY_MIN    0
 
 typedef int32_t lldControlValue_t;

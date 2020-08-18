@@ -54,9 +54,9 @@ void testMatlabFrequency( void )
         }
 
         test_duty1_prc = CLIP_VALUE( test_duty1_prc, 0, 80 );
-        lldControlSetMotorPower( 1, test_duty1_prc );
+        lldControlSetMotorPower( 3, test_duty1_prc );
 
-        test_motor1_speed    = odometryGetEncoderSpeed( 1, REVS_PER_SEC );
+        test_motor1_speed    = odometryGetEncoderSpeed( 3, REVS_PER_SEC );
 
         if( matlab_start_flag )
         {

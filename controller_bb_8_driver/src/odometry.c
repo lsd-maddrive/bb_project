@@ -115,7 +115,7 @@ float odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t u
         switch( unit )
         {
             case REVS_PER_SEC:
-                return odometryEnc2RevPerSec;
+                return odometryEnc3RevPerSec;
                 break;
 
             default:
