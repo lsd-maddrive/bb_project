@@ -36,6 +36,8 @@ void testMotorControlRoutine( void );
  */
 void testMatlabFrequency( void );
 
+void testSpamPWM( void );
+
 /*============================================================================*/
 /* Encoder Tests                                                              */
 /*============================================================================*/

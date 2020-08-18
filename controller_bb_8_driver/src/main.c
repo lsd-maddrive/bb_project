@@ -16,6 +16,10 @@ static inline void testsRoutines( void )
 
     testMotorControlRoutine( );
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_FOR_GRISHA)
+
+    testSpamPWM( );
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ENCODER_TEST )
 
     testEncoderRoutine( ); 
