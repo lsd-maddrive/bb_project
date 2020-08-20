@@ -16,17 +16,16 @@ void testMatlabFrequency( void )
 {
     lldControlInit( );
     odometryInit( );
-//    debug_stream_init( );
 
     sdStart( &SD6, &sdcfg );
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
-    lldControlValue_t   test_duty1_prc      = 0;
-    lldControlValue_t   test_delta_prc      = 10;
-    float               test_motor1_speed   = 0;
-    int16_t             matlab_motor1_speed = 0;
-    uint8_t             matlab_start_flag   = 0;
+    lldControlValue_t       test_duty1_prc      = 0;
+    lldControlValue_t       test_delta_prc      = 10;
+    odometrySpeedValue_t    test_motor1_speed   = 0;
+    int16_t                 matlab_motor1_speed = 0;
+    uint8_t                 matlab_start_flag   = 0;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
@@ -36,7 +35,6 @@ void testMatlabFrequency( void )
         switch( rc_data )
         {
             case 's':   // start
-                palSetLine( LINE_LED2 );
                 matlab_start_flag = 1;
                 break;
 
@@ -52,15 +50,12 @@ void testMatlabFrequency( void )
             default:
                 break;
         }
-
-        test_duty1_prc = CLIP_VALUE( test_duty1_prc, 0, 80 );
-        lldControlSetMotorPower( 3, test_duty1_prc );
-
-        test_motor1_speed    = odometryGetEncoderSpeed( 3, REVS_PER_SEC );
+        motorNumberValue_t motor_name = A;
+        lldControlSetMotorPower( motor_name, test_duty1_prc );
+        test_motor1_speed    = odometryGetEncoderSpeed( motor_name, REVS_PER_SEC );
 
         if( matlab_start_flag )
         {
-            palSetLine( LINE_LED3 );
             matlab_motor1_speed = (int)test_motor1_speed;
             sdWrite(&SD6, (uint8_t*) &matlab_motor1_speed, 2);
         }

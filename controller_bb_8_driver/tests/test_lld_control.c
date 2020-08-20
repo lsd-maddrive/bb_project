@@ -30,9 +30,9 @@ void testRawMotorDirectionControlRoutine( void )
             default:
                 break;
         }
-        lldControlSetRawMotorPower(1, test_duty, test_dir );
-        lldControlSetRawMotorPower(2, test_duty, test_dir );
-        lldControlSetRawMotorPower(3, test_duty, test_dir );
+        lldControlSetRawMotorPower(A, test_duty, test_dir );
+        lldControlSetRawMotorPower(B, test_duty, test_dir );
+        lldControlSetRawMotorPower(C, test_duty, test_dir );
         dbgprintf( "DIR: (%d)\n\r", test_dir );
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 500 ) );
@@ -104,9 +104,9 @@ void testRawMotorControlRoutine( void )
         test_duty3 = CLIP_VALUE( test_duty3, 0, PWM_PERIOD );
 
 #ifdef MOTOR_FORWARD
-        lldControlSetRawMotorPower( 1, test_duty1, FORWARD );
-        lldControlSetRawMotorPower( 2, test_duty2, FORWARD );
-        lldControlSetRawMotorPower( 3, test_duty3, FORWARD );
+        lldControlSetRawMotorPower( A, test_duty1, FORWARD );
+        lldControlSetRawMotorPower( B, test_duty2, FORWARD );
+        lldControlSetRawMotorPower( C, test_duty3, FORWARD );
 
         dbgprintf("F D1:%d\tD2:%d\tD3:%d\n\r",
                   test_duty1, test_duty2, test_duty3);
@@ -183,13 +183,13 @@ void testMotorControlRoutine( void )
                 break; 
         }
         test_duty1_prc = CLIP_VALUE( test_duty1_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
-        lldControlSetMotorPower( 1, test_duty1_prc );
+        lldControlSetMotorPower( A, test_duty1_prc );
         
         test_duty2_prc = CLIP_VALUE( test_duty2_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
-        lldControlSetMotorPower( 2, test_duty2_prc );
+        lldControlSetMotorPower( B, test_duty2_prc );
 
         test_duty3_prc = CLIP_VALUE( test_duty3_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
-        lldControlSetMotorPower( 3, test_duty3_prc );
+        lldControlSetMotorPower( C, test_duty3_prc );
         
         dbgprintf( "M1: (%d)\tM2: (%d)\tM3: (%d)\n\r", 
             test_duty1_prc, test_duty2_prc, test_duty3_prc );
@@ -205,7 +205,7 @@ void testSpamPWM( void )
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-      lldControlSetMotorPower( 1, 50 );
+      lldControlSetMotorPower( A, 50 );
       time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
     }
 }

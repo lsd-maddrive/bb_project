@@ -2,9 +2,7 @@
 #include <lld_encoder.h>
 #include <odometry.h>
 
-#define MS_2_SEC        100 // 10 ms - > 1 s
 
-#define VT_ODOM_MS      10
 static virtual_timer_t  odom_update_vt;
 
 /*============================================================================*/
@@ -12,41 +10,61 @@ static virtual_timer_t  odom_update_vt;
 /*============================================================================*/
 
 /**************** ENCODER 1 ********************/
-float   encPreviousRevsNumber1   = 0; 
-float   encCurrentRevsNumber1    = 0; 
+encoderRevsValue_t      encPrevRevsNumberA      = 0;
+encoderRevsValue_t      encCurRevsNumberA       = 0;
 
-float   odometryEnc1RevPerSec    = 0; 
+odometrySpeedValue_t    odometryEncRevPerSecA   = 0;
+
+#define ENC_A_LPF       (float)0.8
+odometrySpeedValue_t    odometryWheelSpeedRPS_A_LPF         = 0;
+odometrySpeedValue_t    odometryWheelPrevSpeedRPS_A_LPF     = 0;
 
 /**************** ENCODER 2 ********************/
-float   encPreviousRevsNumber2   = 0;
-float   encCurrentRevsNumber2    = 0;
+encoderRevsValue_t      encPrevRevsNumberB      = 0;
+encoderRevsValue_t      encCurRevsNumberB       = 0;
 
-float   odometryEnc2RevPerSec    = 0;
+odometrySpeedValue_t    odometryEncRevPerSecB   = 0;
+
+#define ENC_B_LPF       (float)0.8
+odometrySpeedValue_t    odometryWheelSpeedRPS_B_LPF         = 0;
+odometrySpeedValue_t    odometryWheelPrevSpeedRPS_B_LPF     = 0;
 
 /**************** ENCODER 3 ********************/
-float   encPreviousRevsNumber3   = 0;
-float   encCurrentRevsNumber3    = 0;
+encoderRevsValue_t      encPrevRevsNumberC      = 0;
+encoderRevsValue_t      encCurRevsNumberC       = 0;
 
-float   odometryEnc3RevPerSec    = 0;
+odometrySpeedValue_t    odometryEncRevPerSecC   = 0;
 
+#define ENC_C_LPF       (float)0.8
+odometrySpeedValue_t    odometryWheelSpeedRPS_C_LPF         = 0;
+odometrySpeedValue_t    odometryWheelPrevSpeedRPS_C_LPF     = 0;
 
 static void odom_update_vt_cb( void *arg )
 {
     arg = arg; 
 /**************** ENCODER 1 ********************/
-    encCurrentRevsNumber1    = lldGetEncoderRevs( 1 );
-    odometryEnc1RevPerSec    = (encCurrentRevsNumber1 - encPreviousRevsNumber1) * MS_2_SEC;
-    encPreviousRevsNumber1   = encCurrentRevsNumber1;
+    encCurRevsNumberA    = lldGetEncoderRevs( 1 );
+    odometryEncRevPerSecA    = (encCurRevsNumberA - encPrevRevsNumberA) * MS_2_SEC;
+    encPrevRevsNumberA   = encCurRevsNumberA;
+// LPF Filter
+    odometryWheelSpeedRPS_A_LPF      = (odometryEncRevPerSecA / MOTOR_GAIN) * (1 - ENC_A_LPF) + odometryWheelPrevSpeedRPS_A_LPF * ENC_A_LPF;
+    odometryWheelPrevSpeedRPS_A_LPF  = odometryWheelSpeedRPS_A_LPF;
 
 /**************** ENCODER 2 ********************/
-    encCurrentRevsNumber2    = lldGetEncoderRevs( 2 );
-    odometryEnc2RevPerSec    = (encCurrentRevsNumber2 - encPreviousRevsNumber2) * MS_2_SEC;
-    encPreviousRevsNumber2   = encCurrentRevsNumber2;
+    encCurRevsNumberB    = lldGetEncoderRevs( 2 );
+    odometryEncRevPerSecB    = (encCurRevsNumberB - encPrevRevsNumberB) * MS_2_SEC;
+    encPrevRevsNumberB   = encCurRevsNumberB;
+// LPF Filter
+    odometryWheelSpeedRPS_B_LPF      = (odometryEncRevPerSecB / MOTOR_GAIN) * (1 - ENC_B_LPF) + odometryWheelPrevSpeedRPS_B_LPF * ENC_B_LPF;
+    odometryWheelPrevSpeedRPS_B_LPF  = odometryWheelSpeedRPS_B_LPF;
 
 /**************** ENCODER 3 ********************/
-    encCurrentRevsNumber3    = lldGetEncoderRevs( 3 );
-    odometryEnc3RevPerSec    = (encCurrentRevsNumber3 - encPreviousRevsNumber3) * MS_2_SEC;
-    encPreviousRevsNumber3   = encCurrentRevsNumber3;
+    encCurRevsNumberC    = lldGetEncoderRevs( 3 );
+    odometryEncRevPerSecC    = (encCurRevsNumberC - encPrevRevsNumberC) * MS_2_SEC;
+    encPrevRevsNumberC   = encCurRevsNumberC;
+// LPF Filter
+    odometryWheelSpeedRPS_C_LPF      = (odometryEncRevPerSecC / MOTOR_GAIN) * (1 - ENC_C_LPF) + odometryWheelPrevSpeedRPS_C_LPF * ENC_C_LPF;
+    odometryWheelPrevSpeedRPS_C_LPF  = odometryWheelSpeedRPS_C_LPF;
 
     chSysLockFromISR();
     chVTSetI(&odom_update_vt, MS2ST( VT_ODOM_MS ), odom_update_vt_cb, NULL);
@@ -79,17 +97,17 @@ void odometryInit( void )
  * @args    Units of speed 
  *              [REVS_PER_SEC]    - revolutions per second 
  */
-float odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t unit )
+odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t unit )
 {
-  number = CLIP_VALUE( number, 1, 3 );
+//  number = CLIP_VALUE( number, 0, 2 );
 
   switch( number )
   {
-      case 1:
+      case A:
         switch( unit )
         {
             case REVS_PER_SEC:
-                return odometryEnc1RevPerSec;
+                return odometryEncRevPerSecA;
                 break;
 
             default:
@@ -98,11 +116,11 @@ float odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t u
         }
         break;
 
-      case 2:
+      case B:
         switch( unit )
         {
             case REVS_PER_SEC:
-                return odometryEnc2RevPerSec;
+                return odometryEncRevPerSecB;
                 break;
 
             default:
@@ -111,11 +129,11 @@ float odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t u
         }
         break;
 
-      case 3:
+      case C:
         switch( unit )
         {
             case REVS_PER_SEC:
-                return odometryEnc3RevPerSec;
+                return odometryEncRevPerSecC;
                 break;
 
             default:
@@ -128,4 +146,116 @@ float odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t u
         return -1.0;    // useless actually
         break;
   }
+}
+
+/**
+ * @brief   Get filtered speed of rotation of the wheel
+ * @args    Units of speed
+ *              [REVS_PER_SEC]    - revolutions per second
+ */
+odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t number, odometrySpeedUnit_t unit )
+{
+//    number = CLIP_VALUE( number, 0, 2 );
+
+    switch( number )
+    {
+        case A:
+          switch( unit )
+          {
+              case REVS_PER_SEC:
+                  return odometryWheelSpeedRPS_A_LPF;
+                  break;
+
+              default:
+                  return -1.0;
+                  break;
+          }
+          break;
+
+        case B:
+          switch( unit )
+          {
+              case REVS_PER_SEC:
+                  return odometryWheelSpeedRPS_B_LPF;
+                  break;
+
+              default:
+                  return -1.0;
+                  break;
+          }
+          break;
+
+        case C:
+          switch( unit )
+          {
+              case REVS_PER_SEC:
+                  return odometryWheelSpeedRPS_C_LPF;
+                  break;
+
+              default:
+                  return -1.0;
+                  break;
+          }
+          break;
+
+        default:
+          return -1.0;    // useless actually
+          break;
+    }
+}
+
+/**
+ * @brief   Get raw speed of rotation of the wheel
+ * @args    Units of speed
+ *              [REVS_PER_SEC]    - revolutions per second
+ */
+odometrySpeedValue_t odometryGetWheelSpeedRaw( motorNumberValue_t number, odometrySpeedUnit_t unit )
+{
+//    number = CLIP_VALUE( number, 0, 2 );
+
+    switch( number )
+    {
+        case A:
+          switch( unit )
+          {
+              case REVS_PER_SEC:
+                  return odometryEncRevPerSecA / MOTOR_GAIN;
+                  break;
+
+              default:
+                  return -1.0;
+                  break;
+          }
+          break;
+
+        case B:
+          switch( unit )
+          {
+              case REVS_PER_SEC:
+                  return odometryEncRevPerSecB / MOTOR_GAIN;
+                  break;
+
+              default:
+                  return -1.0;
+                  break;
+          }
+          break;
+
+        case C:
+          switch( unit )
+          {
+              case REVS_PER_SEC:
+                  return odometryEncRevPerSecC / MOTOR_GAIN;
+                  break;
+
+              default:
+                  return -1.0;
+                  break;
+          }
+          break;
+
+        default:
+          return -1.0;    // useless actually
+          break;
+    }
 }

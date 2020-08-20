@@ -1,6 +1,15 @@
 #ifndef INCLUDE_ODOMETRY_H_
 #define INCLUDE_ODOMETRY_H_
 
+#define MS_2_SEC        100 // 10 ms - > 1 s
+#define CM_2_M          (float)0.01;
+
+#define VT_ODOM_MS      10
+
+typedef float   odometryValue_t;
+typedef float   odometrySpeedValue_t;
+
+
 typedef enum {
     REVS_PER_SEC
 } odometrySpeedUnit_t; 
@@ -16,6 +25,19 @@ void odometryInit( void );
  * @args    Units of speed 
  *              [REVS_PER_SEC]    - revolutions per second 
  */
-float odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t unit );
+odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t unit );
 
+/**
+ * @brief   Get filtered speed of rotation of the wheel
+ * @args    Units of speed
+ *              [REVS_PER_SEC]    - revolutions per second
+ */
+odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t number, odometrySpeedUnit_t unit );
+
+/**
+ * @brief   Get raw speed of rotation of the wheel
+ * @args    Units of speed
+ *              [REVS_PER_SEC]    - revolutions per second
+ */
+odometrySpeedValue_t odometryGetWheelSpeedRaw( motorNumberValue_t number, odometrySpeedUnit_t unit );
 #endif 

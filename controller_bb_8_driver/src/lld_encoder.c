@@ -190,13 +190,11 @@ void lldEncoderInit( void )
  */
 encoderTicksValue_t lldGetEncoderTicks( motorNumberValue_t number )
 {
-    number = CLIP_VALUE(number, 1, 3);
-
-    if( number == 1 )
+    if( number == A )
       return enc1_tick_cntr;
-    else if( number == 2 )
+    else if( number == B )
       return enc2_tick_cntr;
-    else if( number == 3 )
+    else if( number == C )
       return enc3_tick_cntr;
 
     // must be Impossible
@@ -210,13 +208,11 @@ encoderTicksValue_t lldGetEncoderTicks( motorNumberValue_t number )
  */
 bool lldGetEncoderDirection( motorNumberValue_t number )
 {
-    number = CLIP_VALUE(number, 1, 3);
-
-    if( number == 1 )
+    if( number == A )
       return enc1_dir_state;
-    else if( number == 2)
+    else if( number == B)
       return enc2_dir_state;
-    else if( number == 3 )
+    else if( number == C )
       return enc3_dir_state;
 
     // must be Impossible
@@ -230,13 +226,11 @@ bool lldGetEncoderDirection( motorNumberValue_t number )
  */
 encoderRevsValue_t lldGetEncoderRevs( motorNumberValue_t number )
 {
-    number = CLIP_VALUE(number, 1, 3);
-
-    if( number == 1 )
+    if( number == A )
       return ( enc1_revs_cntr + enc1_tick_cntr / (float)ENC_MAX_TICK_NUM );
-    else if( number == 2 )
+    else if( number == B )
       return ( enc2_revs_cntr + enc2_tick_cntr / (float)ENC_MAX_TICK_NUM );
-    else if( number == 3 )
+    else if( number == C )
       return ( enc3_revs_cntr + enc3_tick_cntr / (float)ENC_MAX_TICK_NUM );
 
     // must be Impossible
@@ -248,21 +242,19 @@ encoderRevsValue_t lldGetEncoderRevs( motorNumberValue_t number )
  */
 void lldEncoderReset( motorNumberValue_t number )
 {
-    number = CLIP_VALUE(number, 1, 3);
-
-    if( number == 1 )
+    if( number == A )
     {
         enc1_tick_cntr       = 0;
         enc1_revs_cntr       = 0;
         enc1_dir_state       = 0;
     }
-    else if( number == 2 )
+    else if( number == B )
     {
         enc2_tick_cntr       = 0;
         enc2_revs_cntr       = 0;
         enc2_dir_state       = 0;
     }
-    else if( number == 3 )
+    else if( number == C )
     {
         enc3_tick_cntr       = 0;
         enc3_revs_cntr       = 0;

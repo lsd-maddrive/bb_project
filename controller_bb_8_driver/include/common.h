@@ -23,9 +23,10 @@ extern "C" {
 #define     PROGRAM_ENCODER_TEST                        6
 //  ODOMETRY TESTS
 #define     PROGRAM_MOTOR_SPEED_TEST                    7
+#define     PROGRAM_WHEEL_SPEED_TEST                    8
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_FOR_GRISHA
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_WHEEL_SPEED_TEST
 
 
 /*============================================================================*/
@@ -39,9 +40,14 @@ extern "C" {
 /* LLD LIMITS                                                                 */
 /*============================================================================*/
 
-#define LLD_MOTOR_MAX_PRC       100 
-#define LLD_MOTOR_MIN_PRC       (-100)
+#define LLD_MOTOR_MAX_PRC       80
+#define LLD_MOTOR_MIN_PRC       (-80)
 
+/*============================================================================*/
+/* MOTOR CONFIGURATION CONTANTS                                                                 */
+/*============================================================================*/
+
+#define MOTOR_GAIN               27
 
 /*============================================================================*/
 /* DEBUG                                                                      */
@@ -55,7 +61,13 @@ void dbgprintf( const char* format, ... );
 /* Common units                                                            */
 /*============================================================================*/
 
-typedef uint8_t     motorNumberValue_t;
+//typedef uint8_t     motorNumberValue_t;
+
+typedef enum {
+  A,
+  B,
+  C
+} motorNumberValue_t;
 
 /**
  * @brief   Initialize EXT driver with empty config

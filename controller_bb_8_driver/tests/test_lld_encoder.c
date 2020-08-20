@@ -42,44 +42,44 @@ void testEncoderRoutine( void )
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        test_ticks1  = lldGetEncoderTicks( 1 );
-        test_revs1   = lldGetEncoderRevs( 1 );
-        test_dir1    = lldGetEncoderDirection( 1 );
+        test_ticks1  = lldGetEncoderTicks( A );
+        test_revs1   = lldGetEncoderRevs( A );
+        test_dir1    = lldGetEncoderDirection( A );
 
-        test_ticks2  = lldGetEncoderTicks( 2 );
-        test_revs2   = lldGetEncoderRevs( 2 );
-        test_dir2    = lldGetEncoderDirection( 2 );
+        test_ticks2  = lldGetEncoderTicks( B );
+        test_revs2   = lldGetEncoderRevs( B );
+        test_dir2    = lldGetEncoderDirection( B );
 
-        test_ticks3  = lldGetEncoderTicks( 3 );
-        test_revs3   = lldGetEncoderRevs( 3 );
-        test_dir3    = lldGetEncoderDirection( 3 );
+        test_ticks3  = lldGetEncoderTicks( C );
+        test_revs3   = lldGetEncoderRevs( C );
+        test_dir3    = lldGetEncoderDirection( C );
 
 #ifdef WITH_MOTOR
         char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE ); 
 
         switch( rcv_data )
         {
-            case 'q':   // Motor 1
+            case 'q':   // Motor A
                 test_duty1_prc += test_delta_prc;
                 break;
 
-            case 'w':   // Motor 1
+            case 'w':   // Motor A
                 test_duty1_prc -= test_delta_prc;
                 break;
 
-            case 'a':   // Motor 2
+            case 'a':   // Motor B
                 test_duty2_prc += test_delta_prc;
                 break; 
             
-            case 's':   // Motor 2
+            case 's':   // Motor B
                 test_duty2_prc -= test_delta_prc;
                 break;
 
-            case 'z':   // Motor 3
+            case 'z':   // Motor c
                 test_duty3_prc  += test_delta_prc;
                 break;
 
-            case 'x':   // Motor 3
+            case 'x':   // Motor C
                 test_duty3_prc  -= test_delta_prc;
                 break;
 
@@ -92,14 +92,9 @@ void testEncoderRoutine( void )
             default:
                 break; 
         }
-        test_duty1_prc = CLIP_VALUE( test_duty1_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
-        lldControlSetMotorPower( 1, test_duty1_prc );
-
-        test_duty2_prc = CLIP_VALUE( test_duty2_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
-        lldControlSetMotorPower( 2, test_duty2_prc );
-
-        test_duty3_prc = CLIP_VALUE( test_duty3_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
-        lldControlSetMotorPower( 3, test_duty3_prc );
+        lldControlSetMotorPower( A, test_duty1_prc );
+        lldControlSetMotorPower( B, test_duty2_prc );
+        lldControlSetMotorPower( C, test_duty3_prc );
 
         dbgprintf( "Power: %d\n\r"
                    "T1: %d\tT2: %d\tT3: %d\n\r"

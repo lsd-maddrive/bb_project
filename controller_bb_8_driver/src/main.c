@@ -28,6 +28,10 @@ static inline void testsRoutines( void )
 
     testMatlabFrequency();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_WHEEL_SPEED_TEST )
+
+    testWheelSpeed();
+
 #endif
 }
 

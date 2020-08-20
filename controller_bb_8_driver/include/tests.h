@@ -36,6 +36,9 @@ void testMotorControlRoutine( void );
  */
 void testMatlabFrequency( void );
 
+/**
+ * @brief   Temporary test with PWM spam (Motor A)
+ */
 void testSpamPWM( void );
 
 /*============================================================================*/
@@ -58,5 +61,10 @@ void testEncoderRoutine( void );
  * @brief   Test motor speed 
  */
 void testMotorSpeed( void );
+
+/*
+ * @brief   Test wheel speed
+ */
+void testWheelSpeed( void );
 
 #endif /* INCLUDE_TESTS_H_ */

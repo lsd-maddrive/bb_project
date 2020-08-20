@@ -189,23 +189,23 @@ void lldControlInit( void )
 void lldControlSetRawMotorPower( motorNumberValue_t motor_num, uint32_t duty, lldMotorDirection_t dir )
 {
     duty = CLIP_VALUE( duty, 0, PWM_PERIOD );
-    motor_num = CLIP_VALUE( motor_num, 1, 3 ); 
+//    motor_num = CLIP_VALUE( motor_num, 1, 3 );
 
     if( dir == FORWARD )
     {
         switch( motor_num )
         {
-            case 1:
+            case A:
                 pwmEnableChannel ( pwm1Driver, MOTOR1_PWM1CH_HIN1, duty );
                 pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 );
                 break;
 
-            case 2:
+            case B:
                 pwmEnableChannel ( pwm8Driver, MOTOR2_PWM8CH_HIN1, duty );
                 pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN2 );
                 break; 
 
-            case 3: 
+            case C:
                 pwmEnableChannel ( pwm8Driver, MOTOR3_PWM8CH_HIN1, duty );
                 pwmDisableChannel( pwm1Driver, MOTOR3_PWM1CH_HIN2 );
                 break; 
@@ -218,17 +218,17 @@ void lldControlSetRawMotorPower( motorNumberValue_t motor_num, uint32_t duty, ll
     {
         switch( motor_num )
         {
-            case 1:
+            case A:
                 pwmEnableChannel ( pwm1Driver, MOTOR1_PWM1CH_HIN2, duty );
                 pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN1 );
                 break;
 
-            case 2:
+            case B:
                 pwmEnableChannel ( pwm8Driver, MOTOR2_PWM8CH_HIN2, duty );
                 pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN1 );
                 break; 
 
-            case 3: 
+            case C:
                 pwmEnableChannel ( pwm1Driver, MOTOR3_PWM1CH_HIN2, duty );
                 pwmDisableChannel( pwm8Driver, MOTOR3_PWM8CH_HIN1 );
                 break;
@@ -242,11 +242,12 @@ void lldControlSetRawMotorPower( motorNumberValue_t motor_num, uint32_t duty, ll
 /**
  * @brief   Set power for motor
  * @param   inputPrc   Motor power value [-100 100]
+ *          motor_num  Name of motor [A, B, C]
  */
 void lldControlSetMotorPower( motorNumberValue_t motor_num, lldControlValue_t inputPrc )
 {
     inputPrc = CLIP_VALUE( inputPrc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
-    motor_num = CLIP_VALUE( motor_num, 1, 3 ); 
+//    motor_num = CLIP_VALUE( motor_num, 1, 3 );
 
     uint32_t duty = abs(inputPrc) * motor_k + motor_b; 
 
