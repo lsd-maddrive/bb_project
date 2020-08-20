@@ -16,20 +16,20 @@ logger = logging.getLogger(__name__)
 def main():
     try:
         port = serial.Serial('/dev/ttyUSB0', 115200)
-        port.open()
         logger.debug(f"USB is connected successfully!")
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")
+        port.close()
+        port.open()
         return 
-
 
     # Instantiate the controller
     joy = xbox.Joystick()
 
     while joy.leftTrigger() < 0.8:
         # Read joystick data
-        x_axis = joy.leftX()
-        y_axis = joy.leftY()
+        y_axis = joy.leftX()
+        x_axis = joy.leftY()
         velocity = joy.rightTrigger()
         ang_speed_raw = joy.rightX()
 
