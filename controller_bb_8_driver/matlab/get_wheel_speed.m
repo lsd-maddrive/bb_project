@@ -15,12 +15,12 @@ fwrite(dat, start, 'uint8');
 pool = []; 
 total = []; 
 
-iter = 3;
+iter = 5;
 for i = 1:iter
     % increase dutycycle 
     fwrite(dat, 'f', 'uint8');
     disp 'Increase speed!'
-    pool = fread(dat, [200, 1], 'int16');
+    pool = fread(dat, [1000, 1], 'int16');
     total = [total; pool];
 end
 
@@ -39,7 +39,7 @@ disp 'Connection is closed!'
 raw_speed = []; 
 lpf_speed = [];
 
-for i = 1:lenght(total)
+for i = 1:length(total)
     if mod(i, 2) == 0
         raw_speed = [raw_speed; total(i, 1)]; 
     else
@@ -61,4 +61,4 @@ plot(raw_speed)
 hold on 
 grid on 
 plot(lpf_speed)
-legend
+legend('raw_speed', 'lpf_speed')

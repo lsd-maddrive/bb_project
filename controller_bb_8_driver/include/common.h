@@ -26,7 +26,7 @@ extern "C" {
 #define     PROGRAM_WHEEL_SPEED_TEST                    8
 
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_WHEEL_SPEED_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_FOR_GRISHA
 
 
 /*============================================================================*/

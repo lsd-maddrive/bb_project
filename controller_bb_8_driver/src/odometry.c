@@ -15,7 +15,7 @@ encoderRevsValue_t      encCurRevsNumberA       = 0;
 
 odometrySpeedValue_t    odometryEncRevPerSecA   = 0;
 
-#define ENC_A_LPF       (float)0.8
+#define ENC_A_LPF       (float)0.7
 odometrySpeedValue_t    odometryWheelSpeedRPS_A_LPF         = 0;
 odometrySpeedValue_t    odometryWheelPrevSpeedRPS_A_LPF     = 0;
 
@@ -25,7 +25,7 @@ encoderRevsValue_t      encCurRevsNumberB       = 0;
 
 odometrySpeedValue_t    odometryEncRevPerSecB   = 0;
 
-#define ENC_B_LPF       (float)0.8
+#define ENC_B_LPF       (float)0.7
 odometrySpeedValue_t    odometryWheelSpeedRPS_B_LPF         = 0;
 odometrySpeedValue_t    odometryWheelPrevSpeedRPS_B_LPF     = 0;
 
@@ -35,7 +35,7 @@ encoderRevsValue_t      encCurRevsNumberC       = 0;
 
 odometrySpeedValue_t    odometryEncRevPerSecC   = 0;
 
-#define ENC_C_LPF       (float)0.8
+#define ENC_C_LPF       (float)0.7
 odometrySpeedValue_t    odometryWheelSpeedRPS_C_LPF         = 0;
 odometrySpeedValue_t    odometryWheelPrevSpeedRPS_C_LPF     = 0;
 
@@ -43,7 +43,7 @@ static void odom_update_vt_cb( void *arg )
 {
     arg = arg; 
 /**************** ENCODER 1 ********************/
-    encCurRevsNumberA    = lldGetEncoderRevs( 1 );
+    encCurRevsNumberA    = lldGetEncoderRevs( A );
     odometryEncRevPerSecA    = (encCurRevsNumberA - encPrevRevsNumberA) * MS_2_SEC;
     encPrevRevsNumberA   = encCurRevsNumberA;
 // LPF Filter
@@ -51,7 +51,7 @@ static void odom_update_vt_cb( void *arg )
     odometryWheelPrevSpeedRPS_A_LPF  = odometryWheelSpeedRPS_A_LPF;
 
 /**************** ENCODER 2 ********************/
-    encCurRevsNumberB    = lldGetEncoderRevs( 2 );
+    encCurRevsNumberB    = lldGetEncoderRevs( B );
     odometryEncRevPerSecB    = (encCurRevsNumberB - encPrevRevsNumberB) * MS_2_SEC;
     encPrevRevsNumberB   = encCurRevsNumberB;
 // LPF Filter
@@ -59,7 +59,7 @@ static void odom_update_vt_cb( void *arg )
     odometryWheelPrevSpeedRPS_B_LPF  = odometryWheelSpeedRPS_B_LPF;
 
 /**************** ENCODER 3 ********************/
-    encCurRevsNumberC    = lldGetEncoderRevs( 3 );
+    encCurRevsNumberC    = lldGetEncoderRevs( C );
     odometryEncRevPerSecC    = (encCurRevsNumberC - encPrevRevsNumberC) * MS_2_SEC;
     encPrevRevsNumberC   = encCurRevsNumberC;
 // LPF Filter

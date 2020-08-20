@@ -140,18 +140,20 @@ void testWheelSpeed( void )
 
         if( matlab_start_flag )
         {
-            matlab_wheel_A      = (int)test_wheel_A;
-            matlab_wheel_A_raw  = (int)test_wheel_A_raw;
+            matlab_wheel_A      = (int)(test_wheel_A * 100);
+            matlab_wheel_A_raw  = (int)(test_wheel_A_raw * 100);
             sdWrite( &SD6, (uint8_t*) &matlab_wheel_A, 2 );
             sdWrite( &SD6, (uint8_t*) &matlab_wheel_A_raw, 2 );
         }
+        time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
 #else
         dbgprintf( "A: %d\tB: %d\tC: %d\n\r",
                    (int)test_wheel_A,
                    (int)test_wheel_B,
                    (int)test_wheel_C );
+        time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
 #endif
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 200 ) );
+
     }
 
 }

@@ -49,7 +49,6 @@ bool                    enc3_dir_state   = 0;
 // Motor 1
 static void extcb_base1(EXTDriver *extp, expchannel_t channel)
 {
-     palToggleLine( LINE_LED1 );
     (void)extp;
     (void)channel;
 

@@ -37,5 +37,5 @@ fclose(dat);
 disp 'Connection is closed!'
 
 name = 'freq1000.mat';
-path = 'D:\RTOS_info\Distrib_STM32\Distrib\ChibiStudio_v0\ChibiStudio\workspace176\bb-8_project\controller_bb_8_driver\matlab\files\';
+path = 'D:\RTOS_info\Distrib_STM32\Distrib\ChibiStudio_v0\ChibiStudio\workspace176\bb-8_project\controller_bb_8_driver\matlab\files\frequency_test';
 save(fullfile(path, name), 'total', '-mat')
