@@ -1,10 +1,11 @@
 import logging 
-
-import xbox
-import time
 import math
+import time
+
 import serial
 import struct
+import xbox
+
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -14,7 +15,7 @@ def main():
     try:
         port = serial.Serial('/dev/ttyUSB0', 115200)
         port.open()
-    except FileNotFoundError as err:
+    except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")
         return 
 

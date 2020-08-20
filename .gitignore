@@ -2,4 +2,5 @@
 *build*
 *.vscode 
 *.asv
-python/joystick/venv/
+venv/
+__pycache__/
