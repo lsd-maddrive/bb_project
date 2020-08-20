@@ -25,11 +25,4 @@ void robotOdometryInit( void );
  */
 void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, float k );
 
-// TODO: remove temp functions!
-float setAngleIntegral( float angle );
-
-float getPropError( void );
-
-float getSpeedA( void );
-
 #endif /* INCLUDE_ROBOT_ODOMETRY_H_ */

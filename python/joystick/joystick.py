@@ -4,9 +4,9 @@ import time
 
 import serial
 import struct
-import xbox
+import src.xbox_one
 
-from config import V_MAX, ANG_SPEED_MAX
+from src.config import V_MAX, ANG_SPEED_MAX
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -82,23 +82,24 @@ def main():
         logger.debug(f"USB is connected successfully!")
 
         # Instantiate the controller
-        joy = xbox.Joystick()
+        joy = Xbox_one.Joystick()
 
         while joy.leftTrigger() < 0.8:
-            ang_speed = calc_angle_speed(joy.rightX())
-            # Joystick we use has reversed axis, so X and Y axis are switched
-            velocity_x, velocity_y = calc_velocity(joy.leftY(), joy.leftX(), joy.rightTrigger())
+            ang_speed = calc_angle_speed(joy.rightYAxis())
+
+            velocity_x, velocity_y = calc_velocity(joy.leftXAxis(),
+                                                   joy.leftYAxis(),
+                                                   joy.rightTrigger())
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
             time.sleep(0.1)
 
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")
-        # return
     finally:
         # Close out when done
         if joy is not 0:
-            joy.close()
+            xbox_one.joy_close(joy)
             logger.debug("Joystick is closed successfully")
         if port is not 0:
             port.close()

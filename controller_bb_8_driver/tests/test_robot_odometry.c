@@ -57,7 +57,6 @@ void testRobotOdometry ( void )
               test_v_y = 0;
               // BE CAREFUL! INTEGRAL OF ANGLE
               test_w += test_angle;
-              // cur_angle = setAngleIntegral(test_angle);
               break;
 
             case 'q':  // change only test_w (minus)
@@ -77,24 +76,7 @@ void testRobotOdometry ( void )
         }
 
         robotOdometrySetSpeed( test_v_x, test_v_y, test_w, time_k );
-// TODO: REMOVE IT
-        float err = getPropError( );
-        float ctr = getSpeedA(  );
-
-        dbgprintf("E: %d\tC: %d\tW: %d\n\r",
-                  (int)(err * 10),
-                  (int)(ctr * 100),
-                  (int)(test_w));
-
-// TODO: FIX IT
-//        dbgprintf( "Vx: %d\tVy: %d\tW: %d\n\r",
-//                   (int)(test_v_x * 1000),
-//                   (int)(test_v_y * 1000),
-//                   (int)(cur_angle)
-//                   );
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
     }
 }
-
-
