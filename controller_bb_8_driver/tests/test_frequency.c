@@ -10,7 +10,11 @@ static const SerialConfig sdcfg = {
 };
 
 /**
- * @brief   Find out the correct frequency for motors
+ * @brief   Find out the correct frequency for motors (via Matlab)
+ * @note    Test only for motor A.
+ *          Consumption:
+ *              all motors are similar,
+ *              and configuration for motor A works for motor B and C
  */
 void testMatlabFrequency( void )
 {

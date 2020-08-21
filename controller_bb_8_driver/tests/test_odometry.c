@@ -40,6 +40,13 @@ static const SerialConfig sdcfg = {
 
 /*
  * @brief   Test wheel speed
+ * @note    Two options are available:
+ *              - debug via Terminal (comment define WHEEL_SPEED_MATLAB)
+ *              - debug via Matlab (uncomment define WHEEL_SPEED_MATLAB)
+ *                in Matlab only data about wheel A is sended
+ *                Consumption:
+ *                  wheel A data is enough
+ *                  because all motors (wheels) are the same
  */
 void testWheelSpeed( void )
 {

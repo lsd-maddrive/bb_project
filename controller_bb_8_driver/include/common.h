@@ -24,9 +24,10 @@ extern "C" {
 //  ODOMETRY TESTS
 #define     PROGRAM_MOTOR_SPEED_TEST                    7
 #define     PROGRAM_WHEEL_SPEED_TEST                    8
+// WHEEL CONTROL SYSTEM TESTS
+#define     PROGRAM_WHEEL_CONTROL_MATLAB                9
 
-
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_MOTOR_FOR_GRISHA
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_WHEEL_CONTROL_MATLAB
 
 
 /*============================================================================*/
@@ -47,8 +48,8 @@ extern "C" {
 /* SPEED LIMITS                                                                 */
 /*============================================================================*/
 
-#define WHEEL_SPEED_MAX_RPS     100
-#define WHEEL_SPEED_MIN_RPS     (-100)
+#define WHEEL_SPEED_MAX_RPS     3
+#define WHEEL_SPEED_MIN_RPS     (-3)
 
 /*============================================================================*/
 /* MOTOR CONFIGURATION CONTANTS                                                                 */

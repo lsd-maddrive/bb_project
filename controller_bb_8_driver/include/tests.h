@@ -32,7 +32,11 @@ void testRawMotorControlRoutine( void );
 void testMotorControlRoutine( void );
 
 /**
- * @brief   Find out the correct frequency for motors
+ * @brief   Find out the correct frequency for motors (via Matlab)
+ * @note    Test only for motor A.
+ *          Consumption:
+ *              all motors are similar,
+ *              and configuration for motor A works for motor B and C
  */
 void testMatlabFrequency( void );
 
@@ -66,5 +70,16 @@ void testMotorSpeed( void );
  * @brief   Test wheel speed
  */
 void testWheelSpeed( void );
+
+
+/*============================================================================*/
+/* Wheel Control System Tests                                                              */
+/*============================================================================*/
+
+/*
+ * @brief   Test wheel control system with matlab
+ */
+void testWheelControlMatlab( void );
+
 
 #endif /* INCLUDE_TESTS_H_ */
