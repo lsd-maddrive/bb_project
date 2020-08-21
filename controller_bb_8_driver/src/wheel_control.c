@@ -4,6 +4,9 @@
 
 static virtual_timer_t  wheel_control_vt;
 
+// TODO: add permeation flag!!! in vt_cb
+bool permition_flag = false;
+
 // Array for control values in percent for each of wheels
 lldControlValue_t       wheelControlValuesPrc[3] = {0, 0, 0};
 

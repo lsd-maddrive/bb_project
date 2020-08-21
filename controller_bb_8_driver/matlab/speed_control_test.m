@@ -5,7 +5,7 @@ clear, clc
 x_axis = [0];
 speed_filtered_axis = [0];
 speed_setting_axis = [0];
-update_period = 2;          % How often update plot, points
+update_period = 10;          % How often update plot, points
 time_window = 10;           % Time window to be shown on figure, sec
 counter = 0;
 
@@ -17,9 +17,10 @@ plotHandle = plot(NaN, NaN, '-r',...
                   NaN, NaN, '-b');                          % Make initial empty plot
 legend('Filtered', 'Set');
 xlim([1 time_window]);
-ylim([0 4]);
+ylim([-4 4]);
 ylabel('Speed, rps');
 xlabel('"Time"');
+grid on 
 
 % Usart settings
 port = serial('COM11', 'BaudRate', 115200);
@@ -76,5 +77,5 @@ end
 
 % Stop motor and close port
 fwrite(port, 0, 'int16');
-fclose(dat);
+fclose(port);
 disp('Connection is closed!');
