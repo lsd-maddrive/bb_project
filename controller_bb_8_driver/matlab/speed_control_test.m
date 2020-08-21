@@ -4,7 +4,7 @@ clear, clc
 % Init buffer
 x_axis = [0];
 speed_filtered_axis = [0];
-speed_raw_axis = [0];
+speed_setting_axis = [0];
 update_period = 2;          % How often update plot, points
 time_window = 10;           % Time window to be shown on figure, sec
 counter = 0;
@@ -15,11 +15,11 @@ set(gcf,'CurrentCharacter','@');                            % Set to a dummy cha
 set(gcf, 'MenuBar', 'none', 'WindowState', 'maximized');    % Set figure to fullscreen and make none interactible
 plotHandle = plot(NaN, NaN, '-r',...
                   NaN, NaN, '-b');                          % Make initial empty plot
-legend('Filtered', 'Raw');
+legend('Filtered', 'Set');
 xlim([1 time_window]);
-ylim([0 1])
-ylabel('Speed, rps')
-xlabel('"Time"')
+ylim([0 4]);
+ylabel('Speed, rps');
+xlabel('"Time"');
 
 % Usart settings
 port = serial('COM11', 'BaudRate', 115200);
@@ -48,17 +48,17 @@ while true
     if x_axis(end) >= time_window
         x_axis = [x_axis(2:end) etime(clock, start_time)];
         speed_filtered_axis = [speed_filtered_axis(2:end) (new_values(1) / 100)];
-        speed_raw_axis = [speed_raw_axis(2:end) (new_values(2) / 100)];
+        speed_setting_axis = [speed_setting_axis(2:end) (new_values(2) / 100)];
     else
         x_axis = [x_axis etime(clock, start_time)];
         speed_filtered_axis = [speed_filtered_axis (new_values(1) / 100)];
-        speed_raw_axis = [speed_raw_axis (new_values(2) / 100)];
+        speed_setting_axis = [speed_setting_axis (new_values(2) / 100)];
     end
     
     % Update plot
     if counter == update_period
         set(plotHandle(1), 'XData', x_axis, 'YData', speed_filtered_axis);
-        set(plotHandle(2), 'XData', x_axis, 'YData', speed_raw_axis);
+        set(plotHandle(2), 'XData', x_axis, 'YData', speed_setting_axis);
         if x_axis(end) >= time_window
             xlim([x_axis(1) x_axis(end)]);
         end
