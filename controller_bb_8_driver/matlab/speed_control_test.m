@@ -45,8 +45,8 @@ while true
     
     % Add new points to the plot and forget last one if necessary
     x_axis = [x_axis(2:plot_buffer_size) etime(clock, start_time)];
-    speed_filtered_axis = [speed_filtered_axis(2:plot_buffer_size) new_values(1)];
-    speed_raw_axis = [speed_raw_axis(2:plot_buffer_size) new_values(2)];
+    speed_filtered_axis = [speed_filtered_axis(2:plot_buffer_size) (new_values(1) / 100)];
+    speed_raw_axis = [speed_raw_axis(2:plot_buffer_size) (new_values(2) / 100)];
     
     % Adjust xscale
     if ~isnan(x_axis(end))
@@ -58,6 +58,7 @@ while true
         set(plotHandle(1), 'XData', x_axis, 'YData', speed_filtered_axis);
         set(plotHandle(2), 'XData', x_axis, 'YData', speed_raw_axis);
         drawnow;
+        counter = 0;
     end
     
     % Stop loop from keyboard
