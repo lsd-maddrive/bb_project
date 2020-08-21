@@ -2,21 +2,22 @@ close all
 clear, clc
 
 % Init buffer
-plot_buffer_size = 1000;   % Number of points to be shown simultaneously
-x_axis = ones(1,plot_buffer_size)*NaN;
-speed_filtered_axis = ones(1,plot_buffer_size)*NaN;
-speed_raw_axis = ones(1,plot_buffer_size)*NaN;
-update_period = 10;
+x_axis = [0];
+speed_filtered_axis = [0];
+speed_raw_axis = [0];
+update_period = 2;          % How often update plot, points
+time_window = 10;           % Time window to be shown on figure, sec
 counter = 0;
 
 % Figure settings
 figure(1);
-set(gcf,'CurrentCharacter','@');                    % Set to a dummy character
-set(gcf, 'Position', get(0, 'Screensize'));         % Set figure to fullscreen
-plotHandle = plot(x_axis, speed_filtered_axis, '-r',...
-                  x_axis, speed_raw_axis, '-b');    % Make initial empty plot
-xlim([1 plot_buffer_size]);
-ylim([-2 3])
+set(gcf,'CurrentCharacter','@');                            % Set to a dummy character
+set(gcf, 'MenuBar', 'none', 'WindowState', 'maximized');    % Set figure to fullscreen and make none interactible
+plotHandle = plot(NaN, NaN, '-r',...
+                  NaN, NaN, '-b');                          % Make initial empty plot
+legend('Filtered', 'Raw');
+xlim([1 time_window]);
+ylim([0 1])
 ylabel('Speed, rps')
 xlabel('"Time"')
 
@@ -44,19 +45,23 @@ while true
     end
     
     % Add new points to the plot and forget last one if necessary
-    x_axis = [x_axis(2:plot_buffer_size) etime(clock, start_time)];
-    speed_filtered_axis = [speed_filtered_axis(2:plot_buffer_size) (new_values(1) / 100)];
-    speed_raw_axis = [speed_raw_axis(2:plot_buffer_size) (new_values(2) / 100)];
-    
-    % Adjust xscale
-    if ~isnan(x_axis(end))
-        xlim([x_axis(1) x_axis(end)]);
+    if x_axis(end) >= time_window
+        x_axis = [x_axis(2:end) etime(clock, start_time)];
+        speed_filtered_axis = [speed_filtered_axis(2:end) (new_values(1) / 100)];
+        speed_raw_axis = [speed_raw_axis(2:end) (new_values(2) / 100)];
+    else
+        x_axis = [x_axis etime(clock, start_time)];
+        speed_filtered_axis = [speed_filtered_axis (new_values(1) / 100)];
+        speed_raw_axis = [speed_raw_axis (new_values(2) / 100)];
     end
     
     % Update plot
     if counter == update_period
         set(plotHandle(1), 'XData', x_axis, 'YData', speed_filtered_axis);
         set(plotHandle(2), 'XData', x_axis, 'YData', speed_raw_axis);
+        if x_axis(end) >= time_window
+            xlim([x_axis(1) x_axis(end)]);
+        end
         drawnow;
         counter = 0;
     end
