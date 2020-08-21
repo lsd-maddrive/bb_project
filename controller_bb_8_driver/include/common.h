@@ -44,10 +44,18 @@ extern "C" {
 #define LLD_MOTOR_MIN_PRC       (-80)
 
 /*============================================================================*/
+/* SPEED LIMITS                                                                 */
+/*============================================================================*/
+
+#define WHEEL_SPEED_MAX_RPS     100
+#define WHEEL_SPEED_MIN_RPS     (-100)
+
+/*============================================================================*/
 /* MOTOR CONFIGURATION CONTANTS                                                                 */
 /*============================================================================*/
 
 #define MOTOR_GAIN               27
+
 
 /*============================================================================*/
 /* DEBUG                                                                      */
@@ -61,13 +69,25 @@ void dbgprintf( const char* format, ... );
 /* Common units                                                            */
 /*============================================================================*/
 
-//typedef uint8_t     motorNumberValue_t;
-
 typedef enum {
   A,
   B,
   C
 } motorNumberValue_t;
+
+// PID Controller
+typedef float   controllerRate_t;
+
+typedef struct {
+  controllerRate_t kp;
+  controllerRate_t ki;
+  controllerRate_t kd;
+
+  controllerRate_t intgSaturation;
+  controllerRate_t propDeadZone;
+
+} pidControllerValue_t;
+
 
 /**
  * @brief   Initialize EXT driver with empty config

@@ -1,7 +1,8 @@
 
 PROJECT_MODULES = 	src/lld_control.c	\
 					src/lld_encoder.c	\
-					src/odometry.c
+					src/odometry.c		\
+					src/wheel_control.c
 				  
 PROJECT_TESTS   =	tests/test_lld_control.c	\
 					tests/test_lld_encoder.c	\
