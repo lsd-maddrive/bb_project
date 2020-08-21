@@ -42,7 +42,7 @@ odometrySpeedValue_t    odometryWheelPrevSpeedRPS_C_LPF     = 0;
 static void odom_update_vt_cb( void *arg )
 {
     arg = arg; 
-/**************** ENCODER 1 ********************/
+/**************** ENCODER A ********************/
     encCurRevsNumberA    = lldGetEncoderRevs( A );
     odometryEncRevPerSecA    = (encCurRevsNumberA - encPrevRevsNumberA) * MS_2_SEC;
     encPrevRevsNumberA   = encCurRevsNumberA;
@@ -50,7 +50,7 @@ static void odom_update_vt_cb( void *arg )
     odometryWheelSpeedRPS_A_LPF      = (odometryEncRevPerSecA / MOTOR_GAIN) * (1 - ENC_A_LPF) + odometryWheelPrevSpeedRPS_A_LPF * ENC_A_LPF;
     odometryWheelPrevSpeedRPS_A_LPF  = odometryWheelSpeedRPS_A_LPF;
 
-/**************** ENCODER 2 ********************/
+/**************** ENCODER B ********************/
     encCurRevsNumberB    = lldGetEncoderRevs( B );
     odometryEncRevPerSecB    = (encCurRevsNumberB - encPrevRevsNumberB) * MS_2_SEC;
     encPrevRevsNumberB   = encCurRevsNumberB;
@@ -58,7 +58,7 @@ static void odom_update_vt_cb( void *arg )
     odometryWheelSpeedRPS_B_LPF      = (odometryEncRevPerSecB / MOTOR_GAIN) * (1 - ENC_B_LPF) + odometryWheelPrevSpeedRPS_B_LPF * ENC_B_LPF;
     odometryWheelPrevSpeedRPS_B_LPF  = odometryWheelSpeedRPS_B_LPF;
 
-/**************** ENCODER 3 ********************/
+/**************** ENCODER C ********************/
     encCurRevsNumberC    = lldGetEncoderRevs( C );
     odometryEncRevPerSecC    = (encCurRevsNumberC - encPrevRevsNumberC) * MS_2_SEC;
     encPrevRevsNumberC   = encCurRevsNumberC;
@@ -108,11 +108,11 @@ odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odomet
         {
             case REVS_PER_SEC:
                 return odometryEncRevPerSecA;
-                break;
+                break; // does it make sense after return?
 
             default:
                 return -1.0;
-                break;
+                break; // does it make sense after return?
         }
         break;
 
@@ -121,11 +121,11 @@ odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odomet
         {
             case REVS_PER_SEC:
                 return odometryEncRevPerSecB;
-                break;
+                break; // does it make sense after return?
 
             default:
                 return -1.0;
-                break;
+                break; // does it make sense after return?
         }
         break;
 
@@ -134,11 +134,11 @@ odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odomet
         {
             case REVS_PER_SEC:
                 return odometryEncRevPerSecC;
-                break;
+                break; // does it make sense after return?
 
             default:
                 return -1.0;
-                break;
+                break; // does it make sense after return?
         }
         break;
 
