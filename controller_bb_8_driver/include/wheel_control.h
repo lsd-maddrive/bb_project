@@ -16,6 +16,18 @@ typedef float   wheelSpeedValue_t;
 void wheelControlInit( void );
 
 /**
+ * @brief       Permeation is enabled,
+ *              control system is enabled
+ */
+void wheelControlSetPermeation( void );
+
+/**
+ * @brief       Permeation is disabled,
+ *              control system is disabled
+ */
+void wheelControlResetPermeation( void );
+
+/**
  * @brief       Set reference value of for specified wheel
  */
 void wheelControlSetSpeed( wheelSpeedValue_t speed_val, motorNumberValue_t number, odometrySpeedUnit_t unit );
