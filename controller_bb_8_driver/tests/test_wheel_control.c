@@ -51,8 +51,10 @@ void testWheelControlMatlab( void )
             sdWrite(&SD6, (uint8_t*) &matlab_ref_wheel_speed_RPS, 2);
         }
         else
+        {
+            wheelControlResetPermeation();
             lldControlSetMotorPower( A, 0 );
-
+        }
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
     }
