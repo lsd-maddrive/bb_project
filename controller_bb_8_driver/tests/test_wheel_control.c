@@ -33,16 +33,16 @@ void testWheelControlMatlab( void )
             if( matlab_ref_wheel_speed_RPS == 0 )
             {
                 palSetLine( LINE_LED2 );
+                wheelControlResetPermeation();
                 lldControlSetMotorPower( A, 0 );
             }
             else
             {
+                wheelControlSetPermeation();
                 wheelControlSetSpeed(
                     (float)matlab_ref_wheel_speed_RPS / 100, A, REVS_PER_SEC
                 );
             }
-
-
 
             test_wheel_speed_A = odometryGetWheelSpeed( A, REVS_PER_SEC );
 

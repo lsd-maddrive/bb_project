@@ -5,7 +5,7 @@
 static virtual_timer_t  wheel_control_vt;
 
 // TODO: add permeation flag!!! in vt_cb
-bool permition_flag = false;
+bool permeation_flag = false;
 
 // Array for control values in percent for each of wheels
 lldControlValue_t       wheelControlValuesPrc[3] = {0, 0, 0};
@@ -74,98 +74,117 @@ static void wheel_control_vt_cb( void *arg )
 /* Calculation Area                                                            */
 /*============================================================================*/
 
-/**************** CS WHEEL A ********************/
-    odometrySpeedValue_t wheelSpeedRPS_A_LPF = odometryGetWheelSpeed( A, REVS_PER_SEC );
-// P-Part
-    float wheelSpeedError_A = wheelSpeedRefValuesPRS[0] - wheelSpeedRPS_A_LPF;
-// How does it reflect on D-part? Maybe should be after D-calculation?
-    if( wheelSpeedError_A <= wheelController_A.propDeadZone )
+    if( permeation_flag )
     {
-        wheelSpeedError_A = 0;
-        wheelSpeedIntgCntr_A = 0;
-    }
+/**************** CS WHEEL A ********************/
+      odometrySpeedValue_t wheelSpeedRPS_A_LPF = odometryGetWheelSpeed( A, REVS_PER_SEC );
+// P-Part
+      float wheelSpeedError_A = wheelSpeedRefValuesPRS[0] - wheelSpeedRPS_A_LPF;
+// How does it reflect on D-part? Maybe should be after D-calculation?
+      if( wheelSpeedError_A <= wheelController_A.propDeadZone )
+      {
+          wheelSpeedError_A = 0;
+          wheelSpeedIntgCntr_A = 0;
+      }
 // I-Part
-    wheelSpeedIntg_A += wheelController_A.ki * wheelSpeedError_A;
-    // I-part with saturation
-    wheelSpeedIntgCntr_A = CLIP_VALUE(
-          wheelSpeedIntg_A,
-          -wheelController_A.intgSaturation,
-          wheelController_A.intgSaturation
-    );
+      wheelSpeedIntg_A += wheelController_A.ki * wheelSpeedError_A;
+// I-part with saturation
+      wheelSpeedIntgCntr_A = CLIP_VALUE(
+            wheelSpeedIntg_A,
+            -wheelController_A.intgSaturation,
+            wheelController_A.intgSaturation
+      );
 // D-Part
-    float wheelSpeedDif_A = wheelSpeedError_A - wheelSpeedPrevError_A;
+      float wheelSpeedDif_A = wheelSpeedError_A - wheelSpeedPrevError_A;
 
-    wheelSpeedPrevError_A = wheelSpeedError_A;
+      wheelSpeedPrevError_A = wheelSpeedError_A;
 
-    wheelControlValuesPrc[0] = wheelController_A.kp * wheelSpeedError_A +
-                               wheelController_A.ki * wheelSpeedIntgCntr_A +
-                               wheelController_A.kd * wheelSpeedDif_A;
+      wheelControlValuesPrc[0] = wheelController_A.kp * wheelSpeedError_A +
+                                 wheelController_A.ki * wheelSpeedIntgCntr_A +
+                                 wheelController_A.kd * wheelSpeedDif_A;
 
 /**************** CS WHEEL B ********************/
-    odometrySpeedValue_t wheelSpeedRPS_B_LPF = odometryGetWheelSpeed( B, REVS_PER_SEC );
+      odometrySpeedValue_t wheelSpeedRPS_B_LPF = odometryGetWheelSpeed( B, REVS_PER_SEC );
 // P-Part
-    float wheelSpeedError_B = wheelSpeedRefValuesPRS[1] - wheelSpeedRPS_B_LPF;
+      float wheelSpeedError_B = wheelSpeedRefValuesPRS[1] - wheelSpeedRPS_B_LPF;
 // How does it reflect on D-part? Maybe should be after D-calculation?
-    if( wheelSpeedError_B <= wheelController_B.propDeadZone )
-    {
-        wheelSpeedError_B = 0;
-        wheelSpeedIntgCntr_B = 0;
-    }
+      if( wheelSpeedError_B <= wheelController_B.propDeadZone )
+      {
+          wheelSpeedError_B = 0;
+          wheelSpeedIntgCntr_B = 0;
+      }
 // I-Part
-    wheelSpeedIntg_B += wheelController_B.ki * wheelSpeedError_B;
-    float wheelSpeedIntgCntr_B = CLIP_VALUE(
-          wheelSpeedIntg_B,
-          -wheelController_B.intgSaturation,
-          wheelController_B.intgSaturation
-    );
+      wheelSpeedIntg_B += wheelController_B.ki * wheelSpeedError_B;
+      float wheelSpeedIntgCntr_B = CLIP_VALUE(
+            wheelSpeedIntg_B,
+            -wheelController_B.intgSaturation,
+            wheelController_B.intgSaturation
+      );
 // D-Part
-    float wheelSpeedDif_B = wheelSpeedError_B - wheelSpeedPrevError_B;
+      float wheelSpeedDif_B = wheelSpeedError_B - wheelSpeedPrevError_B;
 
-    wheelSpeedPrevError_B = wheelSpeedError_B;
+      wheelSpeedPrevError_B = wheelSpeedError_B;
 
-    wheelControlValuesPrc[1] = wheelController_B.kp * wheelSpeedError_B +
-                               wheelController_B.ki * wheelSpeedIntgCntr_B +
-                               wheelController_B.kd * wheelSpeedDif_B;
+      wheelControlValuesPrc[1] = wheelController_B.kp * wheelSpeedError_B +
+                                 wheelController_B.ki * wheelSpeedIntgCntr_B +
+                                 wheelController_B.kd * wheelSpeedDif_B;
 
 /**************** CS WHEEL C ********************/
-    odometrySpeedValue_t wheelSpeedRPS_C_LPF = odometryGetWheelSpeed( C, REVS_PER_SEC );
+      odometrySpeedValue_t wheelSpeedRPS_C_LPF = odometryGetWheelSpeed( C, REVS_PER_SEC );
 // P-Part
-    float wheelSpeedError_C = wheelSpeedRefValuesPRS[2] - wheelSpeedRPS_C_LPF;
+      float wheelSpeedError_C = wheelSpeedRefValuesPRS[2] - wheelSpeedRPS_C_LPF;
 // How does it reflect on D-part? Maybe should be after D-calculation?
-    if( wheelSpeedError_C <= wheelController_C.propDeadZone )
-    {
-        wheelSpeedError_C = 0;
-        wheelSpeedIntgCntr_C = 0;
-    }
+      if( wheelSpeedError_C <= wheelController_C.propDeadZone )
+      {
+          wheelSpeedError_C = 0;
+          wheelSpeedIntgCntr_C = 0;
+      }
 // I-Part
-    wheelSpeedIntg_C += wheelController_C.ki * wheelSpeedError_C;
-    wheelSpeedIntgCntr_C = CLIP_VALUE(
-          wheelSpeedIntg_C,
-          -wheelController_C.intgSaturation,
-          wheelController_C.intgSaturation
-    );
+      wheelSpeedIntg_C += wheelController_C.ki * wheelSpeedError_C;
+      wheelSpeedIntgCntr_C = CLIP_VALUE(
+            wheelSpeedIntg_C,
+            -wheelController_C.intgSaturation,
+            wheelController_C.intgSaturation
+      );
 // D-Part
-    float wheelSpeedDif_C = wheelSpeedError_C - wheelSpeedPrevError_C;
+      float wheelSpeedDif_C = wheelSpeedError_C - wheelSpeedPrevError_C;
 
-    wheelSpeedPrevError_C = wheelSpeedError_C;
+      wheelSpeedPrevError_C = wheelSpeedError_C;
 
-    wheelControlValuesPrc[2] = wheelController_C.kp * wheelSpeedError_C +
-                               wheelController_C.ki * wheelSpeedIntgCntr_C +
-                               wheelController_C.kd * wheelSpeedDif_C;
+      wheelControlValuesPrc[2] = wheelController_C.kp * wheelSpeedError_C +
+                                 wheelController_C.ki * wheelSpeedIntgCntr_C +
+                                 wheelController_C.kd * wheelSpeedDif_C;
 
 /*============================================================================*/
 /* Set control in percent                                                             */
 /*============================================================================*/
-    lldControlSetMotorPower( A, wheelControlValuesPrc[0] );
-    lldControlSetMotorPower( B, wheelControlValuesPrc[1] );
-    lldControlSetMotorPower( C, wheelControlValuesPrc[2] );
-
+      lldControlSetMotorPower( A, wheelControlValuesPrc[0] );
+      lldControlSetMotorPower( B, wheelControlValuesPrc[1] );
+      lldControlSetMotorPower( C, wheelControlValuesPrc[2] );
+    }
 
     chSysLockFromISR();
     chVTSetI(&wheel_control_vt, MS2ST( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL);
     chSysUnlockFromISR();
 }
 
+/**
+ * @brief       Permeation is enabled,
+ *              control system is enabled
+ */
+void wheelControlSetPermeation( void )
+{
+    permeation_flag = true;
+}
+
+/**
+ * @brief       Permeation is disabled,
+ *              control system is disabled
+ */
+void wheelControlResetPermeation( void )
+{
+    permeation_flag = false;
+}
 
 static bool isInitialized = false;
 
@@ -315,6 +334,7 @@ void wheelControlResetController( motorNumberValue_t number )
 {
     wheelSpeedRefValuesPRS[number] = 0;
     wheelControlValuesPrc[number] = 0;
+    permeation_flag = false;
 
     lldControlSetMotorPower( number, wheelControlValuesPrc[number] );
 
