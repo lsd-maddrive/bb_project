@@ -5,7 +5,7 @@ clear, clc
 x_axis = [0];
 speed_filtered_axis = [0];
 speed_setting_axis = [0];
-time_lentgh = 2;           % Time window to be shown on figure, sec
+time_length = 2;           % Time window to be shown on figure, sec
 
 % Usart settings
 port = serial('COM11', 'BaudRate', 115200);

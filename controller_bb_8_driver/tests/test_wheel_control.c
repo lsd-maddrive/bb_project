@@ -16,39 +16,61 @@ void testWheelControlMatlab( void )
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
     odometrySpeedValue_t    test_wheel_speed_A          = 0;
+    odometrySpeedValue_t    test_wheel_speed_B          = 0;
+    odometrySpeedValue_t    test_wheel_speed_C          = 0;
     // outside of limits to indicate start connection with matlab
     int16_t                 matlab_ref_wheel_speed_RPS  = 500;
     int16_t                 matlab_wheel_speed_A        = 0;
+    int16_t                 matlab_wheel_speed_B        = 0;
+    int16_t                 matlab_wheel_speed_C        = 0;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
         sdReadTimeout( &SD6, (uint8_t*) &matlab_ref_wheel_speed_RPS, 2, TIME_IMMEDIATE );
 
-//        dbgprintf("%d\n\r", matlab_ref_wheel_speed_RPS);
 
         if( matlab_ref_wheel_speed_RPS <= 300 && matlab_ref_wheel_speed_RPS >= -300)
         {
             palSetLine( LINE_LED3 );
             if( matlab_ref_wheel_speed_RPS == 0 )
             {
-                palSetLine( LINE_LED2 );
                 wheelControlResetPermeation();
                 lldControlSetMotorPower( A, 0 );
+                lldControlSetMotorPower( B, 0 );
+                lldControlSetMotorPower( C, 0 );
             }
             else
             {
+                float send_speed = (float)matlab_ref_wheel_speed_RPS / 100;
                 wheelControlSetPermeation();
+
                 wheelControlSetSpeed(
-                    (float)matlab_ref_wheel_speed_RPS / 100, A, REVS_PER_SEC
+                    send_speed, A, REVS_PER_SEC
+                );
+
+                wheelControlSetSpeed(
+                    send_speed, B, REVS_PER_SEC
+                );
+
+                wheelControlSetSpeed(
+                    send_speed, C, REVS_PER_SEC
                 );
             }
 
             test_wheel_speed_A = odometryGetWheelSpeed( A, REVS_PER_SEC );
+            test_wheel_speed_B = odometryGetWheelSpeed( B, REVS_PER_SEC );
+            test_wheel_speed_C = odometryGetWheelSpeed( C, REVS_PER_SEC );
 
             matlab_wheel_speed_A = (int)(test_wheel_speed_A * 100);
-            sdWrite(&SD6, (uint8_t*) &matlab_wheel_speed_A, 2);
+            matlab_wheel_speed_B = (int)(test_wheel_speed_B * 100);
+            matlab_wheel_speed_C = (int)(test_wheel_speed_C * 100);
+
             sdWrite(&SD6, (uint8_t*) &matlab_ref_wheel_speed_RPS, 2);
+            sdWrite(&SD6, (uint8_t*) &matlab_wheel_speed_A, 2);
+            sdWrite(&SD6, (uint8_t*) &matlab_wheel_speed_B, 2);
+            sdWrite(&SD6, (uint8_t*) &matlab_wheel_speed_C, 2);
+
         }
         else
         {
