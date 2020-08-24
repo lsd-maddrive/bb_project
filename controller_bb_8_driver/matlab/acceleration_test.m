@@ -3,9 +3,11 @@ clear, clc
 
 % Init buffer
 x_axis = [0];
-speed_filtered_axis = [0];
+speed_A_axis = [0];
+speed_B_axis = [0];
+speed_C_axis = [0];
 speed_setting_axis = [0];
-time_lentgh = 2;           % Time window to be shown on figure, sec
+time_length = 2;           % Time window to be shown on figure, sec
 
 % Usart settings
 port = serial('COM11', 'BaudRate', 115200);
@@ -21,7 +23,7 @@ new_values = [];
 start_time = clock;
 
 while x_axis < time_length
-    new_values = fread(port, [2, 1], 'int16');
+    new_values = fread(port, [4, 1], 'int16');
     
     % Break from the loop if timeout occured
     if (strcmp(lastwarn,'Unsuccessful read: A timeout occurred before the Terminator was reached or SIZE values were available..'))
@@ -31,8 +33,11 @@ while x_axis < time_length
     
     % Add new points to the plot
     x_axis = [x_axis etime(clock, start_time)];
-    speed_filtered_axis = [speed_filtered_axis (new_values(1) / 100)];
-    speed_setting_axis = [speed_setting_axis (new_values(2) / 100)];
+    speed_setting_axis = [speed_setting_axis (new_values(1) / 100)];
+    speed_A_axis = [speed_A_axis (new_values(2) / 100)];
+    speed_B_axis = [speed_B_axis (new_values(3) / 100)];
+    speed_C_axis = [speed_C_axis (new_values(4) / 100)];
+    
 end
 
 % Stop motor and close port
@@ -42,9 +47,11 @@ disp('Connection is closed!');
 
 % Figure settings
 figure(1);
-plot(x_axis, speed_filtered_axis, '-r',...
-     x_axis, speed_setting_axis, '-b');
-legend('Filtered', 'Set');
+plot(x_axis(2:end), speed_setting_axis(2:end), '-r',...
+     x_axis(2:end), speed_A_axis(2:end), '-b',...
+     x_axis(2:end), speed_B_axis(2:end), '-g',...
+     x_axis(2:end), speed_C_axis(2:end), '-m');
+legend('Set', 'Motor A', 'Motor B', 'Motor C');
 ylabel('Speed, rps');
 xlabel('"Time"');
 grid on
