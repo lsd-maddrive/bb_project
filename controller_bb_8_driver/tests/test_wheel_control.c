@@ -25,7 +25,7 @@ void testWheelControlMatlab( void )
     {
         sdReadTimeout( &SD6, (uint8_t*) &matlab_ref_wheel_speed_RPS, 2, TIME_IMMEDIATE );
 
-        dbgprintf("%d\n\r", matlab_ref_wheel_speed_RPS);
+//        dbgprintf("%d\n\r", matlab_ref_wheel_speed_RPS);
 
         if( matlab_ref_wheel_speed_RPS <= 300 && matlab_ref_wheel_speed_RPS >= -300)
         {
