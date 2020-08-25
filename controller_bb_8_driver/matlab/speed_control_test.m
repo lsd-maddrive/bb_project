@@ -7,9 +7,11 @@ speed_A_axis = [0];
 speed_B_axis = [0];
 speed_C_axis = [0];
 speed_setting_axis = [0];
-update_period = 10;          % How often update plot, points
+update_period = 10;         % How often update plot, points
 time_window = 10;           % Time window to be shown on figure, sec
 counter = 0;
+freq = 1;                   % Frequency of sine input, Hz (if flag is set)
+flag_var_speed = 0;         % 1 to sine wave as input
 
 % Figure settings
 figure(1);
@@ -82,6 +84,12 @@ while true
     if k ~= '@'
         disp('Stopped by user');
         break;
+    end
+    
+    % Non-constant speed input
+    if flag_var_speed == 1
+        desired_speed = 1.5 + sin(freq * pi * etime(clock, start_time));
+        fwrite(port, desired_speed * 100, 'int16');
     end
 end
 
