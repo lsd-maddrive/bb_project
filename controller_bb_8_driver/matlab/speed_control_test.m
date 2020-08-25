@@ -25,7 +25,7 @@ legend('Set', 'Motor A', 'Motor B', 'Motor C');
 xlim([0 time_window]);
 ylim([-4 4]);
 ylabel('Speed, rps');
-xlabel('"Time"');
+xlabel('Time');
 grid on 
 
 % Usart settings
@@ -55,9 +55,9 @@ while true
     if x_axis(end) >= time_window
         x_axis = [x_axis(2:end) etime(clock, start_time)];
         speed_setting_axis = [speed_setting_axis(2:end) (new_values(1) / 100)];
-        speed_A_axis = [speed_A_axis(2:end) (new_values(1) / 100)];
-        speed_B_axis = [speed_B_axis(2:end) (new_values(1) / 100)];
-        speed_C_axis = [speed_C_axis(2:end) (new_values(1) / 100)];
+        speed_A_axis = [speed_A_axis(2:end) (new_values(2) / 100)];
+        speed_B_axis = [speed_B_axis(2:end) (new_values(3) / 100)];
+        speed_C_axis = [speed_C_axis(2:end) (new_values(4) / 100)];
     else
         x_axis = [x_axis etime(clock, start_time)];
         speed_setting_axis = [speed_setting_axis (new_values(1) / 100)];
@@ -70,8 +70,8 @@ while true
     if counter == update_period
         set(plotHandle(1), 'XData', x_axis, 'YData', speed_setting_axis);
         set(plotHandle(2), 'XData', x_axis, 'YData', speed_A_axis);
-        set(plotHandle(2), 'XData', x_axis, 'YData', speed_B_axis);
-        set(plotHandle(2), 'XData', x_axis, 'YData', speed_C_axis);
+        set(plotHandle(3), 'XData', x_axis, 'YData', speed_B_axis);
+        set(plotHandle(4), 'XData', x_axis, 'YData', speed_C_axis);
         if x_axis(end) >= time_window
             xlim([x_axis(1) x_axis(end)]);
         end
@@ -88,12 +88,12 @@ while true
     
     % Non-constant speed input
     if flag_var_speed == 1
-        desired_speed = 1.5 + sin(freq * pi * etime(clock, start_time));
+        desired_speed = sin(freq * pi * etime(clock, start_time));
         fwrite(port, desired_speed * 100, 'int16');
     end
 end
 
 % Stop motor and close port
-fwrite(port, 500, 'int16');
+fwrite(port, 0, 'int16');
 fclose(port);
 disp('Connection is closed!');

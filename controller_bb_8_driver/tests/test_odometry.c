@@ -29,7 +29,7 @@ void testMotorSpeed( void )
     }
 }
 
-#define WHEEL_SPEED_MATLAB
+//#define WHEEL_SPEED_MATLAB
 
 #ifdef WHEEL_SPEED_MATLAB
 static const SerialConfig sdcfg = {
@@ -54,11 +54,6 @@ void testWheelSpeed( void )
     lldControlInit( );
     odometryInit( );
 
-    lldControlValue_t       test_delta_prc      = 10;
-    lldControlValue_t       test_duty_A_prc     = 0;
-    lldControlValue_t       test_duty_B_prc     = 0;
-    lldControlValue_t       test_duty_C_prc     = 0;
-
     odometrySpeedValue_t    test_wheel_A        = 0;
     odometrySpeedValue_t    test_wheel_B        = 0;
     odometrySpeedValue_t    test_wheel_C        = 0;
@@ -68,19 +63,18 @@ void testWheelSpeed( void )
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
+    lldControlValue_t       test_delta_prc      = 10;
+    lldControlValue_t       test_duty_A_prc     = 0;
+    lldControlValue_t       test_duty_B_prc     = 0;
+    lldControlValue_t       test_duty_C_prc     = 0;
+
     odometrySpeedValue_t    test_wheel_A_raw    = 0;
-    odometrySpeedValue_t    test_wheel_B_raw    = 0;
-    odometrySpeedValue_t    test_wheel_C_raw    = 0;
 
     uint8_t                 matlab_start_flag   = 0;
 
     int16_t                 matlab_wheel_A      = 0;
-    int16_t                 matlab_wheel_B      = 0;
-    int16_t                 matlab_wheel_C      = 0;
-
     int16_t                 matlab_wheel_A_raw  = 0;
-    int16_t                 matlab_wheel_B_raw  = 0;
-    int16_t                 matlab_wheel_C_raw  = 0;
+
 #else
     debug_stream_init( );
 #endif
@@ -90,8 +84,6 @@ void testWheelSpeed( void )
     {
 #ifdef WHEEL_SPEED_MATLAB
         test_wheel_A_raw  = odometryGetWheelSpeedRaw( A, REVS_PER_SEC );
-        test_wheel_B_raw  = odometryGetWheelSpeedRaw( B, REVS_PER_SEC );
-        test_wheel_C_raw  = odometryGetWheelSpeedRaw( C, REVS_PER_SEC );
 #endif
         test_wheel_A      = odometryGetWheelSpeed( A, REVS_PER_SEC );
         test_wheel_B      = odometryGetWheelSpeed( B, REVS_PER_SEC );

@@ -41,7 +41,14 @@ lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odomet
 
 /*
  * @brief       Reset all components for PID-controller
+ *              for specified wheel
  */
 void wheelControlResetController( motorNumberValue_t number );
+
+/*
+ * @brief       Reset all components for PID-controller
+ *              for all wheels
+ */
+void wheelControlResetControllerAllWheels( void );
 
 #endif /* INCLUDE_WHEEL_CONTROL_H_ */

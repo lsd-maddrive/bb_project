@@ -86,6 +86,7 @@ typedef struct {
 
   controllerRate_t intgSaturation;
   controllerRate_t propDeadZone;
+  int16_t controlDeadZone;
 
 } pidControllerValue_t;
 
