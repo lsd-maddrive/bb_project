@@ -76,6 +76,8 @@ void testWheelControlMatlab( void )
         {
             wheelControlResetPermeation();
             lldControlSetMotorPower( A, 0 );
+            lldControlSetMotorPower( B, 0 );
+            lldControlSetMotorPower( C, 0 );
         }
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
