@@ -9,7 +9,7 @@ while loop < 0.5
     x = new_val(1:2);
     w = new_val(4);
     loop = new_val(3);
-    if abs(x(1)) < 0.2 && abs(x(2)) < 0.2
+    if abs(x(1)) < 0.2 & abs(x(2)) < 0.2
         x = [0 0];
     end
     if abs(w) < 0.2
