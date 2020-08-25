@@ -8,13 +8,12 @@ bool permeation_flag = false;
 
 // Array for control values in percent for each of wheels
 lldControlValue_t       wheelControlValuesPrc[3] = {0, 0, 0};
-
+// Array for reference value of wheel speed [RPS]
 wheelSpeedValue_t       wheelSpeedRefValuesPRS[3] = {0, 0, 0};
 
 /**************** WHEEL A ********************/
 wheelSpeedValue_t       wheelSpeedRefRPS_A    = 0;
 // I-part with saturation
-//float                   wheelSpeedIntgCntr_A  = 0;
 float                   wheelSpeedPrevError_A = 0;
 float                   wheelSpeedIntg_A      = 0;
 
@@ -23,12 +22,12 @@ pidControllerValue_t    wheelController_A = {
     .ki = 3,
     .kd = 0,
     .intgSaturation = 80,
-    .propDeadZone = 0
+    .propDeadZone = 0,
+    .controlDeadZone = 5
 };
 
 /**************** WHEEL B ********************/
 wheelSpeedValue_t       wheelSpeedRefRPS_B    = 0;
-float                   wheelSpeedIntgCntr_B  = 0;
 float                   wheelSpeedPrevError_B = 0;
 float                   wheelSpeedIntg_B      = 0;
 
@@ -37,12 +36,12 @@ pidControllerValue_t    wheelController_B = {
     .ki = 3,
     .kd = 0,
     .intgSaturation = 80,
-    .propDeadZone = 0
+    .propDeadZone = 0,
+    .controlDeadZone = 5
 };
 
 /**************** WHEEL C ********************/
 wheelSpeedValue_t       wheelSpeedRefRPS_C    = 0;
-float                   wheelSpeedIntgCntr_C  = 0;
 float                   wheelSpeedPrevError_C = 0;
 float                   wheelSpeedIntg_C      = 0;
 
@@ -51,14 +50,14 @@ pidControllerValue_t    wheelController_C = {
     .ki = 3,
     .kd = 0,
     .intgSaturation = 80,
-    .propDeadZone = 0
+    .propDeadZone = 0,
+    .controlDeadZone = 5
 };
 
 
 static void wheel_control_vt_cb( void *arg )
 {
-    // to avoid warnings
-    arg = arg;
+    arg = arg;  // to avoid warnings
 
 /*============================================================================*/
 /* Calculation Area                                                            */
@@ -87,6 +86,11 @@ static void wheel_control_vt_cb( void *arg )
                                  wheelSpeedIntg_A +
                                  wheelController_A.kd * wheelSpeedDif_A;
 
+      if( abs(wheelControlValuesPrc[0]) <= wheelController_A.controlDeadZone )
+      {
+          wheelControlValuesPrc[0] = 0;
+      }
+
 /**************** CS WHEEL B ********************/
       odometrySpeedValue_t wheelSpeedRPS_B_LPF = odometryGetWheelSpeed( B, REVS_PER_SEC );
 // P-Part
@@ -106,6 +110,10 @@ static void wheel_control_vt_cb( void *arg )
       wheelControlValuesPrc[1] = wheelController_B.kp * wheelSpeedError_B +
                                  wheelSpeedIntg_B +
                                  wheelController_B.kd * wheelSpeedDif_B;
+      if( abs(wheelControlValuesPrc[1]) <= wheelController_B.controlDeadZone )
+      {
+          wheelControlValuesPrc[1] = 0;
+      }
 
 /**************** CS WHEEL C ********************/
       odometrySpeedValue_t wheelSpeedRPS_C_LPF = odometryGetWheelSpeed( C, REVS_PER_SEC );
@@ -127,6 +135,10 @@ static void wheel_control_vt_cb( void *arg )
                                  wheelSpeedIntg_C +
                                  wheelController_C.kd * wheelSpeedDif_C;
 
+      if( abs(wheelControlValuesPrc[2]) <= wheelController_C.controlDeadZone )
+      {
+          wheelControlValuesPrc[2] = 0;
+      }
 /*============================================================================*/
 /* Set control in percent                                                             */
 /*============================================================================*/
@@ -215,6 +227,7 @@ lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odomet
 
 /*
  * @brief       Reset all components for PID-controller
+ *              for specified wheel
  */
 void wheelControlResetController( motorNumberValue_t number )
 {
@@ -244,4 +257,33 @@ void wheelControlResetController( motorNumberValue_t number )
         default:
           break;
     }
+}
+
+/*
+ * @brief       Reset all components for PID-controller
+ *              for all wheels
+ */
+void wheelControlResetControllerAllWheels( void )
+{
+    wheelSpeedRefValuesPRS[0] = 0;
+    wheelSpeedRefValuesPRS[1] = 0;
+    wheelSpeedRefValuesPRS[2] = 0;
+
+    wheelControlValuesPrc[0] = 0;
+    wheelControlValuesPrc[1] = 0;
+    wheelControlValuesPrc[2] = 0;
+    permeation_flag = false;
+
+    lldControlSetMotorPower( A, wheelControlValuesPrc[0] );
+    lldControlSetMotorPower( B, wheelControlValuesPrc[1] );
+    lldControlSetMotorPower( C, wheelControlValuesPrc[2] );
+
+    wheelSpeedPrevError_A = 0;
+    wheelSpeedIntg_A      = 0;
+
+    wheelSpeedPrevError_B = 0;
+    wheelSpeedIntg_B      = 0;
+
+    wheelSpeedPrevError_C = 0;
+    wheelSpeedIntg_C      = 0;
 }

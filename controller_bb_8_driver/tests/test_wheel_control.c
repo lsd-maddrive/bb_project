@@ -32,31 +32,20 @@ void testWheelControlMatlab( void )
 
         if( matlab_ref_wheel_speed_RPS <= 300 && matlab_ref_wheel_speed_RPS >= -300)
         {
-            palSetLine( LINE_LED3 );
-            if( matlab_ref_wheel_speed_RPS == 0 )
-            {
-                wheelControlResetPermeation();
-                lldControlSetMotorPower( A, 0 );
-                lldControlSetMotorPower( B, 0 );
-                lldControlSetMotorPower( C, 0 );
-            }
-            else
-            {
-                float send_speed = (float)matlab_ref_wheel_speed_RPS / 100;
-                wheelControlSetPermeation();
+            float send_speed = (float)matlab_ref_wheel_speed_RPS / 100;
+            wheelControlSetPermeation();
 
-                wheelControlSetSpeed(
-                    send_speed, A, REVS_PER_SEC
-                );
+            wheelControlSetSpeed(
+                send_speed, A, REVS_PER_SEC
+            );
 
-                wheelControlSetSpeed(
-                    send_speed, B, REVS_PER_SEC
-                );
+            wheelControlSetSpeed(
+                send_speed, B, REVS_PER_SEC
+            );
 
-                wheelControlSetSpeed(
-                    send_speed, C, REVS_PER_SEC
-                );
-            }
+            wheelControlSetSpeed(
+                send_speed, C, REVS_PER_SEC
+            );
 
             test_wheel_speed_A = odometryGetWheelSpeed( A, REVS_PER_SEC );
             test_wheel_speed_B = odometryGetWheelSpeed( B, REVS_PER_SEC );
@@ -74,8 +63,11 @@ void testWheelControlMatlab( void )
         }
         else
         {
+            // hard stop without control system
             wheelControlResetPermeation();
             lldControlSetMotorPower( A, 0 );
+            lldControlSetMotorPower( B, 0 );
+            lldControlSetMotorPower( C, 0 );
         }
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
