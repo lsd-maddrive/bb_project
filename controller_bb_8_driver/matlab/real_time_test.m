@@ -1,17 +1,19 @@
 close all
 clear, clc
 
-% Init buffer
+% Init gamepad (need to install simulink 3d animation add-on)
+joy = vrjoystick(1);
+stop_check = 0;
+
+% Init variables
 x_axis = [0];
 speed_A_axis = [0];
 speed_B_axis = [0];
 speed_C_axis = [0];
 speed_setting_axis = [0];
-update_period = 10;         % How often update plot, points
+update_period = 10;         % How often to update plot, points
 time_window = 10;           % Time window to be shown on figure, sec
 counter = 0;
-freq = 1;                   % Frequency of sine input, Hz (if flag is set)
-flag_var_speed = 0;         % 1 to sine wave as input
 
 % Figure settings
 figure(1);
@@ -35,16 +37,10 @@ fopen(port);
 set(port, 'ByteOrder', 'littleEndian');
 disp('Connection is ready!');
 
-% desired_speed_A = 1; % Speed setting ([-3 3], rps)
-% desired_speed_B = 1;
-% desired_speed_C = 1;
-%set_speed = [desired_speed_A desired_speed_B desired_speed_C];
-%fwrite(port, cast(set_speed * 100, 'int16'), 'int16');   % Send command to mcu
-
 new_values = [];
 start_time = clock;
 
-while true
+while stop_check < 0.5
     counter = counter + 1;
     new_values = fread(port, [4, 1], 'int16');
     
@@ -89,11 +85,13 @@ while true
         break;
     end
     
-    % Non-constant speed input
-    if flag_var_speed == 1
-        desired_speed = sin(freq * pi * etime(clock, start_time));
-        fwrite(port, desired_speed * 100, 'int16');
-    end
+    gamepad_vals = axis(joy, [1 2 3 4]);    % get data from gamepad
+    stop_check = gamepad_vals(3);
+    % Calculate speed for each motor
+    [w_A, w_B, w_C] = inverse_kinematic(gamepad_vals(2),...
+                        gamepad_vals(1), gamepad_vals(4));
+    fwrite(port, [w_A w_B w_C] * 100, 'int16');
+
 end
 
 % Stop motor and close port
