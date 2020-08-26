@@ -41,8 +41,8 @@ static const SerialConfig sdcfg = {
 /*
  * @brief   Test wheel speed
  * @note    Two options are available:
- *              - debug via Terminal (comment define WHEEL_SPEED_MATLAB)
- *              - debug via Matlab (uncomment define WHEEL_SPEED_MATLAB)
+ *              - debug via Terminal (comment   define WHEEL_SPEED_MATLAB)
+ *              - debug via Matlab   (uncomment define WHEEL_SPEED_MATLAB)
  *                in Matlab only data about wheel A is sended
  *                Consumption:
  *                  wheel A data is enough
@@ -182,9 +182,9 @@ void testLinearSpeedMatlab( void )
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        sdReadTimeout( &SD6, (uint8_t*) &matlab_speed_A, 2, TIME_IMMEDIATE );
-        sdReadTimeout( &SD6, (uint8_t*) &matlab_speed_B, 2, TIME_IMMEDIATE );
-        sdReadTimeout( &SD6, (uint8_t*) &matlab_speed_C, 2, TIME_IMMEDIATE );
+        sdRead( &SD6, (uint8_t*) &matlab_speed_A, 2 );
+        sdRead( &SD6, (uint8_t*) &matlab_speed_B, 2 );
+        sdRead( &SD6, (uint8_t*) &matlab_speed_C, 2 );
 
         if( abs(matlab_speed_A) <= 300 )
         {
@@ -218,14 +218,25 @@ void testLinearSpeedMatlab( void )
         odom_wheel_speed_B = odometryGetWheelSpeed( B, REVS_PER_SEC );
         odom_wheel_speed_C = odometryGetWheelSpeed( C, REVS_PER_SEC );
 
-        if( abs(matlab_speed_A) > 300 || abs(matlab_speed_B) > 300 || abs(matlab_speed_C) > 300 )
+        if( abs(matlab_speed_A) == 500 || abs(matlab_speed_B) == 500 || abs(matlab_speed_C) == 500 )
         {
-            wheelControlStopWheels();
+            palSetLine( LINE_LED3 );
 
-            wheelControlResetPermeation();
+            wheelControlSetSpeed(
+                0, A, REVS_PER_SEC
+            );
+
+            wheelControlSetSpeed(
+                0, B, REVS_PER_SEC
+            );
+
+            wheelControlSetSpeed(
+                0, C, REVS_PER_SEC
+            );
         }
         else
         {
+            palClearLine( LINE_LED3 );
             matlab_odom_speed_A = (int)(odom_wheel_speed_A * 100);
             matlab_odom_speed_B = (int)(odom_wheel_speed_B * 100);
             matlab_odom_speed_C = (int)(odom_wheel_speed_C * 100);

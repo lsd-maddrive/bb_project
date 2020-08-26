@@ -8,8 +8,6 @@
 
 typedef float   wheelSpeedValue_t;
 
-
-
 /**
  * @brief       Initialization of unit with control system for each wheel
  */

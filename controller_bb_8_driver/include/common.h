@@ -53,10 +53,12 @@ extern "C" {
 #define WHEEL_SPEED_MIN_RPS     (-3)
 
 /*============================================================================*/
-/* MOTOR CONFIGURATION CONTANTS                                                                 */
+/* ROBOT CONFIGURATION CONTANTS                                                                 */
 /*============================================================================*/
 
 #define MOTOR_GAIN               27
+#define WHEEL_RADIUS_M           (float)0.05
+#define BASE_WHEEL_DIST_M        0.2
 
 
 /*============================================================================*/

@@ -6,12 +6,12 @@ x_axis = [0];
 speed_A_axis = [0];
 speed_B_axis = [0];
 speed_C_axis = [0];
-time_length = 2;           % Time window to be shown on figure, sec
+time_length = 10;           % Time window to be shown on figure, sec
 
 
-V_x = 0.5;  % Linear velocity, m/s
-V_y = 0.1; 
-w = 0;      % angular velocity, rad/s
+V_x = 0;  % Linear velocity, m/s
+V_y = 0; 
+w = 1;      % angular velocity, rad/s
 [w_A, w_B, w_C] = inverse_kinematic(V_x, V_y, w);   % Get wheels speed
 
 % Usart settings
@@ -22,6 +22,7 @@ set(port, 'ByteOrder', 'littleEndian');
 disp('Connection is ready!');
 
 fwrite(port, cast([w_A w_B w_C] * 100, 'int16'), 'int16');   % Send command to mcu
+% fwrite(port, cast([0.10 0 0] * 100, 'int16'), 'int16');   % Send command to mcu
 
 new_values = [];
 start_time = clock;

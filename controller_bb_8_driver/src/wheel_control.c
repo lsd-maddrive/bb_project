@@ -182,6 +182,7 @@ void wheelControlInit( void )
 
     lldControlInit( );
     odometryInit( );
+    permeation_flag = false;
 
     chVTObjectInit(&wheel_control_vt);
     chVTSet( &wheel_control_vt, MS2ST( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL );

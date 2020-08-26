@@ -38,6 +38,8 @@ disp('Connection is ready!');
 new_values = [];
 start_time = clock;
 
+fwrite(port, cast(([0 0 0] * 100), 'int16'), 'int16');
+
 while stop_check < 0.5
     counter = counter + 1;
     new_values = fread(port, [3, 1], 'int16');
@@ -94,7 +96,8 @@ while stop_check < 0.5
     % Calculate speed for each motor
     [w_A, w_B, w_C] = inverse_kinematic(V_xy_set(2),...
                         V_xy_set(1), w_set);
-    fwrite(port, [w_A w_B w_C] * 100, 'int16');
+    [w_A w_B w_C]
+    fwrite(port, cast(([w_A w_B w_C] * 100), 'int16'), 'int16');
 
 end
 
