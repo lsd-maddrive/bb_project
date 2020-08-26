@@ -71,6 +71,10 @@ void testMotorSpeed( void );
  */
 void testWheelSpeed( void );
 
+/*
+ * @brief   Test linear robot speed calculation in Matlab
+ */
+void testLinearSpeedMatlab( void );
 
 /*============================================================================*/
 /* Wheel Control System Tests                                                              */

@@ -24,10 +24,11 @@ extern "C" {
 //  ODOMETRY TESTS
 #define     PROGRAM_MOTOR_SPEED_TEST                    7
 #define     PROGRAM_WHEEL_SPEED_TEST                    8
+#define     PROGRAM_LINEAR_SPEED_MATLAB_TEST            9
 // WHEEL CONTROL SYSTEM TESTS
-#define     PROGRAM_WHEEL_CONTROL_MATLAB                9
+#define     PROGRAM_WHEEL_CONTROL_MATLAB                10
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_WHEEL_CONTROL_MATLAB
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_LINEAR_SPEED_MATLAB_TEST
 
 
 /*============================================================================*/

@@ -40,6 +40,13 @@ void wheelControlSetSpeed( wheelSpeedValue_t speed_val, motorNumberValue_t numbe
 lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odometrySpeedUnit_t unit );
 
 /*
+ * @brief       Stop all wheels
+ *              - PID config is not reseted
+ *              - permeation flag is not reseted
+ */
+void wheelControlStopWheels( void );
+
+/*
  * @brief       Reset all components for PID-controller
  *              for specified wheel
  */

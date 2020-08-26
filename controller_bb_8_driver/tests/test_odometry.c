@@ -1,6 +1,7 @@
 #include <tests.h>
 #include "lld_control.h"
 #include "odometry.h"
+#include "wheel_control.h"
 
 /*
  * @brief   Test motor speed 
@@ -31,12 +32,11 @@ void testMotorSpeed( void )
 
 //#define WHEEL_SPEED_MATLAB
 
-#ifdef WHEEL_SPEED_MATLAB
 static const SerialConfig sdcfg = {
   .speed = 115200,
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
-#endif
+
 
 /*
  * @brief   Test wheel speed
@@ -154,5 +154,87 @@ void testWheelSpeed( void )
 #endif
 
     }
+}
 
+/*
+ * @brief   Test linear robot speed calculation in Matlab
+ */
+void testLinearSpeedMatlab( void )
+{
+    wheelControlInit();
+
+    sdStart( &SD6, &sdcfg );
+    palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
+    palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
+
+    odometrySpeedValue_t    odom_wheel_speed_A          = 0;
+    odometrySpeedValue_t    odom_wheel_speed_B          = 0;
+    odometrySpeedValue_t    odom_wheel_speed_C          = 0;
+
+    int16_t                 matlab_speed_A              = 0;
+    int16_t                 matlab_speed_B              = 0;
+    int16_t                 matlab_speed_C              = 0;
+
+    int16_t                 matlab_odom_speed_A         = 0;
+    int16_t                 matlab_odom_speed_B         = 0;
+    int16_t                 matlab_odom_speed_C         = 0;
+
+    systime_t   time = chVTGetSystemTimeX( );
+    while( true )
+    {
+        sdReadTimeout( &SD6, (uint8_t*) &matlab_speed_A, 2, TIME_IMMEDIATE );
+        sdReadTimeout( &SD6, (uint8_t*) &matlab_speed_B, 2, TIME_IMMEDIATE );
+        sdReadTimeout( &SD6, (uint8_t*) &matlab_speed_C, 2, TIME_IMMEDIATE );
+
+        if( abs(matlab_speed_A) <= 300 )
+        {
+            wheelControlSetPermeation();
+
+            float send_speed_A = (float)matlab_speed_A / 100;
+            wheelControlSetSpeed(
+                send_speed_A, A, REVS_PER_SEC
+            );
+        }
+        if( abs(matlab_speed_B) <= 300 )
+        {
+            wheelControlSetPermeation();
+
+            float send_speed_B = (float)matlab_speed_B / 100;
+            wheelControlSetSpeed(
+                send_speed_B, B, REVS_PER_SEC
+            );
+        }
+        if( abs(matlab_speed_C) <= 300 )
+        {
+            wheelControlSetPermeation();
+
+            float send_speed_C = (float)matlab_speed_C / 100;
+            wheelControlSetSpeed(
+                send_speed_C, C, REVS_PER_SEC
+            );
+        }
+
+        odom_wheel_speed_A = odometryGetWheelSpeed( A, REVS_PER_SEC );
+        odom_wheel_speed_B = odometryGetWheelSpeed( B, REVS_PER_SEC );
+        odom_wheel_speed_C = odometryGetWheelSpeed( C, REVS_PER_SEC );
+
+        if( abs(matlab_speed_A) > 300 || abs(matlab_speed_B) > 300 || abs(matlab_speed_C) > 300 )
+        {
+            wheelControlStopWheels();
+
+            wheelControlResetPermeation();
+        }
+        else
+        {
+            matlab_odom_speed_A = (int)(odom_wheel_speed_A * 100);
+            matlab_odom_speed_B = (int)(odom_wheel_speed_B * 100);
+            matlab_odom_speed_C = (int)(odom_wheel_speed_C * 100);
+
+            sdWrite(&SD6, (uint8_t*) &matlab_odom_speed_A, 2);
+            sdWrite(&SD6, (uint8_t*) &matlab_odom_speed_B, 2);
+            sdWrite(&SD6, (uint8_t*) &matlab_odom_speed_C, 2);
+        }
+
+        time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
+    }
 }

@@ -226,6 +226,20 @@ lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odomet
 }
 
 /*
+ * @brief       Stop all wheels
+ *              - PID config is not reseted
+ *              - permeation flag is not reseted
+ */
+void wheelControlStopWheels( void )
+{
+    wheelSpeedRefValuesPRS[0] = 0;
+    wheelSpeedRefValuesPRS[1] = 0;
+    wheelSpeedRefValuesPRS[2] = 0;
+}
+
+
+
+/*
  * @brief       Reset all components for PID-controller
  *              for specified wheel
  */
