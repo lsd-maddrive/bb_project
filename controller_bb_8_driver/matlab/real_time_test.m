@@ -27,7 +27,7 @@ ylim([-4 4]);
 ylabel('Speed, rps');
 xlabel('Time');
 grid on 
-
+pause(0.5);
 % Usart settings
 port = serial('COM11', 'BaudRate', 115200);
 port.InputBufferSize = 4096;
@@ -82,9 +82,10 @@ while stop_check < 0.5
     
     gamepad_vals = axis(joy, [1 2 3 4]);    % get data from gamepad
     V_xy_set = gamepad_vals(1:2);
-    if abs(V_xy_set(1)) < 0.2 & abs(V_xy_set(2)) < 0.2
+    if abs(V_xy_set(1)) < 0.2 && abs(V_xy_set(2)) < 0.2
         V_xy_set = [0 0];
     end
+    V_xy_set = V_xy_set * 0.5;
     w_set = gamepad_vals(4);
     if abs(w_set) < 0.2
         w_set = 0;

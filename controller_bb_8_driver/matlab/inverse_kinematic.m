@@ -1,3 +1,5 @@
+% https://github.com/Daveorr/Omni-directional-Robot-Model
+
 function [w_A, w_B, w_C] = inverse_kinematic(V_x, V_y, w)
     input = [V_x; V_y; w];
     R = 0.05;   % Radius of wheels, m

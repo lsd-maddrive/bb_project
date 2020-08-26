@@ -28,6 +28,8 @@ ylabel('Speed, rps');
 xlabel('Time');
 grid on 
 
+pause(0.5);
+
 % Usart settings
 port = serial('COM11', 'BaudRate', 115200);
 port.InputBufferSize = 4096;
