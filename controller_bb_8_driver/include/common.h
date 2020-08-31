@@ -21,14 +21,16 @@ extern "C" {
 #define     PROGRAM_MOTOR_FOR_GRISHA                    5
 //  LLD ENCODER TESTS
 #define     PROGRAM_ENCODER_TEST                        6
-//  ODOMETRY TESTS
+//  WHEEL ODOMETRY TESTS
 #define     PROGRAM_MOTOR_SPEED_TEST                    7
 #define     PROGRAM_WHEEL_SPEED_TEST                    8
+// ROBOT ODOMETRY TESTS
 #define     PROGRAM_LINEAR_SPEED_MATLAB_TEST            9
+#define     PROGRAM_ROBOT_ODOMETRY_TEST                 10
 // WHEEL CONTROL SYSTEM TESTS
-#define     PROGRAM_WHEEL_CONTROL_MATLAB                10
+#define     PROGRAM_WHEEL_CONTROL_MATLAB                11
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_LINEAR_SPEED_MATLAB_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROBOT_ODOMETRY_TEST
 
 
 /*============================================================================*/
@@ -58,7 +60,7 @@ extern "C" {
 
 #define MOTOR_GAIN               27
 #define WHEEL_RADIUS_M           (float)0.05
-#define BASE_WHEEL_DIST_M        0.2
+#define BASE_WHEEL_DIST_M        (float)0.2
 
 
 /*============================================================================*/

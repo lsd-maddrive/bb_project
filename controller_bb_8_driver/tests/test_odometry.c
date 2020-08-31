@@ -236,7 +236,6 @@ void testLinearSpeedMatlab( void )
         }
         else
         {
-            palClearLine( LINE_LED3 );
             matlab_odom_speed_A = (int)(odom_wheel_speed_A * 100);
             matlab_odom_speed_B = (int)(odom_wheel_speed_B * 100);
             matlab_odom_speed_C = (int)(odom_wheel_speed_C * 100);
