@@ -81,5 +81,11 @@ void testWheelSpeed( void );
  */
 void testWheelControlMatlab( void );
 
+/*
+ * @brief   Test gyroscope L3GD20H library
+ */
+void testGyroscope(void);
+
+
 
 #endif /* INCLUDE_TESTS_H_ */

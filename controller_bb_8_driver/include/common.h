@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include <i2c.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -26,8 +28,10 @@ extern "C" {
 #define     PROGRAM_WHEEL_SPEED_TEST                    8
 // WHEEL CONTROL SYSTEM TESTS
 #define     PROGRAM_WHEEL_CONTROL_MATLAB                9
+// GYROSCOPE TEST
+#define		PROGRAM_GYROSCOPE_TEST						10
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_WHEEL_CONTROL_MATLAB
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_GYROSCOPE_TEST
 
 
 /*============================================================================*/
