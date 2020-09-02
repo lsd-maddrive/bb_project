@@ -24,6 +24,9 @@ void gyroscopeInit(void)
     initbuf[3] = 0x00;                      // Too smart for me
     initbuf[4] = 0x30;                      // 2000dps
 
+    chVTObjectInit( &gyroscope_vt );
+    chVTSet( &gyroscope_vt, MS2ST( GYRO_INT_PERIOD ), gyroIntegrationCallback, NULL );
+    
     i2cSimpleWrite(GYRO_ADDR, initbuf, 5, 1000);
 
     calculateGyroError(gyro_mean_error);
@@ -40,17 +43,21 @@ static void gyroIntegrationCallback(void *args)
     args = args;
 
     uint8_t i;
-    readGyroSpeed(angular_speed);
+    msg_t msg = readGyroSpeed(angular_speed);
 
-    for(i = 0; i < 3; i++)
+    if( msg == MSG_OK )
     {
-        angular_speed[i] -= gyro_mean_error[i];
+        for(i = 0; i < 3; i++)
+        {
+            angular_speed[i] -= gyro_mean_error[i];
 
-        if (abs(angular_speed[i]) < 0.01)
-            angular_speed[i] = 0;
+            if (abs(angular_speed[i]) < 0.01)
+                angular_speed[i] = 0;
 
-        gyro_angle_xyz[i] += angular_speed[i] * GYRO_INT_PERIOD;
+            gyro_angle_xyz[i] += angular_speed[i] * GYRO_INT_PERIOD;
+        }
     }
+    
 
     chSysLockFromISR();
     chVTSetI(&gyroscope_vt, MS2ST(GYRO_INT_PERIOD), gyroIntegrationCallback, NULL);
@@ -110,6 +117,7 @@ msg_t readGyroscope(int16_t *axis_values)
     uint8_t gyro_temp[6] = {0, 0, 0, 0, 0, 0};
     msg_t msg = i2cRegisterRead(GYRO_ADDR, GYRO_DATA_REG, gyro_temp, 6, 10000);
 
+    
     uint8_t i = 0;
     for(i = 0; i < 3; i++)
     {
