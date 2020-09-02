@@ -1,7 +1,13 @@
 #include <gyroscope.h>
 
 
-static bool isInitialized   = false;
+static bool             isInitialized       = false;
+
+static bool             timerFlag           = false;
+static virtual_timer_t  gyroscope_vt;
+float                   gyro_angle_xyz[3]   = {0, 0, 0};
+float                   angular_speed[3]    = {0, 0, 0};
+float                   gyro_mean_error[3]  = {0, 0, 0};
 
 /**
  * @brief   Initialize gyroscope
@@ -20,8 +26,77 @@ void gyroscopeInit(void)
 
     i2cSimpleWrite(GYRO_ADDR, initbuf, 5, 1000);
 
+    calculateGyroError(gyro_mean_error);
 
     isInitialized = true;
+}
+
+
+/**
+ * @brief   Callback function that calculates angle
+ */
+static void gyroIntegrationCallback(void *args)
+{
+    args = args;
+
+    uint8_t i;
+    readGyroSpeed(angular_speed);
+
+    for(i = 0; i < 3; i++)
+    {
+        angular_speed[i] -= gyro_mean_error[i];
+
+        if (abs(angular_speed[i]) < 0.01)
+            angular_speed[i] = 0;
+
+        gyro_angle_xyz[i] += angular_speed[i] * GYRO_INT_PERIOD;
+    }
+
+    chSysLockFromISR();
+    chVTSetI(&gyroscope_vt, MS2ST(GYRO_INT_PERIOD), gyroIntegrationCallback, NULL);
+    chSysUnlockFromISR();
+}
+
+
+/**
+ * @brief   Get current angle value, [deg]
+ *
+ * @param
+ *          axis        Number of axis to return. 0 through 2 for XYZ
+ */
+float getGyroAngle(uint8_t axis)
+{
+    if(axis < 3)
+        return gyro_angle_xyz[axis];
+    return -1;
+}
+
+
+/**
+ * @brief   Start calculation of angle
+ */
+void startGyroPosition(void)
+{
+    if(timerFlag)
+        return;
+
+    gyroscopeInit();
+    chVTObjectInit(&gyroscope_vt);
+    chVTSet( &gyroscope_vt, MS2ST(GYRO_INT_PERIOD), gyroIntegrationCallback, NULL );
+
+    timerFlag = true;
+}
+
+
+/**
+ * @brief   Stop calculation of angle
+ */
+void stopGyroPosition(void)
+{
+    timerFlag = false;
+    gyro_angle_xyz[0] = 0;
+    gyro_angle_xyz[1] = 0;
+    gyro_angle_xyz[2] = 0;
 }
 
 /**

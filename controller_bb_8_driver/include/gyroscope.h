@@ -6,6 +6,7 @@
 #define GYRO_ADDR       0x6B    // i2c address of gyroscope
 #define GYRO_CTRL1_REG  0xA0    // address of control register with autoincrement bit set
 #define GYRO_DATA_REG   0xA8    // address of OUT_X_L register with autoincrement bit set
+#define GYRO_INT_PERIOD 400
 
 
 /**
@@ -34,6 +35,33 @@ msg_t readGyroSpeed(float *axis_speed);
  *          *axis_speed         Array where to store static error values
  */
 msg_t calculateGyroError(float *buf);
+
+
+/**
+ * @brief   Stop calculation of angle
+ */
+void stopGyroPosition(void);
+
+
+/**
+ * @brief   Start calculation of angle
+ */
+void startGyroPosition(void);
+
+
+/**
+ * @brief   Get current angle value, [deg]
+ *
+ * @param
+ *          axis        Number of axis to return. 0 through 2 for XYZ
+ */
+float getGyroAngle(uint8_t axis);
+
+
+/**
+ * @brief   Callback function that calculates angle
+ */
+static void gyroIntegrationCallback(void *args);
 
 
 /**
