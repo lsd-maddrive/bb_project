@@ -6,7 +6,7 @@
 #define GYRO_ADDR       0x6B    // i2c address of gyroscope
 #define GYRO_CTRL1_REG  0xA0    // address of control register with autoincrement bit set
 #define GYRO_DATA_REG   0xA8    // address of OUT_X_L register with autoincrement bit set
-#define GYRO_INT_PERIOD 400
+#define GYRO_INT_PERIOD 10
 
 
 /**

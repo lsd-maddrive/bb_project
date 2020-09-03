@@ -5,7 +5,7 @@ static I2CDriver    *i2cDriver  = &I2CD1;   // Chose i2c hardware driver
 
 
 static const I2CConfig i2c1conf = {
-         STM32_TIMINGR_PRESC(15U)  |
+         STM32_TIMINGR_PRESC(1U)  |
          STM32_TIMINGR_SCLDEL(9U)  | STM32_TIMINGR_SDADEL(9U) |
          STM32_TIMINGR_SCLH(21U)   | STM32_TIMINGR_SCLL(24U),
          0,                         // CR1
