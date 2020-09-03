@@ -1,5 +1,4 @@
 #include <tests.h>
-#include <lcd.h>
 #include <gyroscope.h>
 
 static const SerialConfig sdcfg = {
@@ -18,21 +17,17 @@ void testGyroscope(void)
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
-    lcdInit();
-    lcdClear();
-    lcdSendNumber(8, 1, 125);
     gyroscopeInit();
     systime_t time = chVTGetSystemTime();
-    palSetLine(LINE_LED1);
 
     while (true)
     {
-        int16_t x_axis = (int)(getGyroAngle(2) * 100);
+        int16_t x_axis = (int)(getGyroAngle(GYRO_AXIS_Z) * 100);
         sdWrite(&SD6, (int8_t*) &x_axis, 2);
 
-        //dbgprintf("X = %d\tY = %d\tZ = %d\n\r", (int)(getGyroAngle(0) * 100), (int)(getGyroAngle(1) * 100), (int)(getGyroAngle(2) * 100));
-        systime_t prev = time;
-        chThdSleepUntilWindowed(prev, time += MS2ST(5));
+        //dbgprintf("X = %d\tY = %d\tZ = %d\n\r", (int)(getGyroAngle(GYRO_AXIS_X) * 100), (int)(getGyroAngle(GYRO_AXIS_Y) * 100), (int)(getGyroAngle(GYRO_AXIS_Z) * 100));
+
+        time = chThdSleepUntilWindowed(time, time + MS2ST(5));
 
     }
 }

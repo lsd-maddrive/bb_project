@@ -3,10 +3,16 @@
 
 #include <common.h>
 
-#define GYRO_ADDR       0x6B    // i2c address of gyroscope
-#define GYRO_CTRL1_REG  0xA0    // address of control register with autoincrement bit set
-#define GYRO_DATA_REG   0xA8    // address of OUT_X_L register with autoincrement bit set
-#define GYRO_INT_PERIOD 10
+#define GYRO_ADDR       0x6B    // I2c address of gyroscope
+#define GYRO_CTRL1_REG  0xA0    // Address of control register with autoincrement bit set
+#define GYRO_DATA_REG   0xA8    // Address of OUT_X_L register with autoincrement bit set
+#define GYRO_INT_PERIOD 10      // Gyroscope integration step [ms]
+
+typedef enum {
+    GYRO_AXIS_X,
+    GYRO_AXIS_Y,
+    GYRO_AXIS_Z
+} gyroAxis_t;
 
 
 /**
@@ -37,17 +43,6 @@ msg_t readGyroSpeed(float *axis_speed);
 msg_t calculateGyroError(float *buf);
 
 
-/**
- * @brief   Stop calculation of angle
- */
-void stopGyroPosition(void);
-
-
-/**
- * @brief   Start calculation of angle
- */
-void startGyroPosition(void);
-
 
 /**
  * @brief   Get current angle value, [deg]
@@ -55,13 +50,16 @@ void startGyroPosition(void);
  * @param
  *          axis        Number of axis to return. 0 through 2 for XYZ
  */
-float getGyroAngle(uint8_t axis);
+float getGyroAngle(gyroAxis_t axis);
 
 
 /**
- * @brief   Callback function that calculates angle
+ * @brief   Get current angular speed value, [deg/s]
+ *
+ * @param
+ *          axis        Number of axis to return. 0 through 2 for XYZ
  */
-static void gyroIntegrationCallback(void *args);
+float getGyroSpeed(gyroAxis_t axis);
 
 
 /**

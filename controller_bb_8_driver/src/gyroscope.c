@@ -1,32 +1,26 @@
 #include <gyroscope.h>
 
 
-static bool             isInitialized       = false;
-
 float                   gyro_angle_xyz[3]   = {0, 0, 0};
 float                   angular_speed[3]    = {0, 0, 0};
 float                   gyro_mean_error[3]  = {0, 0, 0};
 
 
-static THD_WORKING_AREA(gyroThread, 400); // 256 - stack size
+/*
+ * @brief   Gyroscope thread. Read gyroscope data and integrate it to get angle value
+ */
+static THD_WORKING_AREA(gyroThread, 256); // 256 - stack size
 static THD_FUNCTION(Gyro, arg)
 {
-    arg = arg;            // just to avoid warnings
+    arg = arg;              // just to avoid warnings
     systime_t time = chVTGetSystemTime();
     while( true )
     {
         uint8_t i;
         msg_t msg = readGyroSpeed(angular_speed);
-//        if(msg == MSG_TIMEOUT)
-//            palToggleLine(LINE_LED2);
-
-
-
 
         if( msg == MSG_OK )
         {
-            palToggleLine(LINE_LED2);
-
             for(i = 0; i < 3; i++)
             {
                 angular_speed[i] -= gyro_mean_error[i];
@@ -41,6 +35,8 @@ static THD_FUNCTION(Gyro, arg)
     }
 }
 
+
+static bool             isInitialized       = false;
 /**
  * @brief   Initialize gyroscope
  */
@@ -72,40 +68,25 @@ void gyroscopeInit(void)
  * @param
  *          axis        Number of axis to return. 0 through 2 for XYZ
  */
-float getGyroAngle(uint8_t axis)
+float getGyroAngle(gyroAxis_t axis)
+{
+    return gyro_angle_xyz[axis];
+}
+
+
+/**
+ * @brief   Get current angular speed value, [deg]
+ *
+ * @param
+ *          axis        Number of axis to return. 0 through 2 for XYZ
+ */
+float getGyroSpeed(gyroAxis_t axis)
 {
     if(axis < 3)
-        return gyro_angle_xyz[axis];
+        return angular_speed[axis];
     return -1;
 }
 
-
-/**
- * @brief   Start calculation of angle
- */
-void startGyroPosition(void)
-{
-//    if(timerFlag)
-//        return;
-//
-//    gyroscopeInit();
-//    chVTObjectInit(&gyroscope_vt);
-//    chVTSet( &gyroscope_vt, MS2ST(GYRO_INT_PERIOD), gyroIntegrationCallback, NULL );
-//
-//    timerFlag = true;
-}
-
-
-/**
- * @brief   Stop calculation of angle
- */
-void stopGyroPosition(void)
-{
-
-    gyro_angle_xyz[0] = 0;
-    gyro_angle_xyz[1] = 0;
-    gyro_angle_xyz[2] = 0;
-}
 
 /**
  * @brief   Read gyroscope axis values in XYZ order
