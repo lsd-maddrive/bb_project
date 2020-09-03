@@ -1,6 +1,8 @@
 #ifndef LCD_H_
 #define LCD_H_
 
+#include <common.h>
+
 #define lcd_address 0x27                                // i2c address of lcd
 #define e_set()     lcdWriteByte( port_lcd |= 0x04 )    // set E in 1
 #define e_reset()   lcdWriteByte( port_lcd &= ~0x04 )   // set E in 0
