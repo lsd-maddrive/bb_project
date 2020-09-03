@@ -1,4 +1,3 @@
-#include <tests.h>
 #include <lld_encoder.h>
 
 #define ENC_MAX_TICK_NUM        1000

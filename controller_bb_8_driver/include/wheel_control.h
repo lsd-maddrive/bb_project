@@ -1,6 +1,7 @@
 #ifndef INCLUDE_WHEEL_CONTROL_H_
 #define INCLUDE_WHEEL_CONTROL_H_
 
+#include "common.h"
 #include "lld_control.h"
 #include "odometry.h"
 

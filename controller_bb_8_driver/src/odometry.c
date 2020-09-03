@@ -1,7 +1,4 @@
-#include <tests.h>
-#include <lld_encoder.h>
 #include <odometry.h>
-
 
 static virtual_timer_t  odom_update_vt;
 
@@ -88,7 +85,6 @@ void odometryInit( void )
 
     lldEncoderInit( ); 
 
-
     isInitialized = true; 
 }
 
@@ -99,8 +95,6 @@ void odometryInit( void )
  */
 odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t unit )
 {
-//  number = CLIP_VALUE( number, 0, 2 );
-
   switch( number )
   {
       case A:
@@ -155,8 +149,6 @@ odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odomet
  */
 odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t number, odometrySpeedUnit_t unit )
 {
-//    number = CLIP_VALUE( number, 0, 2 );
-
     switch( number )
     {
         case A:
@@ -211,8 +203,6 @@ odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t number, odometryS
  */
 odometrySpeedValue_t odometryGetWheelSpeedRaw( motorNumberValue_t number, odometrySpeedUnit_t unit )
 {
-//    number = CLIP_VALUE( number, 0, 2 );
-
     switch( number )
     {
         case A:

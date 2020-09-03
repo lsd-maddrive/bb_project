@@ -1,6 +1,11 @@
 #ifndef INCLUDE_ODOMETRY_H_
 #define INCLUDE_ODOMETRY_H_
 
+#include "common.h"
+#include "lld_encoder.h"
+
+
+
 #define MS_2_SEC        100 // 10 ms - > 1 s
 #define CM_2_M          (float)0.01;
 
