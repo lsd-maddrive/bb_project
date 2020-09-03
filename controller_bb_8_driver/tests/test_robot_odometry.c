@@ -48,9 +48,6 @@ void testRobotOdometry ( void )
               break;
         }
 
-        // robotOdometrySetVx( test_v_x );
-        // robotOdometrySetVy( test_v_y );
-        // robotOdometrySetW (  test_w  );
         robotOdometrySetSpeed( test_v_x, test_v_y, test_w );
 
         dbgprintf( "Vx: %d\tVy: %d\tW: %d\n\r",
