@@ -138,8 +138,4 @@ void lcdWriteByte( uint8_t byte )
     buf[0] = byte;
     msg_t msg = i2cSimpleWrite(lcd_address, buf, 1, 1000);
 
-    if( msg == MSG_OK ) // just to be sure that the address of LCD is correct
-    {
-        palSetLine( LINE_LED3 );
-    }
 }

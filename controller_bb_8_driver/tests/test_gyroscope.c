@@ -22,12 +22,8 @@ void testGyroscope(void)
 
     while (true)
     {
-        int16_t x_axis = (int)(getGyroAngle(GYRO_AXIS_Z) * 100);
-        sdWrite(&SD6, (int8_t*) &x_axis, 2);
-
-        //dbgprintf("X = %d\tY = %d\tZ = %d\n\r", (int)(getGyroAngle(GYRO_AXIS_X) * 100), (int)(getGyroAngle(GYRO_AXIS_Y) * 100), (int)(getGyroAngle(GYRO_AXIS_Z) * 100));
-
-        time = chThdSleepUntilWindowed(time, time + MS2ST(5));
-
+        float axis = getGyroAngle(GYRO_AXIS_X);
+        sdWrite(&SD6, (uint8_t*) &axis, 4);
+        time = chThdSleepUntilWindowed(time, time + MS2ST(50));
     }
 }

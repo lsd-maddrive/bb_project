@@ -29,6 +29,14 @@ static THD_FUNCTION(Gyro, arg)
                     angular_speed[i] = 0;
 
                 gyro_angle_xyz[i] += angular_speed[i] * GYRO_INT_PERIOD / 1000;
+
+                if (gyro_angle_xyz[i] > 360)   // Keep angle in range [0 360]
+                    gyro_angle_xyz[i] -= 360;
+                else
+                    {
+                    if (gyro_angle_xyz[i] < 0)
+                        gyro_angle_xyz[i] += 360;
+                    }
             }
         }
         time = chThdSleepUntilWindowed( time, time + MS2ST( GYRO_INT_PERIOD ) );
@@ -119,10 +127,11 @@ msg_t readGyroSpeed(float *axis_speed)
     int16_t gyro_axis_values[3] = {0, 0, 0};
     uint8_t i = 0;
     msg_t msg = readGyroscope(gyro_axis_values);
-    for(i = 0; i < 3; i++)
-    {
-        axis_speed[i] = (float)gyro_axis_values[i] * 0.07;
-    }
+    if (msg == MSG_OK)
+        for(i = 0; i < 3; i++)
+        {
+            axis_speed[i] = (float)gyro_axis_values[i] * 0.07;
+        }
     return msg;
 }
 
@@ -144,10 +153,11 @@ msg_t calculateGyroError(float *buf)
     for(i = 0; i < 10; i++)
     {
         msg = readGyroscope(super_temp);
-        for(j = 0; j < 3; j++)
-        {
-            temp_buf[i][j] = super_temp[j];
-        }
+        if (msg == MSG_OK)
+            for(j = 0; j < 3; j++)
+            {
+                temp_buf[i][j] = super_temp[j];
+            }
     }
 
 
