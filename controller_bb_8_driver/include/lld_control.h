@@ -1,6 +1,8 @@
 #ifndef INCLUDE_LLD_CONTROL_H_
 #define INCLUDE_LLD_CONTROL_H_
 
+#include "common.h"
+
 #define PWM_FREQ        1000000
 #define PWM_PERIOD      1000   // 1 kHz
 #define LLD_DUTY_MIN    0

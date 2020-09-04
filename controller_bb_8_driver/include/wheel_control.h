@@ -1,14 +1,13 @@
 #ifndef INCLUDE_WHEEL_CONTROL_H_
 #define INCLUDE_WHEEL_CONTROL_H_
 
+#include "common.h"
 #include "lld_control.h"
 #include "odometry.h"
 
 #define VT_WHEEL_CONTROL_MS      10
 
 typedef float   wheelSpeedValue_t;
-
-
 
 /**
  * @brief       Initialization of unit with control system for each wheel
@@ -38,6 +37,13 @@ void wheelControlSetSpeed( wheelSpeedValue_t speed_val, motorNumberValue_t numbe
  *              for specified wheel in specified units
  */
 lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odometrySpeedUnit_t unit );
+
+/*
+ * @brief       Stop all wheels
+ *              - PID config is not reseted
+ *              - permeation flag is not reseted
+ */
+void wheelControlStopWheels( void );
 
 /*
  * @brief       Reset all components for PID-controller

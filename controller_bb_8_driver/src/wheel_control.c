@@ -1,6 +1,4 @@
-#include "tests.h"
 #include "wheel_control.h"
-
 
 static virtual_timer_t  wheel_control_vt;
 
@@ -57,6 +55,7 @@ pidControllerValue_t    wheelController_C = {
 
 static void wheel_control_vt_cb( void *arg )
 {
+    palToggleLine( PAL_LINE( GPIOG, 3 ) );
     arg = arg;  // to avoid warnings
 
 /*============================================================================*/
@@ -182,9 +181,12 @@ void wheelControlInit( void )
 
     lldControlInit( );
     odometryInit( );
+    permeation_flag = false;
 
     chVTObjectInit(&wheel_control_vt);
     chVTSet( &wheel_control_vt, MS2ST( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL );
+
+    palSetLineMode( PAL_LINE( GPIOG, 3 ), PAL_MODE_OUTPUT_PUSHPULL );
 
     isInitialized = true;
 }
@@ -224,6 +226,20 @@ lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odomet
             break;
     }
 }
+
+/*
+ * @brief       Stop all wheels
+ *              - PID config is not reseted
+ *              - permeation flag is not reseted
+ */
+void wheelControlStopWheels( void )
+{
+    wheelSpeedRefValuesPRS[0] = 0;
+    wheelSpeedRefValuesPRS[1] = 0;
+    wheelSpeedRefValuesPRS[2] = 0;
+}
+
+
 
 /*
  * @brief       Reset all components for PID-controller

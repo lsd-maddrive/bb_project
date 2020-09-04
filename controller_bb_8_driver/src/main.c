@@ -36,6 +36,14 @@ static inline void testsRoutines( void )
 
     testWheelSpeed();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_LINEAR_SPEED_MATLAB_TEST )
+
+    testLinearSpeedMatlab();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROBOT_ODOMETRY_TEST )
+
+    testRobotOdometry();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_WHEEL_CONTROL_MATLAB )
 
     testWheelControlMatlab();

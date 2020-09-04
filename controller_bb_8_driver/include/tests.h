@@ -58,7 +58,7 @@ void testSpamPWM( void );
 void testEncoderRoutine( void );
 
 /*============================================================================*/
-/* Odometry Tests                                                             */
+/* Wheel Odometry Tests                                                       */
 /*============================================================================*/
 
 /*
@@ -71,9 +71,22 @@ void testMotorSpeed( void );
  */
 void testWheelSpeed( void );
 
+/*
+ * @brief   Test linear robot speed calculation in Matlab
+ */
+void testLinearSpeedMatlab( void );
 
 /*============================================================================*/
-/* Wheel Control System Tests                                                              */
+/* Robot Odometry Tests (kinematic)                                           */
+/*============================================================================*/
+
+/*
+ * @brief   Test robot (kinematic) odometry unit
+ */
+void testRobotOdometry ( void );
+
+/*============================================================================*/
+/* Wheel Control System Tests                                                 */
 /*============================================================================*/
 
 /*

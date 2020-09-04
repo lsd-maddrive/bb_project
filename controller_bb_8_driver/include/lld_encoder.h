@@ -1,6 +1,8 @@
 #ifndef INCLUDE_LLD_ENCODER_H_
 #define INCLUDE_LLD_ENCODER_H_
 
+#include "common.h"
+
 typedef int32_t     encoderTicksValue_t; 
 typedef float       encoderRevsValue_t;
 
