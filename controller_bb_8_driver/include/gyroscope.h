@@ -64,8 +64,10 @@ float getGyroSpeed(gyroAxis_t axis);
 
 /**
  * @brief   Initialize gyroscope
+ * @args
+ *          priopity - NORMALPRIO +/- numbers
  */
-void gyroscopeInit(void);
+void gyroscopeInit( tprio_t priority );
 
 
 #endif /* GYROSCOPE_H_ */

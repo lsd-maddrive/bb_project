@@ -8,16 +8,13 @@ static const SerialConfig sdcfg = {
 
 void testGyroscope(void)
 {
-    chSysInit();
-    halInit();
-    debug_stream_init();
     i2cStartUp();
 
     sdStart( &SD6, &sdcfg );
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
-    gyroscopeInit();
+    gyroscopeInit( NORMALPRIO );
     systime_t time = chVTGetSystemTime();
 
     while (true)
