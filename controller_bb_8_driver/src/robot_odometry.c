@@ -1,5 +1,7 @@
 #include "robot_odometry.h"
 
+static virtual_timer_t  angle_vt;
+
 const float TWO_PIR = WHEEL_RADIUS_M * 2 * M_PI;
 // Initialization of matrix A
 // kinematic matrix A for three motors

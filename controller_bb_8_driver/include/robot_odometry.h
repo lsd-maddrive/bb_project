@@ -3,6 +3,7 @@
 
 #include <common.h>
 #include "wheel_control.h"
+#include "gyroscope.h"
 
 /**
  * @brief       Initialization of robot odometry unit
