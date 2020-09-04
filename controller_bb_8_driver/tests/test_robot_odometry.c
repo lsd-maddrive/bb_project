@@ -1,6 +1,7 @@
 #include <tests.h>
 #include "robot_odometry.h"
 
+// TODO: remake test!!! with GYRO
 /*
  * @brief   Test robot (kinematic) odometry unit
  */
@@ -48,7 +49,7 @@ void testRobotOdometry ( void )
               break;
         }
 
-        robotOdometrySetSpeed( test_v_x, test_v_y, test_w );
+//        robotOdometrySetSpeed( test_v_x, test_v_y, test_w );
 
         dbgprintf( "Vx: %d\tVy: %d\tW: %d\n\r",
                    (int)(test_v_x * 1000),
@@ -59,4 +60,3 @@ void testRobotOdometry ( void )
         time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
     }
 }
-

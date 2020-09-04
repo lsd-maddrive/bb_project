@@ -1,6 +1,44 @@
 #include "robot_odometry.h"
 
+float   angle_integral  = 0;
+float   omega_cntr      = 0;
+
+
+/**
+ * @brief       Integral of (input) d_phi
+ */
+void robotOdometryAddAngle( float angle )
+{
+    angle_integral += angle;
+}
+
+pidControllerValue_t    angleController_C = {
+    .kp = 10,
+    .ki = 0,
+    .kd = 0,
+    .intgSaturation = 0,
+    .propDeadZone = 0,
+    .controlDeadZone = 0
+};
+
 static virtual_timer_t  angle_vt;
+
+static void angle_vt_cb( void *arg )
+{
+    arg = arg;
+
+    float real_z_angle = getGyroAngle( GYRO_AXIS_Z );
+
+    float anglePropError = angle_integral - real_z_angle;
+
+    omega_cntr = angleController_C.kp * anglePropError;
+
+    chSysLockFromISR();
+    chVTSetI( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
+    chSysUnlockFromISR();
+}
+
+
 
 const float TWO_PIR = WHEEL_RADIUS_M * 2 * M_PI;
 // Initialization of matrix A
@@ -14,21 +52,31 @@ float       k_C[3]  = {0, 0, 0};
  * @args
  *              v_x - linear speed x-axis [m/s]
  *              v_y - linear speed y-axis [m/s]
- *              w   - angular speed [rad/s]
  */
-void robotOdometrySetSpeed( float v_x, float v_y, float w )
+void robotOdometrySetSpeed( float v_x_glob, float v_y_glob )
 {
+    float real_z_angle  = getGyroAngle( GYRO_AXIS_Z );
+    float angle_cos     = cosf(real_z_angle);
+    float angle_sin     = sinf(real_z_angle);
+
+    // convert global v_x_glob, v_y_glob to local
+    float v_x = angle_cos * v_x_glob + angle_cos * v_y_glob
+              - angle_sin * v_x_glob - angle_sin * v_y_glob;
+
+    float v_y = angle_sin * v_x_glob + angle_sin * v_y_glob
+              + angle_cos * v_x_glob + angle_cos * v_y_glob;
+
     float wheel_speed_A = k_A[0] * v_x +
                           k_A[1] * v_y +
-                          k_A[2] * w;
+                          k_A[2] * omega_cntr;
 
     float wheel_speed_B = k_B[0] * v_x +
                           k_B[1] * v_y +
-                          k_B[2] * w;
+                          k_B[2] * omega_cntr;
 
     float wheel_speed_C = k_C[0] * v_x +
                           k_C[1] * v_y +
-                          k_C[2] * w;
+                          k_C[2] * omega_cntr;
 
     wheelControlSetSpeed( wheel_speed_A, A, REVS_PER_SEC );
     wheelControlSetSpeed( wheel_speed_B, B, REVS_PER_SEC );
@@ -61,9 +109,13 @@ void robotOdometryInit( void )
     // *************************************************
 
     wheelControlInit();
+    gyroscopeInit( NORMALPRIO );
 
     // wheel control system is enabled
     wheelControlSetPermeation();
+
+    chVTObjectInit(&angle_vt);
+    chVTSet( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
 
     isInitialized = true;
 }
