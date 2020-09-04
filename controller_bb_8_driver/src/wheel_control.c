@@ -55,7 +55,6 @@ pidControllerValue_t    wheelController_C = {
 
 static void wheel_control_vt_cb( void *arg )
 {
-    palToggleLine( PAL_LINE( GPIOG, 3 ) );
     arg = arg;  // to avoid warnings
 
 /*============================================================================*/
@@ -185,8 +184,6 @@ void wheelControlInit( void )
 
     chVTObjectInit(&wheel_control_vt);
     chVTSet( &wheel_control_vt, MS2ST( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL );
-
-    palSetLineMode( PAL_LINE( GPIOG, 3 ), PAL_MODE_OUTPUT_PUSHPULL );
 
     isInitialized = true;
 }
