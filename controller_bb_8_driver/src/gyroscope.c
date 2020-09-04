@@ -45,10 +45,13 @@ static THD_FUNCTION(Gyro, arg)
 
 
 static bool             isInitialized       = false;
+
 /**
  * @brief   Initialize gyroscope
+ * @args
+ *          priopity - NORMALPRIO +/- numbers
  */
-void gyroscopeInit(void)
+void gyroscopeInit( tprio_t priority )
 {
     if(isInitialized)
         return;
@@ -64,7 +67,7 @@ void gyroscopeInit(void)
 
     calculateGyroError(gyro_mean_error);
 
-    chThdCreateStatic(gyroThread, sizeof(gyroThread), NORMALPRIO, Gyro, NULL);
+    chThdCreateStatic(gyroThread, sizeof(gyroThread), priority, Gyro, NULL);
 
     isInitialized = true;
 }
