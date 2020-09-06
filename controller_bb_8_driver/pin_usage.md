@@ -9,6 +9,13 @@ Driver | Pins | Input/Output
 SD6    | PG_14| TX
 SD6    | PG_9 | RX 
 
+## Гироскоп
+
+Driver | Pins | Input/Output 
+:-----:|:----:|:------------:
+i2c    | PB_8 | SCL
+i2c    | PB_9 | SDA
+
 ## Драйвер управления приводами движения 
 
 ### Motor A 
