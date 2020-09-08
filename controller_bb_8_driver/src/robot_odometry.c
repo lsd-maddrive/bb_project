@@ -1,7 +1,8 @@
 #include "robot_odometry.h"
 
-float   angle_integral  = 0;
-float   omega_cntr      = 0;
+float   angle_integral      = 0;
+float   omega_cntr          = 0;
+float   angleIntgController = 0;
 
 
 /**
@@ -12,11 +13,11 @@ void robotOdometryAddAngle( float angle )
     angle_integral += angle;
 }
 
-pidControllerValue_t    angleController_C = {
+pidControllerValue_t    angleController = {
     .kp = 10,
     .ki = 0,
     .kd = 0,
-    .intgSaturation = 0,
+    .intgSaturation = 100,
     .propDeadZone = 0,
     .controlDeadZone = 0
 };
@@ -27,11 +28,20 @@ static void angle_vt_cb( void *arg )
 {
     arg = arg;
 
-    float real_z_angle = getGyroAngle( GYRO_AXIS_Z );
+    float realAngle_Z = getGyroAngle( GYRO_AXIS_Z );
 
-    float anglePropError = angle_integral - real_z_angle;
+    float anglePropError = angle_integral - realAngle_Z;
 
-    omega_cntr = angleController_C.kp * anglePropError;
+
+
+    angleIntgController += angleController.ki * anglePropError;
+    angleIntgController = CLIP_VALUE(
+        angleIntgController,
+        -angleController.intgSaturation,
+        angleController.intgSaturation
+    );
+
+    omega_cntr = angleController.kp * anglePropError + angleIntgController;
 
     chSysLockFromISR();
     chVTSetI( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
