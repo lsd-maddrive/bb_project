@@ -6,6 +6,8 @@ import serial
 import struct
 import xbox
 
+from config import V_MAX, ANG_SPEED_MAX
+
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -15,6 +17,7 @@ def main():
     try:
         port = serial.Serial('/dev/ttyUSB0', 115200)
         port.open()
+        logger.debug(f"USB is connected successfully!")
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")
         return 
@@ -22,9 +25,6 @@ def main():
 
     # Instantiate the controller
     joy = xbox.Joystick()
-
-    V_max = 0.5         # Max linear velocity [m/s]
-    ang_speed_max = 1   # Max angular speed [grad/s]
 
     while joy.leftTrigger() < 0.8:
         # Read joystick data
@@ -59,8 +59,8 @@ def main():
             velocity_x, velocity_y = 0, 0
         # Calculate axial velocity
         else:
-            velocity_x = velocity * math.cos(angle) * V_max
-            velocity_y = velocity * math.sin(angle) * V_max
+            velocity_x = velocity * math.cos(angle) * V_MAX
+            velocity_y = velocity * math.sin(angle) * V_MAX
 
         # Just in case
         if abs(velocity_y) < 0.01:
@@ -69,7 +69,7 @@ def main():
             velocity_x = 0
 
         # Calculate angular speed set
-        ang_speed = ang_speed_raw * ang_speed_max
+        ang_speed = ang_speed_raw * ANG_SPEED_MAX
         data_pack = struct.pack('<hhh', int(velocity_x * 1000), int(velocity_y * 1000), int(ang_speed * 1000))
         # Here should be data transmit
         port.write(data_pack)
