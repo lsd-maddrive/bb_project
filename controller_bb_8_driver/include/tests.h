@@ -73,7 +73,7 @@ void testWheelSpeed( void );
 
 
 /*============================================================================*/
-/* Wheel Control System Tests                                                              */
+/* Wheel Control System Tests                                                 */
 /*============================================================================*/
 
 /*
@@ -81,5 +81,13 @@ void testWheelSpeed( void );
  */
 void testWheelControlMatlab( void );
 
+/*============================================================================*/
+/* Joystick Tests                                                             */
+/*============================================================================*/
+
+/*
+ * @brief   Simple joystick test (without control system)
+ */
+void testJoystick( void );
 
 #endif /* INCLUDE_TESTS_H_ */

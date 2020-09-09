@@ -26,8 +26,10 @@ extern "C" {
 #define     PROGRAM_WHEEL_SPEED_TEST                    8
 // WHEEL CONTROL SYSTEM TESTS
 #define     PROGRAM_WHEEL_CONTROL_MATLAB                9
+// JOYSTICK TESTS
+#define     PROGRAM_JOYSTICK_TEST                       13
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_WHEEL_CONTROL_MATLAB
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_JOYSTICK_TEST
 
 
 /*============================================================================*/

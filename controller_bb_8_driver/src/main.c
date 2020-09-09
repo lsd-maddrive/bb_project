@@ -40,6 +40,10 @@ static inline void testsRoutines( void )
 
     testWheelControlMatlab();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_JOYSTICK_TEST )
+
+    testJoystick();
+
 #endif
 }
 

@@ -6,6 +6,9 @@ static const SerialConfig sdcfg = {
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
 
+/*
+ * @brief   Test wheel control system with matlab
+ */
 void testWheelControlMatlab( void )
 {
     wheelControlInit();
