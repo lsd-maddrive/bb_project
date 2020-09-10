@@ -19,3 +19,9 @@ sudo apt-get install xboxdr
 ```bash
 pip3 install -r requirements.txt
 ```
+
+4. Run python-script 
+
+```bash
+sudo python3 joystick.py 
+```

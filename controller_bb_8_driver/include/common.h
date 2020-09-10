@@ -32,8 +32,8 @@ extern "C" {
 // WHEEL CONTROL SYSTEM TESTS
 #define     PROGRAM_WHEEL_CONTROL_MATLAB                11
 // GYROSCOPE TEST
-#define		PROGRAM_GYROSCOPE_TEST						            12
-  // JOYSTICK TESTS
+#define		PROGRAM_GYROSCOPE_TEST						12
+// JOYSTICK TESTS
 #define     PROGRAM_JOYSTICK_TEST                       13
 
 #define     MAIN_PROGRAM_ROUTINE                        PROGRAM_GYROSCOPE_TEST
