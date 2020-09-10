@@ -94,13 +94,15 @@ def main():
 
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")
-        return
+        # return
     finally:
         # Close out when done
         if joy is not 0:
             joy.close()
+            logger.debug("Joystick is closed successfully")
         if port is not 0:
             port.close()
+            logger.debug("Serial port is closed successfully")
 
 
 if __name__ == "__main__":
