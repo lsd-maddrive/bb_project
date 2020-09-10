@@ -99,6 +99,13 @@ void testWheelControlMatlab( void );
  */
 void testGyroscope(void);
 
+/*============================================================================*/
+/* Joystick Tests                                                             */
+/*============================================================================*/
 
+/*
+ * @brief   Simple joystick test (without control system)
+ */
+void testJoystick( void );
 
 #endif /* INCLUDE_TESTS_H_ */
