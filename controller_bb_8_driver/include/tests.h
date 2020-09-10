@@ -108,4 +108,7 @@ void testGyroscope(void);
  */
 void testJoystick( void );
 
+// TODO: add comments
+void testRobotWithJoystick( void );
+
 #endif /* INCLUDE_TESTS_H_ */

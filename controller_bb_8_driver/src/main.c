@@ -52,6 +52,10 @@ static inline void testsRoutines( void )
 
     testJoystick();
 
+#elif ( MAIN_PROGRAM_ROUTINE == PROGRAM_ROBOT_WITH_JOYSTICK_TEST )
+
+    testRobotWithJoystick();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_GYROSCOPE_TEST)
 
     testGyroscope();
