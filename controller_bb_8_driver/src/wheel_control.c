@@ -1,6 +1,4 @@
-#include "tests.h"
 #include "wheel_control.h"
-
 
 static virtual_timer_t  wheel_control_vt;
 
@@ -182,6 +180,7 @@ void wheelControlInit( void )
 
     lldControlInit( );
     odometryInit( );
+    permeation_flag = false;
 
     chVTObjectInit(&wheel_control_vt);
     chVTSet( &wheel_control_vt, MS2ST( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL );
@@ -224,6 +223,20 @@ lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odomet
             break;
     }
 }
+
+/*
+ * @brief       Stop all wheels
+ *              - PID config is not reseted
+ *              - permeation flag is not reseted
+ */
+void wheelControlStopWheels( void )
+{
+    wheelSpeedRefValuesPRS[0] = 0;
+    wheelSpeedRefValuesPRS[1] = 0;
+    wheelSpeedRefValuesPRS[2] = 0;
+}
+
+
 
 /*
  * @brief       Reset all components for PID-controller
