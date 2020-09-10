@@ -54,3 +54,11 @@ Driver | Pins | Input/Output | Base EXT channel
 :-----:|:----:|:------------:|:--------:
 EXT1   | PD_3 | input | YES
 EXT1   | PE_2 | input | NO
+
+
+## Драйвер для обработки гироскоп
+
+Driver | Pins | Input/Output 
+:-----:|:----:|:------------:
+i2c    | PB_8 | SCL
+i2c    | PB_9 | SDA
