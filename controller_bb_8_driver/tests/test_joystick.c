@@ -21,10 +21,10 @@ void testJoystick( void )
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        sdReadTimeout( &SD6, (uint8_t*) &buf, 6, TIME_IMMEDIATE );
+        sdReadTimeout( &SD6, (uint8_t*) &buf, 12, TIME_IMMEDIATE );
 
         dbgprintf("x: %d\ty: %d\tw: %d\n\r",
-                  buf[0] * 100, buf[1] * 100, buf[2] * 100);
+                  (int)(buf[0] * 100), (int)(buf[1] * 100), (int)(buf[2] * 100));
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 100 ) );
     }
