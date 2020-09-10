@@ -25,3 +25,4 @@ pip3 install -r requirements.txt
 ```bash
 sudo python3 joystick.py 
 ```
+> [xbox module](https://github.com/FRC4564/Xbox) 
