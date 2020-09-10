@@ -2,3 +2,6 @@
 *build*
 *.vscode 
 *.asv
+venv/
+__pycache__/
+.idea/
