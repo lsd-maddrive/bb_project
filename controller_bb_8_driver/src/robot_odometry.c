@@ -11,7 +11,8 @@ float   angleIntgController = 0;
 void robotOdometryAddAngle( float angle )
 {
     angle_integral += angle;
-    angle_integral = CLIP_VALUE( angle_integral, 0, 360 );
+    // % can work only with integers, so we lose some accuracity
+    angle_integral = abs(angle_integral) > 360 ? (int)angle_integral % 360 : angle_integral;
 }
 
 pidControllerValue_t    angleController = {
