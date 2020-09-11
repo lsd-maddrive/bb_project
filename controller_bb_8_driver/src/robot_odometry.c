@@ -11,6 +11,7 @@ float   angleIntgController = 0;
 void robotOdometryAddAngle( float angle )
 {
     angle_integral += angle;
+    angle_integral = CLIP_VALUE( angle_integral, 0, 360 );
 }
 
 pidControllerValue_t    angleController = {
@@ -31,6 +32,29 @@ static void angle_vt_cb( void *arg )
     float realAngle_Z = getGyroAngle( GYRO_AXIS_Z );
 
     float anglePropError = angle_integral - realAngle_Z;
+
+    /*
+     *              |
+     *              |       ref
+     *              |
+     * ------------------------------
+     *              |
+     *              |       real
+     *              |
+     */
+    if( angle_integral <= 90 && realAngle_Z >= 270 )
+      anglePropError = 360 - (realAngle_Z - angle_integral);
+    /*
+     *              |
+     *              |       real
+     *              |
+     * ------------------------------
+     *              |
+     *              |       ref
+     *              |
+     */
+    else if( angle_integral >= 270 && realAngle_Z <= 90 )
+      anglePropError = (angle_integral - realAngle_Z) - 360;
 
 
 
@@ -70,11 +94,9 @@ void robotOdometrySetSpeed( float v_x_glob, float v_y_glob )
     float angle_sin     = sinf(real_z_angle);
 
     // convert global v_x_glob, v_y_glob to local
-    float v_x = angle_cos * v_x_glob + angle_cos * v_y_glob
-              - angle_sin * v_x_glob - angle_sin * v_y_glob;
+    float v_x = angle_cos * v_x_glob - angle_sin * v_y_glob;
 
-    float v_y = angle_sin * v_x_glob + angle_sin * v_y_glob
-              + angle_cos * v_x_glob + angle_cos * v_y_glob;
+    float v_y = angle_sin * v_x_glob + angle_cos * v_y_glob;
 
     float wheel_speed_A = k_A[0] * v_x +
                           k_A[1] * v_y +

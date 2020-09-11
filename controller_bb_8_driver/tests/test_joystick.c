@@ -35,7 +35,6 @@ void testJoystick( void )
 // TODO: add comments
 void testRobotWithJoystick( void )
 {
-    gyroscopeInit( NORMALPRIO );
     robotOdometryInit();
 
     sdStart( &SD6, &sdcfg );
