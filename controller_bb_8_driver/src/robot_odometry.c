@@ -1,7 +1,7 @@
 #include "robot_odometry.h"
 
-float   angle_integral      = 0;
-float   omega_cntr          = 0;
+float   angleIntegral       = 0;
+float   angularSpeedControl = 0;
 float   angleIntgController = 0;
 
 
@@ -10,9 +10,9 @@ float   angleIntgController = 0;
  */
 void robotOdometryAddAngle( float angle )
 {
-    angle_integral += angle;
-    // % can work only with integers, so we lose some accuracity
-    angle_integral = abs(angle_integral) > 360 ? (int)angle_integral % 360 : angle_integral;
+    angleIntegral += angle;
+
+    angleIntegral = abs(angleIntegral) > 360 ? fmodf(angleIntegral, 360) : angleIntegral;
 }
 
 pidControllerValue_t    angleController = {
@@ -32,31 +32,12 @@ static void angle_vt_cb( void *arg )
 
     float realAngle_Z = getGyroAngle( GYRO_AXIS_Z );
 
-    float anglePropError = angle_integral - realAngle_Z;
+    float anglePropError = angleIntegral - realAngle_Z;
 
-    /*
-     *              |
-     *              |       ref
-     *              |
-     * ------------------------------
-     *              |
-     *              |       real
-     *              |
-     */
-    if( angle_integral <= 90 && realAngle_Z >= 270 )
-      anglePropError = 360 - (realAngle_Z - angle_integral);
-    /*
-     *              |
-     *              |       real
-     *              |
-     * ------------------------------
-     *              |
-     *              |       ref
-     *              |
-     */
-    else if( angle_integral >= 270 && realAngle_Z <= 90 )
-      anglePropError = (angle_integral - realAngle_Z) - 360;
-
+    if( anglePropError > 180 )
+      anglePropError -= 360;
+    else if( anglePropError < -180 )
+      anglePropError += 360;
 
 
     angleIntgController += angleController.ki * anglePropError;
@@ -66,7 +47,7 @@ static void angle_vt_cb( void *arg )
         angleController.intgSaturation
     );
 
-    omega_cntr = angleController.kp * anglePropError + angleIntgController;
+    angularSpeedControl = angleController.kp * anglePropError + angleIntgController;
 
     chSysLockFromISR();
     chVTSetI( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
@@ -101,15 +82,15 @@ void robotOdometrySetSpeed( float v_x_glob, float v_y_glob )
 
     float wheel_speed_A = k_A[0] * v_x +
                           k_A[1] * v_y +
-                          k_A[2] * omega_cntr;
+                          k_A[2] * angularSpeedControl;
 
     float wheel_speed_B = k_B[0] * v_x +
                           k_B[1] * v_y +
-                          k_B[2] * omega_cntr;
+                          k_B[2] * angularSpeedControl;
 
     float wheel_speed_C = k_C[0] * v_x +
                           k_C[1] * v_y +
-                          k_C[2] * omega_cntr;
+                          k_C[2] * angularSpeedControl;
 
     wheelControlSetSpeed( wheel_speed_A, A, REVS_PER_SEC );
     wheelControlSetSpeed( wheel_speed_B, B, REVS_PER_SEC );

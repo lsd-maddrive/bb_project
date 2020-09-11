@@ -1,11 +1,11 @@
 
-PROJECT_MODULES = 	src/lld_control.c		\
-					src/lld_encoder.c		\
-					src/odometry.c			\
-					src/wheel_control.c		\
-          			src/robot_odometry.c 	\
-					src/i2c.c				\
-					src/lcd.c				\
+PROJECT_MODULES = 	src/lld_control.c			\
+					src/lld_encoder.c			\
+					src/odometry.c				\
+					src/wheel_control.c			\
+          			src/robot_odometry.c 		\
+					src/i2c.c					\
+					src/lcd.c					\
 					src/gyroscope.c
 
 				  
