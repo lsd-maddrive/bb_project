@@ -15,14 +15,16 @@ void robotOdometryInit( void );
 /**
  * @brief       Set linera speed of robot 
  * @args
- *              v_x - linear speed x-axis [m/s]
- *              v_y - linear speed y-axis [m/s]
+ *              v_x_glob - linear speed x-axis [m/s]
+ *              v_y_glob - linear speed y-axis [m/s]
+ *              ang_speed- angular speed [rad/s]
+ *
  */
-void robotOdometrySetSpeed( float v_x_glob, float v_y_glob );
+void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float ang_speed );
 
-/**
- * @brief       Integral of (input) d_phi
- */
-void robotOdometryAddAngle( float angle );
+///**
+// * @brief       Integral of (input) d_phi
+// */
+//static void robotOdometryAddAngle( float angle );
 
 #endif /* INCLUDE_ROBOT_ODOMETRY_H_ */

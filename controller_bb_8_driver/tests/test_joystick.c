@@ -36,6 +36,7 @@ void testJoystick( void )
 void testRobotWithJoystick( void )
 {
     robotOdometryInit();
+    debug_stream_init();
 
     sdStart( &SD6, &sdcfg );
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
@@ -48,9 +49,8 @@ void testRobotWithJoystick( void )
     {
       sdReadTimeout( &SD6, (uint8_t*) &buf, 12, TIME_IMMEDIATE );
 
-      robotOdometryAddAngle(buf[2]);
-      robotOdometrySetSpeed(buf[0], buf[1]);
+      robotOdometrySetSpeed(buf[0], buf[1], buf[2]);
 
-      time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
+      time = chThdSleepUntilWindowed( time, time + MS2ST( 80 ) );
     }
 }

@@ -56,6 +56,8 @@ void gyroscopeInit( tprio_t priority )
     if(isInitialized)
         return;
 
+    i2cStartUp();
+
     uint8_t initbuf[5];
     initbuf[0] = GYRO_CTRL1_REG;            // Start from ctrl1 register
     initbuf[1] = 0x0F;                      // Normal mode, each axis enable, freq settings ignored

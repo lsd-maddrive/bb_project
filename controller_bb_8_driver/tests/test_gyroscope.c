@@ -12,8 +12,6 @@ static const SerialConfig sdcfg = {
 
 void testGyroscope(void)
 {
-    i2cStartUp();
-
 #ifdef MATLAB_TEST
     sdStart( &SD6, &sdcfg );
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX

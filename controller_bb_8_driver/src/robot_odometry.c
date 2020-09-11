@@ -8,7 +8,7 @@ float   angleIntgController = 0;
 /**
  * @brief       Integral of (input) d_phi
  */
-void robotOdometryAddAngle( float angle )
+static void robotOdometryAddAngle( float angle )
 {
     angleIntegral += angle;
 
@@ -16,8 +16,8 @@ void robotOdometryAddAngle( float angle )
 }
 
 pidControllerValue_t    angleController = {
-    .kp = 10,
-    .ki = 0,
+    .kp = 1,
+    .ki = 0.001,
     .kd = 0,
     .intgSaturation = 100,
     .propDeadZone = 0,
@@ -39,6 +39,7 @@ static void angle_vt_cb( void *arg )
     else if( anglePropError < -180 )
       anglePropError += 360;
 
+    dbgprintf("%d\n\r", (int)(anglePropError * 1000));
 
     angleIntgController += angleController.ki * anglePropError;
     angleIntgController = CLIP_VALUE(
@@ -66,11 +67,15 @@ float       k_C[3]  = {0, 0, 0};
 /**
  * @brief       Set linera speed of robot 
  * @args
- *              v_x - linear speed x-axis [m/s]
- *              v_y - linear speed y-axis [m/s]
+ *              v_x_glob - linear speed x-axis [m/s]
+ *              v_y_glob - linear speed y-axis [m/s]
+ *              ang_speed- angular speed [rad/s]
+ *
  */
-void robotOdometrySetSpeed( float v_x_glob, float v_y_glob )
+void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float ang_speed )
 {
+
+    robotOdometryAddAngle( ang_speed );
     float real_z_angle  = getGyroAngle( GYRO_AXIS_Z );
     float angle_cos     = cosf(real_z_angle);
     float angle_sin     = sinf(real_z_angle);
