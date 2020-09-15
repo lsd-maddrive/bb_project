@@ -76,3 +76,19 @@ void testWheelControlMatlab( void )
         time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
     }
 }
+
+void testOneWheelControllerMatlab( void )
+{
+    wheelControlInit();
+
+    sdStart( &SD6, &sdcfg );
+    palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
+    palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
+
+    systime_t   time = chVTGetSystemTimeX( );
+    while( true )
+    {
+
+        time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
+    }
+}

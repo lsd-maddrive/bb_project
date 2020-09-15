@@ -20,24 +20,23 @@ extern "C" {
 #define     PROGRAM_MOTOR_RAW_CONTROL_TEST              2
 #define     PROGRAM_MOTOR_PRC_CONTROL_TEST              3
 #define     PROGRAM_MOTOR_MATLAB_FREQ_TEST              4
-#define     PROGRAM_MOTOR_FOR_GRISHA                    5
 //  LLD ENCODER TESTS
-#define     PROGRAM_ENCODER_TEST                        6
+#define     PROGRAM_ENCODER_TEST                        5
 //  WHEEL ODOMETRY TESTS
-#define     PROGRAM_MOTOR_SPEED_TEST                    7
-#define     PROGRAM_WHEEL_SPEED_TEST                    8
-// ROBOT ODOMETRY TESTS
+#define     PROGRAM_MOTOR_SPEED_TEST                    6
+#define     PROGRAM_WHEEL_SPEED_TEST                    7
+//  WHEEL CONTROL SYSTEM TESTS
+#define     PROGRAM_WHEEL_CONTROL_MATLAB                8
+//  ROBOT ODOMETRY TESTS
 #define     PROGRAM_LINEAR_SPEED_MATLAB_TEST            9
 #define     PROGRAM_ROBOT_ODOMETRY_TEST                 10
-// WHEEL CONTROL SYSTEM TESTS
-#define     PROGRAM_WHEEL_CONTROL_MATLAB                11
-// GYROSCOPE TEST
-#define		PROGRAM_GYROSCOPE_TEST						12
-// JOYSTICK TESTS
-#define     PROGRAM_JOYSTICK_TEST                       13
-#define     PROGRAM_ROBOT_WITH_JOYSTICK_TEST            14
+//  GYROSCOPE TEST
+#define		PROGRAM_GYROSCOPE_TEST						11
+//  JOYSTICK TESTS
+#define     PROGRAM_JOYSTICK_TEST                       12
+#define     PROGRAM_ROBOT_WITH_JOYSTICK_TEST            13
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROBOT_WITH_JOYSTICK_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_WHEEL_CONTROL_MATLAB
 
 
 /*============================================================================*/

@@ -19,7 +19,7 @@ pidControllerValue_t    wheelController_A = {
     .kp = 10,
     .ki = 0.5,
     .kd = 0,
-    .intgSaturation = 80,
+    .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
     .controlDeadZone = 5
 };
@@ -33,7 +33,7 @@ pidControllerValue_t    wheelController_B = {
     .kp = 10,
     .ki = 0.5,
     .kd = 0,
-    .intgSaturation = 80,
+    .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
     .controlDeadZone = 5
 };
@@ -47,7 +47,7 @@ pidControllerValue_t    wheelController_C = {
     .kp = 10,
     .ki = 0.5,
     .kd = 0,
-    .intgSaturation = 80,
+    .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
     .controlDeadZone = 5
 };
