@@ -77,17 +77,68 @@ void testWheelControlMatlab( void )
     }
 }
 
+// TODO: add comments
 void testOneWheelControllerMatlab( void )
 {
     wheelControlInit();
+    debug_stream_init();
 
     sdStart( &SD6, &sdcfg );
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
+    bool                    matlab_start_flag   = false;
+    int16_t                 matlab_speed        = 0;
+
+    wheelSpeedValue_t       test_speed          = 0.2f;
+    int16_t                 matlab_ref          = (int)(test_speed * 1000);
+
+    wheelControlSetPermeation( );
+
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
+        char rc_data = sdGetTimeout( &SD6, TIME_IMMEDIATE );
+
+        switch( rc_data )
+        {
+            case 's':   // start
+                matlab_start_flag = true;
+                break;
+
+            case 'n':   // set speed to 0
+                test_speed = 0.02f;
+                break;
+
+            case 'm':   // set speed to negative
+                test_speed = -test_speed;
+                break;
+
+            case 'x':   // stop
+                matlab_start_flag = false;
+                break;
+
+            default:
+              break;
+        }
+
+
+        if( matlab_start_flag )
+        {
+            wheelControlSetPermeation( );
+            wheelControlSetSpeed( test_speed, A, REVS_PER_SEC );
+
+            matlab_speed = (int)(odometryGetWheelSpeed( A, REVS_PER_SEC ) * 1000);
+            dbgprintf("%d\n\r", matlab_speed);
+            sdWrite(&SD6, (uint8_t*) &matlab_speed, 2);
+            sdWrite(&SD6, (uint8_t*) &matlab_ref, 2);
+        }
+        else
+        {
+            wheelControlResetPermeation( );
+            wheelControlResetController( A );
+            lldControlSetMotorPower( A, 0 );
+        }
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
     }

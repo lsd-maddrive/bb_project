@@ -89,6 +89,14 @@ void testRobotOdometry ( void );
  */
 void testWheelControlMatlab( void );
 
+// TODO: add comments
+void testOneWheelControllerMatlab( void );
+
+/*============================================================================*/
+/* Gyroscope Tests                                                            */
+/*============================================================================*/
+
+
 /*
  * @brief   Test gyroscope L3GD20H library
  */

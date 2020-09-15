@@ -16,8 +16,8 @@ float                   wheelSpeedPrevError_A = 0;
 float                   wheelSpeedIntg_A      = 0;
 
 pidControllerValue_t    wheelController_A = {
-    .kp = 10,
-    .ki = 0.5,
+    .kp = 20,
+    .ki = 1.5,
     .kd = 0,
     .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
@@ -30,8 +30,8 @@ float                   wheelSpeedPrevError_B = 0;
 float                   wheelSpeedIntg_B      = 0;
 
 pidControllerValue_t    wheelController_B = {
-    .kp = 10,
-    .ki = 0.5,
+    .kp = 5,
+    .ki = 3,
     .kd = 0,
     .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
@@ -45,7 +45,7 @@ float                   wheelSpeedIntg_C      = 0;
 
 pidControllerValue_t    wheelController_C = {
     .kp = 10,
-    .ki = 0.5,
+    .ki = 3,
     .kd = 0,
     .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
