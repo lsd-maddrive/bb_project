@@ -58,8 +58,8 @@ extern "C" {
 /* SPEED LIMITS                                                                 */
 /*============================================================================*/
 
-#define WHEEL_SPEED_MAX_RPS     3
-#define WHEEL_SPEED_MIN_RPS     (-3)
+#define WHEEL_SPEED_MAX_RPS     3.0
+#define WHEEL_SPEED_MIN_RPS     (-3.0)
 
 /*============================================================================*/
 /* ROBOT CONFIGURATION CONTANTS                                                                 */

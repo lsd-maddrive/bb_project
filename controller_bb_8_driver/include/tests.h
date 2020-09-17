@@ -89,7 +89,12 @@ void testRobotOdometry ( void );
  */
 void testWheelControlMatlab( void );
 
-// TODO: add comments
+
+/*
+ * @brief   Test wheel control system with matlab
+ * @note    Send two packages with float value (4-byte)
+ *          only wheel A data are send to matlab
+ */
 void testOneWheelControllerMatlab( void );
 
 /*============================================================================*/

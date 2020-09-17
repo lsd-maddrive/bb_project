@@ -1,3 +1,4 @@
+clear all
 global dat
 delete(instrfind);
 dat = serial('COM11', 'BaudRate', 115200);
@@ -16,10 +17,10 @@ cur = [];
 total = [];
 ref = []; 
 
-test_speed = 200;
-iter = 10;
+
+iter = 6;
 for i = 1:iter
-    cur = fread(dat, [100, 1], 'int16');
+    cur = fread(dat, [100, 1], 'float32');
     total = [total; cur];
 end
 
@@ -31,7 +32,7 @@ disp 'Connection is closed!'
 
 time = [];
 for i = 0:10:(iter * 1000 / 2 - 1)
-   time = [time; i];
+   time = [time; i / 1000];
 end
 
 real_v = [];
@@ -45,9 +46,9 @@ end
 
 
 
-plot(time, real_v, 'DisplayName', 'real-v')
+plot(time, real_v, 'DisplayName', 'real-v', 'LineWidth', 2)
 grid on 
 hold on 
-plot(time, ref, 'DisplayName', 'ref-v') 
-xlabel('t, ms')
+plot(time, ref, 'DisplayName', 'ref-v', 'LineWidth', 1) 
+xlabel('t, s')
 legend

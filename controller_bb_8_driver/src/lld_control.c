@@ -101,7 +101,7 @@ PWMConfig pwm8conf = {
 /**
  * @brief   Disable all used PWM channels
  */
-void lldDisableAllChannels( void )
+static void lldDisableAllChannels( void )
 {
     // Motor 1
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN1 );
@@ -125,7 +125,7 @@ void lldDisableAllChannels( void )
 /**
  * @brief   Configure all lines to be used for PWM 
  */
-void lldConfigureLineMode( void )
+static void lldConfigureLineMode( void )
 {
     // Motor 1
     palSetLineMode( MOTOR1_PWM_LINE_HIN1, PAL_MODE_ALTERNATE(1) );
@@ -258,4 +258,15 @@ void lldControlSetMotorPower( motorNumberValue_t motor_num, lldControlValue_t in
     {
         lldControlSetRawMotorPower( motor_num, duty, BACKWARD );
     }
+}
+
+/**
+ * @brief   Stop all motors
+ * @note    lldControlSetMotorPower() is used!!!!
+ */
+void lldControlStopAllMotors( void )
+{
+    lldControlSetMotorPower( A, 0 );
+    lldControlSetMotorPower( B, 0 );
+    lldControlSetMotorPower( C, 0 );
 }

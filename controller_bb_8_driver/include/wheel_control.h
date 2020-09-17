@@ -31,7 +31,13 @@ void wheelControlResetPermeation( void );
  */
 void wheelControlSetSpeed( wheelSpeedValue_t speed_val, motorNumberValue_t number, odometrySpeedUnit_t unit );
 
-// TODO: CHECK wheelControlValuesPrc[number] !
+
+/**
+ * @brief       Set reference value of for all wheel
+ */
+void wheelControlSetSpeedAllWheels( wheelSpeedValue_t speed_val, odometrySpeedUnit_t unit );
+
+
 /**
  * @brief       Get calculated control value of speed in percent
  *              for specified wheel in specified units

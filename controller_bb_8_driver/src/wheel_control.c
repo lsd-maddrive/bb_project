@@ -16,8 +16,8 @@ float                   wheelSpeedPrevError_A = 0;
 float                   wheelSpeedIntg_A      = 0;
 
 pidControllerValue_t    wheelController_A = {
-    .kp = 20,
-    .ki = 1.5,
+    .kp = 50,
+    .ki = 3,
     .kd = 0,
     .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
@@ -30,7 +30,7 @@ float                   wheelSpeedPrevError_B = 0;
 float                   wheelSpeedIntg_B      = 0;
 
 pidControllerValue_t    wheelController_B = {
-    .kp = 5,
+    .kp = 50,
     .ki = 3,
     .kd = 0,
     .intgSaturation = LLD_MOTOR_MAX_PRC,
@@ -44,7 +44,7 @@ float                   wheelSpeedPrevError_C = 0;
 float                   wheelSpeedIntg_C      = 0;
 
 pidControllerValue_t    wheelController_C = {
-    .kp = 10,
+    .kp = 50,
     .ki = 3,
     .kd = 0,
     .intgSaturation = LLD_MOTOR_MAX_PRC,
@@ -205,6 +205,30 @@ void wheelControlSetSpeed( wheelSpeedValue_t speed_val, motorNumberValue_t numbe
             wheelSpeedRefValuesPRS[number] = 0; // temporary maybe
             break;
     }
+}
+
+/**
+ * @brief       Set reference value of for all wheel
+ */
+void wheelControlSetSpeedAllWheels( wheelSpeedValue_t speed_val, odometrySpeedUnit_t unit )
+{
+    speed_val = CLIP_VALUE( speed_val, WHEEL_SPEED_MIN_RPS, WHEEL_SPEED_MAX_RPS);
+
+    switch( unit )
+    {
+        case REVS_PER_SEC:
+            wheelSpeedRefValuesPRS[0] = speed_val; // A wheel
+            wheelSpeedRefValuesPRS[1] = speed_val; // B wheel
+            wheelSpeedRefValuesPRS[2] = speed_val; // C wheel
+            break;
+
+        default:
+            wheelSpeedRefValuesPRS[0] = 0; // temporary maybe
+            wheelSpeedRefValuesPRS[1] = 0; // temporary maybe
+            wheelSpeedRefValuesPRS[2] = 0; // temporary maybe
+            break;
+    }
+
 }
 
 /**

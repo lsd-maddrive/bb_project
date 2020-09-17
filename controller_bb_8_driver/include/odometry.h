@@ -6,7 +6,9 @@
 
 
 
-#define MS_2_SEC        100 // 10 ms - > 1 s
+#define MS_2_SEC        100   // 10 ms -> 1 s
+// #define MS_2_SEC     200   // 5 ms  -> 1 s
+// #define MS_2_SEC     1000  // 1 ms  -> 1 s
 #define CM_2_M          (float)0.01;
 
 #define VT_ODOM_MS      10
