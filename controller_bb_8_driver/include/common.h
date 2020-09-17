@@ -37,7 +37,7 @@ extern "C" {
 #define     PROGRAM_JOYSTICK_TEST                       13
 #define     PROGRAM_ROBOT_WITH_JOYSTICK_TEST            14
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ONE_WHEEL_CONTROLLER_MATLAB
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROBOT_ODOMETRY_TEST
 
 
 /*============================================================================*/
@@ -58,8 +58,8 @@ extern "C" {
 /* SPEED LIMITS                                                                 */
 /*============================================================================*/
 
-#define WHEEL_SPEED_MAX_RPS     3.0
-#define WHEEL_SPEED_MIN_RPS     (-3.0)
+#define WHEEL_SPEED_MAX_RPS     1.5
+#define WHEEL_SPEED_MIN_RPS     (-1.5)
 
 /*============================================================================*/
 /* ROBOT CONFIGURATION CONTANTS                                                                 */
