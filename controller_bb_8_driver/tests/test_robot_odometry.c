@@ -1,7 +1,7 @@
 #include <tests.h>
 #include "robot_odometry.h"
 
-// TODO: remake test!!! with GYRO
+
 /*
  * @brief   Test robot (kinematic) odometry unit
  */
@@ -10,12 +10,14 @@ void testRobotOdometry ( void )
     robotOdometryInit();
     debug_stream_init();
 
-    float   test_v_x    = 0;
-    float   test_v_y    = 0;
-    float   test_w      = 0;
-    float   test_speed  = 0.2f;
-    float   test_angle  = 10.0f;
+    float       test_v_x    = 0;
+    float       test_v_y    = 0;
+    float       test_w      = 0;
+    float       test_speed  = 0.2f;
+    float       test_angle  = 10.0f;
 
+    uint16_t    time_delta  = 100;
+    float       time_k      = (float)time_delta * 0.0001;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
@@ -74,8 +76,8 @@ void testRobotOdometry ( void )
               break;
         }
 
-        robotOdometrySetSpeed( test_v_x, test_v_y, test_w );
-// TODO: FIX IT
+        robotOdometrySetSpeed( test_v_x, test_v_y, test_w, time_k );
+// TODO: REMOVE IT
         float err = getPropError( );
         float ctr = getSpeedA(  );
 
@@ -91,7 +93,7 @@ void testRobotOdometry ( void )
 //                   (int)(cur_angle)
 //                   );
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 100 ) );
+        time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
     }
 }
 

@@ -23,34 +23,44 @@ void testJoystick( void )
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        sdReadTimeout( &SD6, (uint8_t*) &buf, 12, TIME_IMMEDIATE );
+        sdReadTimeout( &SD3, (uint8_t*) &buf, 12, TIME_IMMEDIATE );
 
-        dbgprintf("x: %d\ty: %d\tw: %d\n\r",
-                  (int)(buf[0] * 100), (int)(buf[1] * 100), (int)(buf[2] * 100));
+        chprintf( (BaseSequentialStream *)&SD6, "x: %d\ty: %d\tw: %d\n\r",
+                  (int32_t)(buf[0] * 10),
+                  (int32_t)(buf[1] * 10),
+                  (int32_t)(buf[2])
+                  );
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 100 ) );
     }
 }
 
-// TODO: add comments
+/*
+ * @brief   Test control robot via joystick
+ * @note    Data transferring via USB (SD3)
+ * */
 void testRobotWithJoystick( void )
 {
     robotOdometryInit();
     debug_stream_init();
 
+    // TODO: remove after testing
     sdStart( &SD6, &sdcfg );
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
     float buf[3] = {0, 0, 0};
+    uint16_t    time_delta  = 100;
+    float       time_k      = (float)time_delta * 0.0001;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-      sdReadTimeout( &SD6, (uint8_t*) &buf, 12, TIME_IMMEDIATE );
+      sdReadTimeout( &SD3, (uint8_t*) &buf, 12, TIME_IMMEDIATE );
 
-      robotOdometrySetSpeed(buf[0], buf[1], buf[2]);
+      // 0.1 = 100 ms -> 1 ms
+      robotOdometrySetSpeed(buf[0], buf[1], buf[2], time_k );
 
-      time = chThdSleepUntilWindowed( time, time + MS2ST( 80 ) );
+      time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
     }
 }

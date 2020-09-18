@@ -1,6 +1,6 @@
-#include "common.h"
+//#include "common.h"
 #include "tests.h"
-#include <chprintf.h>
+//#include <chprintf.h>
 
 static inline void testsRoutines( void )
 {

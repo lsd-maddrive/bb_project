@@ -20,10 +20,12 @@ void robotOdometryInit( void );
  *              v_x_glob - linear speed x-axis [m/s]
  *              v_y_glob - linear speed y-axis [m/s]
  *              ang_speed- angular speed [rad/s]
+ *              k        - time coefficient (convert s to ms)
  *
  */
-void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float ang_speed );
+void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, float k );
 
+// TODO: remove temp functions!
 float setAngleIntegral( float angle );
 
 float getPropError( void );

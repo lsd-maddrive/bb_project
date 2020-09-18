@@ -8,9 +8,9 @@ float   angleIntgController = 0;
 /**
  * @brief       Integral of (input) d_phi
  */
-static void robotOdometryAddAngle( float angle )
+static void robotOdometryAddAngle( float angle, float k )
 {
-    angleIntegral += angle;
+    angleIntegral += angle * k;
 
     angleIntegral = abs(angleIntegral) > 360 ? fmodf(angleIntegral, 360) : angleIntegral;
 }
@@ -94,12 +94,13 @@ float wheel_speed_A = 0;
  *              v_x_glob - linear speed x-axis [m/s]
  *              v_y_glob - linear speed y-axis [m/s]
  *              ang_speed- angular speed [rad/s]
+ *              k        - time coefficient (convert s to ms)
  *
  */
-void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob )
+void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, float k )
 {
 
-    robotOdometryAddAngle( angle_glob );
+    robotOdometryAddAngle( angle_glob, k );
 
 
     float real_z_angle  = getGyroAngle( GYRO_AXIS_Z );

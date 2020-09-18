@@ -101,7 +101,6 @@ void testOneWheelControllerMatlab( void );
 /* Gyroscope Tests                                                            */
 /*============================================================================*/
 
-
 /*
  * @brief   Test gyroscope L3GD20H library
  */
@@ -116,7 +115,12 @@ void testGyroscope(void);
  */
 void testJoystick( void );
 
-// TODO: add comments
+
+/*
+ * @brief   Test control robot via joystick
+ * @note    Data transferring via USB (SD3)
+ * */
 void testRobotWithJoystick( void );
+
 
 #endif /* INCLUDE_TESTS_H_ */
