@@ -78,7 +78,7 @@ def main():
     try:
         joy = 0
         port = 0
-        port = serial.Serial('/dev/ttyUSB0', 115200)
+        port = serial.Serial('/dev/ttyACM0', 115200)
         logger.debug(f"USB is connected successfully!")
 
         # Instantiate the controller
