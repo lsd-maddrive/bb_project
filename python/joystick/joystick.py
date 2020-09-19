@@ -30,7 +30,7 @@ def calc_angle(x, y):
     else:
         angle = math.atan(y / x)
         if x < 0:
-            angle = angle + math.pi / 2
+            angle = angle + math.pi
         angle = angle % (2 * math.pi)
     return angle
 
