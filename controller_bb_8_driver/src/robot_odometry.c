@@ -10,9 +10,13 @@ float   angleIntgController = 0;
  */
 static void robotOdometryAddAngle( float angle, float k )
 {
+    palToggleLine( LINE_LED2 );
     angleIntegral += angle * k;
 
     angleIntegral = abs(angleIntegral) > 360 ? fmodf(angleIntegral, 360) : angleIntegral;
+
+    chprintf( (BaseSequentialStream *)&SD6,
+              "%d\n\r", (int)(angleIntegral * 100));
 }
 
 pidControllerValue_t    angleController = {
@@ -108,9 +112,9 @@ void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, fl
     float angle_sin     = sinf(real_z_angle * GRAD_2_RAD);
 
     // convert global v_x_glob, v_y_glob to local
-    float v_x = angle_cos * v_x_glob + angle_sin * v_y_glob;
+    float v_x = -(angle_cos * v_x_glob + angle_sin * v_y_glob);
 
-    float v_y = -angle_sin * v_x_glob + angle_cos * v_y_glob;
+    float v_y = -(-angle_sin * v_x_glob + angle_cos * v_y_glob);
 
 
 
