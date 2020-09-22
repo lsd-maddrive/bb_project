@@ -10,19 +10,19 @@ sudo apt-get upgrade
 
 2. Install xow driver 
 
-2.1. Install libusb
+* 2.1. Install libusb
 
 ```bash
 sudo apt-get install libusb-1.0-0-dev
 ```
 
-2.2. Install cabextract
+* 2.2. Install cabextract
 
 ```bash
 sudo apt-get install cabextract
 ```
 
-2.3. Follow the original [README](https://github.com/medusalix/xow)
+* 2.3. Follow the original [README](https://github.com/medusalix/xow)
 
 
 3. Install all required modules
