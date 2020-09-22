@@ -41,11 +41,10 @@ void testJoystick( void )
  * */
 void testRobotWithJoystick( void )
 {
-    systime_t   time = chVTGetSystemTimeX( );
-    // pause for gyro initialization
-    palSetLine( LINE_LED3 );
-    time = chThdSleepUntilWindowed( time, time + MS2ST( 1000 ) );
-    palClearLine( LINE_LED3 );
+//    systime_t   time = chVTGetSystemTimeX( );
+//    // pause for gyro initialization
+//    time = chThdSleepUntilWindowed( time, time + MS2ST( 1000 ) );
+
 
     robotOdometryInit();
     debug_stream_init();
@@ -54,17 +53,17 @@ void testRobotWithJoystick( void )
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
-    // TODO: remove after testing
-    sdStart( &SD6, &sdcfg );
-    palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
-    palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
+//    // TODO: remove after testing
+//    sdStart( &SD6, &sdcfg );
+//    palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
+//    palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
     float buf[3] = {0, 0, 0};
     uint16_t    time_delta  = 100;
     float       time_k      = (float)time_delta * 0.001;
 
     chprintf( (BaseSequentialStream *)&SD6, "Start test!" );
-    time = chVTGetSystemTimeX( );
+    systime_t time = chVTGetSystemTimeX( );
     while( true )
     {
       sdReadTimeout( &SD3, (uint8_t*) &buf, 12, TIME_IMMEDIATE );

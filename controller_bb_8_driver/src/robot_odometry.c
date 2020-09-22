@@ -10,7 +10,6 @@ float   angleIntgController = 0;
  */
 static void robotOdometryAddAngle( float angle, float k )
 {
-    palToggleLine( LINE_LED2 );
     angleIntegral += angle * k;
 
     angleIntegral = abs(angleIntegral) > 360 ? fmodf(angleIntegral, 360) : angleIntegral;
