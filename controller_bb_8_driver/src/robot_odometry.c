@@ -14,9 +14,6 @@ static void robotOdometryAddAngle( float angle, float k )
     angleIntegral += angle * k;
 
     angleIntegral = abs(angleIntegral) > 360 ? fmodf(angleIntegral, 360) : angleIntegral;
-
-    chprintf( (BaseSequentialStream *)&SD6,
-              "%d\n\r", (int)(angleIntegral * 100));
 }
 
 pidControllerValue_t    angleController = {
@@ -28,15 +25,7 @@ pidControllerValue_t    angleController = {
     .controlDeadZone = 0
 };
 
-// TODO: REMOVE IT
-float setAngleIntegral( float angle )
-{
-    angleIntegral += angle;
 
-    return angleIntegral;
-}
-
-float anglePropError = 0;
 static virtual_timer_t  angle_vt;
 
 static void angle_vt_cb( void *arg )
@@ -45,7 +34,7 @@ static void angle_vt_cb( void *arg )
 
     float realAngle_Z = getGyroAngle( GYRO_AXIS_Z );
 
-    anglePropError = angleIntegral - realAngle_Z;
+    float anglePropError = angleIntegral - realAngle_Z;
 
 
     if( anglePropError > 180 )
@@ -75,12 +64,6 @@ static void angle_vt_cb( void *arg )
     chSysUnlockFromISR();
 }
 
-// TODO: REMOVE IT
-float getPropError( void )
-{
-  return anglePropError;
-}
-
 
 const float TWO_PIR = WHEEL_RADIUS_M * 2 * M_PI;
 // Initialization of matrix A
@@ -89,8 +72,6 @@ float       k_A[3]  = {0, 0, 0};
 float       k_B[3]  = {0, 0, 0};
 float       k_C[3]  = {0, 0, 0};
 
-
-float wheel_speed_A = 0;
 
 /**
  * @brief       Set linera speed of robot 
@@ -118,7 +99,7 @@ void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, fl
 
 
 
-    wheel_speed_A = k_A[0] * v_x +
+    float wheel_speed_A = k_A[0] * v_x +
                           k_A[1] * v_y +
                           k_A[2] * angularSpeedControl;
 
@@ -133,12 +114,6 @@ void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, fl
     wheelControlSetSpeed( wheel_speed_A, A, REVS_PER_SEC );
     wheelControlSetSpeed( wheel_speed_B, B, REVS_PER_SEC );
     wheelControlSetSpeed( wheel_speed_C, C, REVS_PER_SEC );
-}
-
-// TODO: REMOVE IT
-float getSpeedA( void )
-{
-    return wheel_speed_A;
 }
 
 
