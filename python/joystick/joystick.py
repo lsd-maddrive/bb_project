@@ -82,14 +82,14 @@ def main():
         logger.debug(f"USB is connected successfully!")
 
         # Instantiate the controller
-        joy = xbox_one.joy_init()
+        joy = Xbox_one.Joystick()
 
-        while xbox_one.get_left_trg(joy) < 0.8:
-            ang_speed = calc_angle_speed(xbox_one.get_right_y_axis(joy))
+        while joy.leftTrigger() < 0.8:
+            ang_speed = calc_angle_speed(joy.rightYAxis())
 
-            velocity_x, velocity_y = calc_velocity(xbox_one.get_left_x_axis(joy),
-                                                   xbox_one.get_left_y_axis(joy),
-                                                   xbox_one.get_right_trg(joy))
+            velocity_x, velocity_y = calc_velocity(joy.leftXAxis(),
+                                                   joy.leftYAxis(),
+                                                   joy.rightTrigger())
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
             time.sleep(0.1)
