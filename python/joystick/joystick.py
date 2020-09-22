@@ -4,7 +4,7 @@ import time
 
 import serial
 import struct
-import src.xbox_one
+from src.xbox_one import Joystick
 
 from src.config import V_MAX, ANG_SPEED_MAX
 
@@ -80,9 +80,9 @@ def main():
         port = 0
         port = serial.Serial('/dev/ttyACM0', 115200)
         logger.debug(f"USB is connected successfully!")
-
-        # Instantiate the controller
-        joy = Xbox_one.Joystick()
+		
+		# Instantiate the controller
+        joy = Joystick()
 
         while joy.leftTrigger() < 0.8:
             ang_speed = calc_angle_speed(joy.rightYAxis())
@@ -99,7 +99,7 @@ def main():
     finally:
         # Close out when done
         if joy is not 0:
-            xbox_one.joy_close(joy)
+            joy.close()
             logger.debug("Joystick is closed successfully")
         if port is not 0:
             port.close()
