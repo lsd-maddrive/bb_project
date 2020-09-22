@@ -1,5 +1,10 @@
-import xbox_one
+
+import sys 
+sys.path.append("../")
 import time
+
+import src.xbox_one
+
 
 joy = xbox_one.Joystic()
 

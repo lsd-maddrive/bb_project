@@ -4,9 +4,9 @@ import time
 
 import serial
 import struct
-import xbox_one
+import src.xbox_one
 
-from config import V_MAX, ANG_SPEED_MAX
+from src.config import V_MAX, ANG_SPEED_MAX
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
