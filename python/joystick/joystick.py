@@ -97,6 +97,8 @@ def main():
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")
     except AttributeError as err:
+			# to avoid exception in joy.close()
+    		joy = 0
 	    	logger.error(f"Joystick is turned off. Check it, please!")
     finally:
         # Close out when done
