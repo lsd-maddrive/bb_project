@@ -67,6 +67,8 @@ void gyroscopeInit( tprio_t priority )
     
     i2cSimpleWrite(GYRO_ADDR, initbuf, 5, 1000);
 
+    chThdSleepMilliseconds(100);
+
     calculateGyroError(gyro_mean_error);
 
     chThdCreateStatic(gyroThread, sizeof(gyroThread), priority, Gyro, NULL);
@@ -111,7 +113,6 @@ msg_t readGyroscope(int16_t *axis_values)
 {
     uint8_t gyro_temp[6] = {0, 0, 0, 0, 0, 0};
     msg_t msg = i2cRegisterRead(GYRO_ADDR, GYRO_DATA_REG, gyro_temp, 6, 10000);
-
     
     uint8_t i = 0;
     for(i = 0; i < 3; i++)
