@@ -2,10 +2,16 @@ import evdev
 
 
 class Joystick:
+    """
+    Class of the gamepad. Search for device with 'Xbox' in name. 
+    It's assumed that there'll be only one such device and it'd be gamepad. 
+    Should work with wired gamepad as well as with wireless one.
+    Usage: dev = xbox_one.Joystick()
+    """
     def __init__(self):
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         for i in devices:
-            if i.name == 'Xbox One Wireless Controller':
+            if 'Xbox' in i.name:
                 self.device = i
                 
     def close(self):
