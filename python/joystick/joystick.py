@@ -83,7 +83,7 @@ def main():
         
         # Instantiate the controller
         joy = Joystick()
-        logger.debug("Connected to %s", joy.device.name)
+        logger.debug(f"Connected to {joy.device.name}")
 
         while joy.leftTrigger() < 0.8:
             ang_speed = calc_angle_speed(joy.rightYAxis())
