@@ -1,10 +1,10 @@
 import logging 
 import math
-import time
-
+import asyncio
 import serial
 import struct
 from src.xbox_one import Joystick
+from src.robot_logging import CsvLogger
 
 from src.config import V_MAX, ANG_SPEED_MAX
 
@@ -74,7 +74,7 @@ def calc_angle_speed(omega):
     return omega * ANG_SPEED_MAX
 
 
-def main():
+async def robot_control(csv_logger):
     try:
         joy = 0
         port = 0
@@ -83,6 +83,9 @@ def main():
         
         # Instantiate the controller
         joy = Joystick()
+        # Maybe not necessary. Gamepad store old values for some reason. Maybe only 360
+        await asyncio.sleep(3)
+
         logger.debug("Connected to %s", joy.device.name)
 
         while joy.leftTrigger() < 0.8:
@@ -93,7 +96,8 @@ def main():
                                                    joy.rightTrigger())
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
-            time.sleep(0.1)
+            csv_logger.log_line(port.read(21))
+            await asyncio.sleep(0.1)
 
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")
@@ -104,6 +108,7 @@ def main():
     except OSError as err: 
         logger.error(f"Joystick fell asleep!")
     finally:
+        csv_logger.stop()
         # Close out when done
         if joy is not 0:
             joy.close()
@@ -111,6 +116,20 @@ def main():
         if port is not 0:
             port.close()
             logger.debug("Serial port is closed successfully")
+
+
+async def log(csv_logger):
+    while csv_logger.run:
+        csv_logger.flush()
+        await asyncio.sleep(5)
+
+
+def main():
+    csv_logger = CsvLogger('/Logs')
+    loop = asyncio.get_event_loop()
+    tasks = [loop.create_task(robot_control(csv_logger)), loop.create_task(log(csv_logger))]
+    loop.run_until_complete(asyncio.wait(tasks))
+    loop.close()
 
 
 if __name__ == "__main__":
