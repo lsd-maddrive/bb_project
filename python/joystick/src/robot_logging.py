@@ -22,17 +22,17 @@ class CsvLogger:
         self.buff = []
 
     def log_line(self, raw_data):
-        package = struct.unpack('<bfffff', raw_data)
+        package = struct.unpack('<bffff', raw_data)
         if package[0] == 1:
             self.flush()
             self.new_file()
             return
         string_to_csv = [datetime.datetime.today().strftime('%H.%M.%S.%f')[:-3]] + ['{:.3f}'.format(i) for i in package[1:]]
-        print(string_to_csv)
         self.buff.append(string_to_csv)
 
     def new_file(self):
         self.current_file = self.folder + '/log_{date}.csv'.format(date=datetime.datetime.today().strftime('%m_%d_%H_%M_%S'))
+        print(self.current_file)
         with open(self.current_file, 'w', newline='') as log_file:
             csv.writer(log_file).writerow(self.header)
 
