@@ -60,6 +60,10 @@ static inline void testsRoutines( void )
 
     testGyroscope();
 
+#elif (MAIN_PROGRAM_ROUTIN == PROGRAM_LOGGER_TEST)
+
+    testLogger();
+
 #endif
 }
 
