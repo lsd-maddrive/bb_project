@@ -9,7 +9,7 @@ class CsvLogger:
         self.folder = path
         self.buff = []
         self.current_file = self.folder + '/log_{date}.csv'.format(date=datetime.datetime.today().strftime('%m_%d_%H_%M_%S'))
-        self.header = ['time', 'par1', 'par2', 'par3', 'par4', 'par5']
+        self.header = ['time', 'V_x', 'V_y', 'Current_angle', 'Desired_angel']
         self.run = 1
 
     def flush(self):
@@ -22,13 +22,10 @@ class CsvLogger:
         self.buff = []
 
     def log_line(self, raw_data):
-        package = struct.unpack('<bffff', raw_data)
-        if package[0] == 1:
-            self.flush()
-            self.new_file()
-            return
-        string_to_csv = [datetime.datetime.today().strftime('%H.%M.%S.%f')[:-3]] + ['{:.3f}'.format(i) for i in package[1:]]
+        package = struct.unpack('<ffff', raw_data)
+        string_to_csv = [datetime.datetime.today().strftime('%H.%M.%S.%f')[:-3]] + ['{:.3f}'.format(i) for i in package]
         self.buff.append(string_to_csv)
+        print(string_to_csv)
 
     def new_file(self):
         self.current_file = self.folder + '/log_{date}.csv'.format(date=datetime.datetime.today().strftime('%m_%d_%H_%M_%S'))

@@ -6,6 +6,9 @@ import serial
 import struct
 
 
+start_bytes = [150, 139, 57]
+
+
 async def log():
     while csv_logger.run:
         csv_logger.flush()
@@ -13,16 +16,31 @@ async def log():
         await asyncio.sleep(5)
 
 
+def read_line(port):
+    package = port.read(20)
+    if [package[i] for i in range(3)] == start_bytes:
+        if package[3] == 1:
+            csv_logger.flush()
+            csv_logger.new_file()
+        elif package[3] == 0:
+            csv_logger.log_line(package[4:])
+    port.reset_input_buffer()
+
+
+
+
+
+
 async def robot_read():
-
-    port = serial.Serial('COM6', 115200)
+    port = serial.Serial('COM3', 115200)
+    print(port.name)
+    count = 0
     while True:
-        a = port.read(17)
-        print(struct.unpack('<bffff', a))
-        csv_logger.log_line(a)
-        port.write(struct.pack('<fff', 1, 1, 1))
+        read_line(port)
+        port.write(struct.pack('<fff', count, count * 2, count * 3))
+        count = count + 1
 
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.1)
 
 
 csv_logger = CsvLogger('../Logs')

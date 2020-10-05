@@ -6,11 +6,13 @@ static const SerialConfig sdcfg = {
 };
 
 struct package_t {
+    uint8_t logger_key[3];
     int8_t  mode;
     float   data[4];
 };
 
 struct package_t log_data = {
+     .logger_key = {150, 139, 57},
      .mode = 1,
      .data = {1.0, 2.0, 3.0, 4.0}
 };
@@ -19,30 +21,24 @@ float buff[3] = {0, 0, 0};
 
 void testLogger(void)
 {
-    debug_stream_init();
     sdStart( &SD6, &sdcfg );
     palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
-
-    dbgprintf("%b%f%f%f%f", log_data.mode, log_data.data[0], log_data.data[1], log_data.data[2], log_data.data[3]);
+    sdWrite(&SD6, (uint8_t*) &log_data, 20);
     log_data.mode = 0;
     chThdSleepMilliseconds(300);
 
     systime_t time = chVTGetSystemTime();
     while (true)
     {
-        sdReadTimeout( &SD3, (uint8_t*) &buff, 12, TIME_IMMEDIATE );
-        dbgprintf("%b%f%f%f%f", log_data.mode, log_data.data[0], log_data.data[1], log_data.data[2], log_data.data[3]);
+        sdReadTimeout(&SD6, (uint8_t*) &buff, 12, TIME_IMMEDIATE);
+        sdWrite(&SD6, (uint8_t*) &log_data, 20);
 
-        for(uint8_t i = 0; i < 4; i++)
+        for(uint8_t i = 0; i < 3; i++)
         {
-            log_data.data[i] += 1 + i;
+            log_data.data[i] = buff[i];
         }
-//        dbgprintf("I %d\t%d\t%d\n\r", (int)(buff[0]), (int)(buff[1]), (int)(buff[2]));
-//        dbgprintf("O %d\t%d\t%d\t%d\t%d\n\r", (int)(log_data.mode),
-//                  (int)(log_data.data[0]), (int)(log_data.data[1]),
-//                  (int)(log_data.data[2]), (int)(log_data.data[3]));
-        time = chThdSleepUntilWindowed(time, time + MS2ST(1000));
+        time = chThdSleepUntilWindowed(time, time + MS2ST(100));
 
     }
 }

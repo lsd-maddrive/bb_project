@@ -6,7 +6,7 @@ import struct
 from src.xbox_one import Joystick
 from src.robot_logging import CsvLogger
 
-from src.config import V_MAX, ANG_SPEED_MAX
+from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -74,6 +74,22 @@ def calc_angle_speed(omega):
     return omega * ANG_SPEED_MAX
 
 
+def read_line(port, csv_logger):
+    """
+    Reading of data from mcu. If everything is fine, saving it to csv
+    :param port: Serial port to read. Need to do because of async: can't see from outer space
+    :param csv_logger: logger class exemplar. Need to do because of async: can't see from outer space
+    """
+    package = port.read(20)
+    if [package[i] for i in range(3)] == START_BYTES:
+        if package[3] == 1:
+            csv_logger.flush()
+            csv_logger.new_file()
+        elif package[3] == 0:
+            csv_logger.log_line(package[4:])
+    port.reset_input_buffer()
+
+
 async def robot_control(csv_logger):
     try:
         joy = 0
@@ -96,7 +112,7 @@ async def robot_control(csv_logger):
                                                    joy.rightTrigger())
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
-            csv_logger.log_line(port.read(21))
+            read_line(port, csv_logger)
             await asyncio.sleep(0.1)
 
     except (FileNotFoundError, serial.serialutil.SerialException):
