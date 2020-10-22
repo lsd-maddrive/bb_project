@@ -22,3 +22,8 @@
 ```bash
 ./pi_load_stm.sh 
 ``` 
+
+## Составляющие робота 
+
+* [Моторы 1:27](https://aliexpress.ru/item/32966475558.html?spm=a2g0s.9042311.0.0.27424c4dTAVrdP)
+* [Колёса 100 мм](https://aliexpress.ru/item/32944892463.html?spm=a2g0o.productlist.0.0.2af044a2reCWox&algo_pvid=ed7e1e0c-f34e-4549-a6df-6152c8292dc4&algo_expid=ed7e1e0c-f34e-4549-a6df-6152c8292dc4-26&btsid=fe606a04-0aec-413d-965f-b56420586fb7&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_55)
