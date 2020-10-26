@@ -3,11 +3,12 @@ import sys
 sys.path.append("../")
 import time
 
-import src.xbox_one
+from src.xbox_one import Joystick
 
-
-joy = xbox_one.Joystic()
-
-while True:
+joy = Joystick()
+joy.close()
+joy = Joystick()
+# time.sleep(5)
+for i in range(20):
 	time.sleep(0.1)
-	print(joy.rightTrigger())
+	print(joy.leftTrigger())

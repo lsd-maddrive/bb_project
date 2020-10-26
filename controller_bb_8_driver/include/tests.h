@@ -123,4 +123,11 @@ void testJoystick( void );
 void testRobotWithJoystick( void );
 
 
+/*
+ * @brief   Test sending log data to Python
+ * @note    Data transferring via UART (SD6)
+ * */
+void testLogger(void);
+
+
 #endif /* INCLUDE_TESTS_H_ */
