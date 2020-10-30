@@ -80,7 +80,7 @@ def read_line(port, csv_logger):
     :param port: Serial port to read. Need to do because of async: can't see from outer space
     :param csv_logger: logger class exemplar. Need to do because of async: can't see from outer space
     """
-    package = port.read(20)
+    package = port.read(40)
     if [package[i] for i in range(3)] == START_BYTES:
         if package[3] == 1:
             csv_logger.flush()
@@ -104,7 +104,6 @@ async def robot_control(csv_logger):
         await asyncio.sleep(3)
 
         logger.debug("Connected to %s", joy.device.name)
-
 
         while joy.leftTrigger() < 0.8:
             ang_speed = calc_angle_speed(joy.rightYAxis())
