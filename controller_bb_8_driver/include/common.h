@@ -38,6 +38,8 @@ extern "C" {
 //  JOYSTICK TESTS
 #define     PROGRAM_JOYSTICK_TEST                       13
 #define     PROGRAM_ROBOT_WITH_JOYSTICK_TEST            14
+//  LOGGER TEST
+#define     PROGRAM_LOGGER_TEST                         15
 
 #define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROBOT_WITH_JOYSTICK_TEST
 
