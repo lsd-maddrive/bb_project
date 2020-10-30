@@ -71,6 +71,19 @@ void testRobotWithJoystick( void )
       // 0.1 = 100 ms -> 1 ms
       robotOdometrySetSpeed(buf[0], buf[1], buf[2], time_k );
 
+      //Send all data to python
+      sendLog( &SD3, getSetAngle(),
+               getGyroAngle( GYRO_AXIS_Z ),
+               buf[0],
+               buf[1],
+               getVelocityXLocal(),
+               getVelocityYLocal(),
+               getWheelASpeed(),
+               getWheelBSpeed(),
+               getWheelCSpeed()
+               );
+
+
       time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
     }
 }

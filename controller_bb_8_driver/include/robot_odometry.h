@@ -25,4 +25,35 @@ void robotOdometryInit( void );
  */
 void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, float k );
 
+/**
+ * @brief       getter for logger purpose
+ */
+float getSetAngle( void );
+
+/**
+ * @brief       getter for logger purpose
+ */
+float getVelocityXLocal( void );
+
+/**
+ * @brief       getter for logger purpose
+ */
+float getVelocityYLocal( void );
+
+/**
+ * @brief       getter for logger purpose
+ */
+float getWheelASpeed( void );
+
+/**
+ * @brief       getter for logger purpose
+ */
+float getWheelBSpeed( void );
+
+/**
+ * @brief       getter for logger purpose
+ */
+float getWheelCSpeed( void );
+
+
 #endif /* INCLUDE_ROBOT_ODOMETRY_H_ */

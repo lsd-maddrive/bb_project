@@ -3,6 +3,11 @@
 float   angleIntegral       = 0;
 float   angularSpeedControl = 0;
 float   angleIntgController = 0;
+float   v_x = 0;
+float   v_y = 0;
+float   wheel_speed_A = 0;
+float   wheel_speed_B = 0;
+float   wheel_speed_C = 0;
 
 
 /**
@@ -92,21 +97,21 @@ void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, fl
     float angle_sin     = sinf(real_z_angle * GRAD_2_RAD);
 
     // convert global v_x_glob, v_y_glob to local
-    float v_x = -(angle_cos * v_x_glob + angle_sin * v_y_glob);
+    v_x = -(angle_cos * v_x_glob + angle_sin * v_y_glob);
 
-    float v_y = -(-angle_sin * v_x_glob + angle_cos * v_y_glob);
+    v_y = -(-angle_sin * v_x_glob + angle_cos * v_y_glob);
 
 
 
-    float wheel_speed_A = k_A[0] * v_x +
+    wheel_speed_A = k_A[0] * v_x +
                           k_A[1] * v_y +
                           k_A[2] * angularSpeedControl;
 
-    float wheel_speed_B = k_B[0] * v_x +
+    wheel_speed_B = k_B[0] * v_x +
                           k_B[1] * v_y +
                           k_B[2] * angularSpeedControl;
 
-    float wheel_speed_C = k_C[0] * v_x +
+    wheel_speed_C = k_C[0] * v_x +
                           k_C[1] * v_y +
                           k_C[2] * angularSpeedControl;
 
@@ -151,4 +156,36 @@ void robotOdometryInit( void )
     chVTSet( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
 
     isInitialized = true;
+}
+
+/************ Just bunch of getters ****************/
+
+float getSetAngle()
+{
+    return angleIntegral;
+}
+
+float getVelocityXLocal()
+{
+    return v_x;
+}
+
+float getVelocityYLocal()
+{
+    return v_y;
+}
+
+float getWheelASpeed()
+{
+    return wheel_speed_A;
+}
+
+float getWheelBSpeed()
+{
+    return wheel_speed_B;
+}
+
+float getWheelCSpeed()
+{
+    return wheel_speed_C;
 }
