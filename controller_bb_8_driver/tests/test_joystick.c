@@ -1,6 +1,7 @@
 #include <tests.h>
 #include "robot_odometry.h"
 #include "gyroscope.h"
+#include "logger.h"
 
 static const SerialConfig sdcfg = {
   .speed = 115200,

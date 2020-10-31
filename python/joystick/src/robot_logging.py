@@ -25,11 +25,9 @@ class CsvLogger:
         package = struct.unpack('<fffffffff', raw_data)
         string_to_csv = [datetime.datetime.today().strftime('%H.%M.%S.%f')[:-3]] + ['{:.3f}'.format(i) for i in package]
         self.buff.append(string_to_csv)
-        print(string_to_csv)
 
     def new_file(self):
         self.current_file = self.folder + '/log_{date}.csv'.format(date=datetime.datetime.today().strftime('%m_%d_%H_%M_%S'))
-        print(self.current_file)
         with open(self.current_file, 'w', newline='') as log_file:
             csv.writer(log_file).writerow(self.header)
 
