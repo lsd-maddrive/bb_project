@@ -32,7 +32,7 @@ def read_line(port):
 
 
 async def robot_read():
-    port = serial.Serial('COM3', 115200)
+    port = serial.Serial('/dev/ttyACM0', 115200)
     print(port.name)
     count = 0
     while True:
