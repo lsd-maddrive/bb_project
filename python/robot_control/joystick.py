@@ -3,6 +3,7 @@ import math
 import asyncio
 import serial
 import struct
+import os
 from src.xbox_one import Joystick
 from src.robot_logging import CsvLogger
 from datetime import datetime
@@ -10,9 +11,6 @@ from datetime import timedelta
 
 from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES
 
-import sys
-sys.path.append("../")
-from speaker.speaker import Speaker
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -116,12 +114,6 @@ async def robot_control(csv_logger):
         # Instantiate the controller
         joy = Joystick()
 
-        # Instantiate the speaker
-        # voice = Speaker()
-
-        # Maybe not necessary. Gamepad store old values for some reason. Maybe only 360
-        # await asyncio.sleep(3)
-
         logger.debug("Connected to %s", joy.device.name)
         time = datetime.now()
         while joy.left_trigger() < 0.8:
@@ -129,7 +121,7 @@ async def robot_control(csv_logger):
             joy.update_buttons()
 
             if joy.x_button():
-                os.popen(f'espeak-ng -v "en-us" -a 100 -s 150 "Silence! I\'ll kill you!"')
+                os.popen(f'espeak-ng -v "en-us" -a 100 -s 150 "Hi there! General Kenoby"')
 
             ang_speed = calc_angle_speed(joy.right_y_axis())
 
