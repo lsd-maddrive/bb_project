@@ -17,7 +17,7 @@ static void robotOdometryAddAngle( float angle, float k )
 {
     angleIntegral += angle * k;
 
-    angleIntegral = abs(angleIntegral) > 360 ? fmodf(angleIntegral, 360) : angleIntegral;
+    angleIntegral = (angleIntegral > 360) | (angleIntegral < 0) ? fmodf(angleIntegral, 360) : angleIntegral;
 }
 
 pidControllerValue_t    angleController = {

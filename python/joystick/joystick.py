@@ -101,7 +101,7 @@ async def robot_control(csv_logger):
         joy = Joystick()
 
         # Maybe not necessary. Gamepad store old values for some reason. Maybe only 360
-        await asyncio.sleep(3)
+        # await asyncio.sleep(3)
 
         logger.debug("Connected to %s", joy.device.name)
 
@@ -114,6 +114,7 @@ async def robot_control(csv_logger):
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
             read_line(port, csv_logger)
+            #logger.debug(csv_logger.buff)
             await asyncio.sleep(0.1)
 
     except (FileNotFoundError, serial.serialutil.SerialException):
@@ -142,7 +143,7 @@ async def log(csv_logger):
 
 
 def main():
-    csv_logger = CsvLogger('/Logs')
+    csv_logger = CsvLogger('Logs')
     loop = asyncio.get_event_loop()
     tasks = [loop.create_task(robot_control(csv_logger)), loop.create_task(log(csv_logger))]
     loop.run_until_complete(asyncio.wait(tasks))
