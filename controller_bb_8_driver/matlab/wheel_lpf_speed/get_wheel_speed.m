@@ -1,7 +1,7 @@
 clear all
 global dat
 delete(instrfind);
-dat = serial('COM11', 'BaudRate', 115200);
+dat = serial('COM4', 'BaudRate', 115200);
 dat.InputBufferSize = 4096;
 
 fopen(dat); 
@@ -15,16 +15,19 @@ fwrite(dat, start, 'uint8');
 pool = []; 
 total = []; 
 
-iter = 5;
+fwrite(dat, 'f', 'uint8');
+fwrite(dat, 'f', 'uint8');
+
+iter = 1;
 for i = 1:iter
     % increase dutycycle 
-    fwrite(dat, 'f', 'uint8');
-    disp 'Increase speed!'
-    pool = fread(dat, [1000, 1], 'int16');
+%     fwrite(dat, 'f', 'uint8');
+%     disp 'Increase speed!'
+    pool = fread(dat, [400, 1], 'int16');
     total = [total; pool];
 end
 
-for i = 1:iter
+for i = 1:2
     fwrite(dat, 'd', 'uint8');
     disp 'Decrease speed!'
     pause(1);
@@ -60,5 +63,5 @@ disp 'Saved successfully!'
 plot(raw_speed)
 hold on 
 grid on 
-plot(lpf_speed)
-legend('raw_speed', 'lpf_speed')
+plot(lpf_speed, 'Linewidth', 2)
+legend('raw speed', 'lpf speed')

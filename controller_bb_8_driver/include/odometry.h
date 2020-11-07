@@ -39,7 +39,7 @@ odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odomet
  * @args    Units of speed
  *              [REVS_PER_SEC]    - revolutions per second
  */
-odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t number, odometrySpeedUnit_t unit );
+odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t motor_name, odometrySpeedUnit_t unit );
 
 /**
  * @brief   Get raw speed of rotation of the wheel
@@ -47,4 +47,8 @@ odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t number, odometryS
  *              [REVS_PER_SEC]    - revolutions per second
  */
 odometrySpeedValue_t odometryGetWheelSpeedRaw( motorNumberValue_t number, odometrySpeedUnit_t unit );
+
+
+float odometryGetRawSpeedA( void );
+
 #endif 

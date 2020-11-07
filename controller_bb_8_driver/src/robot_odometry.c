@@ -104,16 +104,16 @@ void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, fl
 
 
     wheel_speed_A = k_A[0] * v_x +
-                          k_A[1] * v_y +
-                          k_A[2] * angularSpeedControl;
+                    k_A[1] * v_y +
+                    k_A[2] * angularSpeedControl;
 
     wheel_speed_B = k_B[0] * v_x +
-                          k_B[1] * v_y +
-                          k_B[2] * angularSpeedControl;
+                    k_B[1] * v_y +
+                    k_B[2] * angularSpeedControl;
 
     wheel_speed_C = k_C[0] * v_x +
-                          k_C[1] * v_y +
-                          k_C[2] * angularSpeedControl;
+                    k_C[1] * v_y +
+                    k_C[2] * angularSpeedControl;
 
     wheelControlSetSpeed( wheel_speed_A, A, REVS_PER_SEC );
     wheelControlSetSpeed( wheel_speed_B, B, REVS_PER_SEC );

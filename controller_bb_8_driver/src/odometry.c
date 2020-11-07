@@ -55,6 +55,9 @@ static void odom_update_vt_cb( void *arg )
     encCurRevsNumberB       = lldGetEncoderRevs( B );
     odometryEncRevPerSec[1] = (encCurRevsNumberB - encPrevRevsNumberB) * MS_2_SEC;
     encPrevRevsNumberB      = encCurRevsNumberB;
+
+
+
 // LPF Filter
     odometryWheelSpeedRPS_LPF[1]     = (odometryEncRevPerSec[1] / MOTOR_GAIN) * (1 - ENC_B_LPF) + odometryWheelPrevSpeedRPS_B_LPF * ENC_B_LPF;
     odometryWheelPrevSpeedRPS_B_LPF  = odometryWheelSpeedRPS_LPF[1];
@@ -115,12 +118,12 @@ odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odomet
  * @args    Units of speed
  *              [REVS_PER_SEC]    - revolutions per second
  */
-odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t number, odometrySpeedUnit_t unit )
+odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t motor_name, odometrySpeedUnit_t unit )
 {
      switch( unit )
      {
          case REVS_PER_SEC:
-            return odometryWheelSpeedRPS_LPF[number];
+            return odometryWheelSpeedRPS_LPF[motor_name];
             break;
 
         default:

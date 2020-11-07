@@ -30,7 +30,7 @@ void testWheelControlMatlab( void )
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        sdReadTimeout( &SD6, (uint8_t*) &matlab_ref_wheel_speed_RPS, 2, TIME_IMMEDIATE );
+        sdReadTimeout( &SD3, (uint8_t*) &matlab_ref_wheel_speed_RPS, 2, TIME_IMMEDIATE );
 
 
         if( matlab_ref_wheel_speed_RPS <= 300 && matlab_ref_wheel_speed_RPS >= -300)
@@ -58,10 +58,10 @@ void testWheelControlMatlab( void )
             matlab_wheel_speed_B = (int)(test_wheel_speed_B * 100);
             matlab_wheel_speed_C = (int)(test_wheel_speed_C * 100);
 
-            sdWrite(&SD6, (uint8_t*) &matlab_ref_wheel_speed_RPS, 2);
-            sdWrite(&SD6, (uint8_t*) &matlab_wheel_speed_A, 2);
-            sdWrite(&SD6, (uint8_t*) &matlab_wheel_speed_B, 2);
-            sdWrite(&SD6, (uint8_t*) &matlab_wheel_speed_C, 2);
+            sdWrite(&SD3, (uint8_t*) &matlab_ref_wheel_speed_RPS, 2);
+            sdWrite(&SD3, (uint8_t*) &matlab_wheel_speed_A, 2);
+            sdWrite(&SD3, (uint8_t*) &matlab_wheel_speed_B, 2);
+            sdWrite(&SD3, (uint8_t*) &matlab_wheel_speed_C, 2);
 
         }
         else

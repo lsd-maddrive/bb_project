@@ -31,7 +31,7 @@ void testMotorSpeed( void )
     }
 }
 
-//#define WHEEL_SPEED_MATLAB
+#define WHEEL_SPEED_MATLAB
 
 static const SerialConfig sdcfg = {
   .speed = 115200,
@@ -54,15 +54,13 @@ void testWheelSpeed( void )
 
     lldControlInit( );
     odometryInit( );
+    debug_stream_init( );
 
     odometrySpeedValue_t    test_wheel_A        = 0;
-    odometrySpeedValue_t    test_wheel_B        = 0;
-    odometrySpeedValue_t    test_wheel_C        = 0;
+//    odometrySpeedValue_t    test_wheel_B        = 0;
+//    odometrySpeedValue_t    test_wheel_C        = 0;
 
 #ifdef WHEEL_SPEED_MATLAB
-    sdStart( &SD6, &sdcfg );
-    palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
-    palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
     lldControlValue_t       test_delta_prc      = 10;
     lldControlValue_t       test_duty_A_prc     = 0;
@@ -75,9 +73,6 @@ void testWheelSpeed( void )
 
     int16_t                 matlab_wheel_A      = 0;
     int16_t                 matlab_wheel_A_raw  = 0;
-
-#else
-    debug_stream_init( );
 #endif
 
     systime_t   time = chVTGetSystemTimeX( );
@@ -87,12 +82,12 @@ void testWheelSpeed( void )
         test_wheel_A_raw  = odometryGetWheelSpeedRaw( A, REVS_PER_SEC );
 #endif
         test_wheel_A      = odometryGetWheelSpeed( A, REVS_PER_SEC );
-        test_wheel_B      = odometryGetWheelSpeed( B, REVS_PER_SEC );
-        test_wheel_C      = odometryGetWheelSpeed( C, REVS_PER_SEC );
+//        test_wheel_B      = odometryGetWheelSpeed( B, REVS_PER_SEC );
+//        test_wheel_C      = odometryGetWheelSpeed( C, REVS_PER_SEC );
 
 
 #ifdef WHEEL_SPEED_MATLAB
-        char rc_data         = sdGetTimeout( &SD6, TIME_IMMEDIATE );
+        char rc_data         = sdGetTimeout( &SD3, TIME_IMMEDIATE );
 
         switch( rc_data )
         {
@@ -142,8 +137,8 @@ void testWheelSpeed( void )
         {
             matlab_wheel_A      = (int)(test_wheel_A * 100);
             matlab_wheel_A_raw  = (int)(test_wheel_A_raw * 100);
-            sdWrite( &SD6, (uint8_t*) &matlab_wheel_A, 2 );
-            sdWrite( &SD6, (uint8_t*) &matlab_wheel_A_raw, 2 );
+            sdWrite( &SD3, (uint8_t*) &matlab_wheel_A, 2 );
+            sdWrite( &SD3, (uint8_t*) &matlab_wheel_A_raw, 2 );
         }
         time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
 #else
