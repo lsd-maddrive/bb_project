@@ -15,6 +15,7 @@ void sendLog(SerialDriver *sdp,
              float value6,
              float value7,
              float value8,
-             float value9);
+             float value9,
+             float value10);
 
 #endif

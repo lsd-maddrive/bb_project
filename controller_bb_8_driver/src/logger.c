@@ -3,14 +3,14 @@
 struct package_t {
     uint8_t logger_key[3];
     uint8_t  mode;
-    float   data[9];
+    float   data[10];
 };
 
 // Struct to store data to log
 struct package_t logData = {
      .logger_key = {150, 139, 57},
      .mode = 1,
-     .data = {0, 0, 0, 0, 0, 0, 0, 0, 0}
+     .data = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
 void sendLog(SerialDriver *sdp,
@@ -22,7 +22,8 @@ void sendLog(SerialDriver *sdp,
              float value6,
              float value7,
              float value8,
-             float value9)
+             float value9,
+             float value10)
 {
     // Update struct
     logData.data[0] = value1;
@@ -34,7 +35,8 @@ void sendLog(SerialDriver *sdp,
     logData.data[6] = value7;
     logData.data[7] = value8;
     logData.data[8] = value9;
-    sdWrite(sdp, (uint8_t*) &logData, 40);
+    logData.data[9] = value10;
+    sdWrite(sdp, (uint8_t*) &logData, 44);
 
     // mode = 1 only for first transmit
     logData.mode = 0;

@@ -77,11 +77,12 @@ void testRobotWithJoystick( void )
                getGyroAngle( GYRO_AXIS_Z ),
                buf[0],
                buf[1],
+               buf[2],
                getVelocityXLocal(),
                getVelocityYLocal(),
-               getWheelASpeed(),
-               getWheelBSpeed(),
-               getWheelCSpeed()
+               odometryGetWheelSpeed(A, REVS_PER_SEC),
+               odometryGetWheelSpeed(B, REVS_PER_SEC),
+               odometryGetWheelSpeed(C, REVS_PER_SEC)
                );
 
 
