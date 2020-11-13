@@ -6,7 +6,7 @@ PROJECT_MODULES = 	src/lld_control.c			\
           			src/robot_odometry.c 		\
 					src/i2c.c					\
 					src/lcd.c					\
-					src/gyroscope.c				\
+					src/lld_gyroscope.c				\
 					src/logger.c
 
 				  
@@ -17,7 +17,7 @@ PROJECT_TESTS   =	tests/test_lld_control.c	\
 					tests/test_wheel_control.c	\
 					tests/test_joystick.c		\
           			tests/test_robot_odometry.c \
-          			tests/test_gyroscope.c		\
+          			tests/test_lld_gyroscope.c		\
           			tests/test_logger.c
 				  		
 PROJECT_CSRC    = src/main.c src/common.c src/debug.c \

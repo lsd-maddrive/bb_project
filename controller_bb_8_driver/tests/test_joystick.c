@@ -1,6 +1,6 @@
 #include <tests.h>
 #include "robot_odometry.h"
-#include "gyroscope.h"
+#include "lld_gyroscope.h"
 #include "logger.h"
 
 static const SerialConfig sdcfg = {
@@ -42,11 +42,6 @@ void testJoystick( void )
  * */
 void testRobotWithJoystick( void )
 {
-//    systime_t   time = chVTGetSystemTimeX( );
-//    // pause for gyro initialization
-//    time = chThdSleepUntilWindowed( time, time + MS2ST( 1000 ) );
-
-
     robotOdometryInit();
     debug_stream_init();
 
@@ -59,6 +54,7 @@ void testRobotWithJoystick( void )
 //    palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );   // TX
 //    palSetPadMode( GPIOG, 9,  PAL_MODE_ALTERNATE(8) );   // RX
 
+    float log[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     float buf[3] = {0, 0, 0};
     uint16_t    time_delta  = 100;
     float       time_k      = (float)time_delta * 0.001;
@@ -73,17 +69,21 @@ void testRobotWithJoystick( void )
       robotOdometrySetSpeed(buf[0], buf[1], buf[2], time_k );
 
       //Send all data to python
-      sendLog( &SD3, getSetAngle(),
-               getGyroAngle( GYRO_AXIS_Z ),
-               buf[0],
-               buf[1],
-               buf[2],
-               getVelocityXLocal(),
-               getVelocityYLocal(),
-               odometryGetWheelSpeed(A, REVS_PER_SEC),
-               odometryGetWheelSpeed(B, REVS_PER_SEC),
-               odometryGetWheelSpeed(C, REVS_PER_SEC)
-               );
+
+      log[0] = (float)chVTGetSystemTimeX( );
+      log[1] = getSetAngle();
+      log[2] = getGyroAngle( GYRO_AXIS_Z );
+      log[3] = buf[0];
+      log[4] = buf[1];
+      log[5] = buf[2];
+      log[6] = getVelocityXLocal();
+      log[7] = getVelocityYLocal();
+      log[8] = odometryGetWheelSpeed(A, REVS_PER_SEC);
+      log[9] = odometryGetWheelSpeed(B, REVS_PER_SEC);
+      log[10] = odometryGetWheelSpeed(C, REVS_PER_SEC);
+
+
+      sendLog( &SD3, log, 11);
 
 
       time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
