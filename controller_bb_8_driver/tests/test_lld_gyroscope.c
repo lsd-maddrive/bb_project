@@ -1,5 +1,5 @@
 #include <tests.h>
-#include <gyroscope.h>
+#include <lld_gyroscope.h>
 
 //#define MATLAB_TEST
 

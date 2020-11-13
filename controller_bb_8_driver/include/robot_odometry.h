@@ -3,7 +3,7 @@
 
 #include <common.h>
 #include "wheel_control.h"
-#include "gyroscope.h"
+#include "lld_gyroscope.h"
 
 #define ANGLE_VT_MS     10
 

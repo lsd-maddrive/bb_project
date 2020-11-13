@@ -1,4 +1,4 @@
-#include <gyroscope.h>
+#include <lld_gyroscope.h>
 
 
 float                   gyro_angle_xyz[3]   = {0, 0, 0};
@@ -67,7 +67,7 @@ void gyroscopeInit( tprio_t priority )
     
     i2cSimpleWrite(GYRO_ADDR, initbuf, 5, 1000);
 
-    chThdSleepMilliseconds(100);
+    chThdSleepMilliseconds(GYRO_INIT_TIME);
 
     calculateGyroError(gyro_mean_error);
 
