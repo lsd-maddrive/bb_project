@@ -5,6 +5,8 @@ import serial
 import struct
 from src.xbox_one import Joystick
 from src.robot_logging import CsvLogger
+from datetime import datetime
+from datetime import timedelta
 
 from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES
 
@@ -90,6 +92,17 @@ def read_line(port, csv_logger):
     port.reset_input_buffer()
 
 
+async def wait_until(dt):
+    """
+    Wait until desired datetime. If the datetime is in the past, return immediately.
+    :param dt: datetime to wait until
+    """
+    now = datetime.now()
+    delta = (dt - now).total_seconds()
+    if delta > 0:
+        await asyncio.sleep(delta)
+
+
 async def robot_control(csv_logger):
     try:
         joy = 0
@@ -104,8 +117,11 @@ async def robot_control(csv_logger):
         # await asyncio.sleep(3)
 
         logger.debug("Connected to %s", joy.device.name)
-
+        time = datetime.now()
         while joy.leftTrigger() < 0.8:
+
+            time = time + timedelta(milliseconds=100)
+
             ang_speed = calc_angle_speed(joy.rightYAxis())
 
             velocity_x, velocity_y = calc_velocity(joy.leftXAxis(),
@@ -114,8 +130,8 @@ async def robot_control(csv_logger):
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
             read_line(port, csv_logger)
-            #logger.debug(csv_logger.buff)
-            await asyncio.sleep(0.1)
+
+            await wait_until(time)
 
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")

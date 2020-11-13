@@ -23,7 +23,7 @@ class CsvLogger:
 
     def log_line(self, raw_data):
         package = struct.unpack('<ffffffffff', raw_data)
-        string_to_csv = [datetime.datetime.today().strftime('%H.%M.%S.%f')[:-3]] + ['{:.3f}'.format(i) for i in package]
+        string_to_csv = [datetime.datetime.today().strftime('%H:%M:%S.%f')[:-3]] + ['{:.3f}'.format(i) for i in package]
         self.buff.append(string_to_csv)
 
     def new_file(self):
