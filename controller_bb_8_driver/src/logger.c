@@ -21,7 +21,7 @@ void sendLog(SerialDriver *sdp, float *log_data, uint8_t log_quantity)
         logData.data[i] = log_data[i];
     }
 
-    sdWrite(sdp, (uint8_t*) &logData, 44);
+    sdWrite(sdp, (uint8_t*) &logData, 48);
 
     // mode = 1 only for first transmit
     logData.mode = 0;
