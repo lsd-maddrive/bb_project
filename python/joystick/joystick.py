@@ -1,12 +1,14 @@
 import logging 
 import math
-import time
-
+import asyncio
 import serial
 import struct
-import xbox
+from src.xbox_one import Joystick
+from src.robot_logging import CsvLogger
+from datetime import datetime
+from datetime import timedelta
 
-from config import V_MAX, ANG_SPEED_MAX
+from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -74,28 +76,73 @@ def calc_angle_speed(omega):
     return omega * ANG_SPEED_MAX
 
 
-def main():
+def read_line(port, csv_logger):
+    """
+    Reading of data from mcu. If everything is fine, saving it to csv
+    :param port: Serial port to read. Need to do because of async: can't see from outer space
+    :param csv_logger: logger class exemplar. Need to do because of async: can't see from outer space
+    """
+    package = port.read(48)
+    if [package[i] for i in range(3)] == START_BYTES:
+        if package[3] == 1:
+            csv_logger.flush()
+            csv_logger.new_file()
+        elif package[3] == 0:
+            csv_logger.log_line(package[4:])
+    port.reset_input_buffer()
+
+
+async def wait_until(dt):
+    """
+    Wait until desired datetime. If the datetime is in the past, return immediately.
+    :param dt: datetime to wait until
+    """
+    now = datetime.now()
+    delta = (dt - now).total_seconds()
+    if delta > 0:
+        await asyncio.sleep(delta)
+
+
+async def robot_control(csv_logger):
     try:
         joy = 0
         port = 0
-        port = serial.Serial('/dev/ttyUSB0', 115200)
+        port = serial.Serial('/dev/ttyACM0', 115200)
         logger.debug(f"USB is connected successfully!")
-
+        
         # Instantiate the controller
-        joy = xbox.Joystick()
+        joy = Joystick()
 
+        # Maybe not necessary. Gamepad store old values for some reason. Maybe only 360
+        # await asyncio.sleep(3)
+
+        logger.debug("Connected to %s", joy.device.name)
+        time = datetime.now()
         while joy.leftTrigger() < 0.8:
-            ang_speed = calc_angle_speed(joy.rightX())
-            # Joystick we use has reversed axis, so X and Y axis are switched
-            velocity_x, velocity_y = calc_velocity(joy.leftY(), joy.leftX(), joy.rightTrigger())
+
+            time = time + timedelta(milliseconds=100)
+
+            ang_speed = calc_angle_speed(joy.rightYAxis())
+
+            velocity_x, velocity_y = calc_velocity(joy.leftXAxis(),
+                                                   joy.leftYAxis(),
+                                                   joy.rightTrigger())
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
-            time.sleep(0.1)
+            read_line(port, csv_logger)
+
+            await wait_until(time)
 
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error(f"USB port is not correct. Connection failed!")
-        # return
+    except AttributeError as err:
+        # to avoid exception in joy.close()
+        joy = 0
+        logger.error(f"Joystick is turned off. Check it, please!")
+    except OSError as err: 
+        logger.error(f"Joystick fell asleep!")
     finally:
+        csv_logger.stop()
         # Close out when done
         if joy is not 0:
             joy.close()
@@ -103,6 +150,20 @@ def main():
         if port is not 0:
             port.close()
             logger.debug("Serial port is closed successfully")
+
+
+async def log(csv_logger):
+    while csv_logger.run:
+        csv_logger.flush()
+        await asyncio.sleep(5)
+
+
+def main():
+    csv_logger = CsvLogger('Logs')
+    loop = asyncio.get_event_loop()
+    tasks = [loop.create_task(robot_control(csv_logger)), loop.create_task(log(csv_logger))]
+    loop.run_until_complete(asyncio.wait(tasks))
+    loop.close()
 
 
 if __name__ == "__main__":

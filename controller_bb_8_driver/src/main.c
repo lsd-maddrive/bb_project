@@ -1,6 +1,5 @@
-#include "common.h"
 #include "tests.h"
-#include <chprintf.h>
+
 
 static inline void testsRoutines( void )
 {
@@ -15,10 +14,6 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_PRC_CONTROL_TEST)
 
     testMotorControlRoutine( );
-
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_FOR_GRISHA)
-
-    testSpamPWM( );
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ENCODER_TEST )
 
@@ -48,13 +43,25 @@ static inline void testsRoutines( void )
 
     testWheelControlMatlab();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ONE_WHEEL_CONTROLLER_MATLAB)
+
+    testOneWheelControllerMatlab();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_JOYSTICK_TEST )
 
     testJoystick();
 
+#elif ( MAIN_PROGRAM_ROUTINE == PROGRAM_ROBOT_WITH_JOYSTICK_TEST )
+
+    testRobotWithJoystick();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_GYROSCOPE_TEST)
 
     testGyroscope();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_LOGGER_TEST)
+
+    testLogger();
 
 #endif
 }

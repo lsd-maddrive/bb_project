@@ -197,15 +197,3 @@ void testMotorControlRoutine( void )
         time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
     }
 }
-
-void testSpamPWM( void )
-{
-    lldControlInit( );
-
-    systime_t   time = chVTGetSystemTimeX( );
-    while( true )
-    {
-      lldControlSetMotorPower( A, 50 );
-      time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
-    }
-}

@@ -1,4 +1,4 @@
-#include <gyroscope.h>
+#include <lld_gyroscope.h>
 
 
 float                   gyro_angle_xyz[3]   = {0, 0, 0};
@@ -7,7 +7,8 @@ float                   gyro_mean_error[3]  = {0, 0, 0};
 
 
 /*
- * @brief   Gyroscope thread. Read gyroscope data and integrate it to get angle value
+ * @brief   Gyroscope thread.
+ *          Read gyroscope data and integrate it to get angle value
  */
 static THD_WORKING_AREA(gyroThread, 256); // 256 - stack size
 static THD_FUNCTION(Gyro, arg)
@@ -56,6 +57,8 @@ void gyroscopeInit( tprio_t priority )
     if(isInitialized)
         return;
 
+    i2cStartUp();
+
     uint8_t initbuf[5];
     initbuf[0] = GYRO_CTRL1_REG;            // Start from ctrl1 register
     initbuf[1] = 0x0F;                      // Normal mode, each axis enable, freq settings ignored
@@ -64,6 +67,8 @@ void gyroscopeInit( tprio_t priority )
     initbuf[4] = 0x30;                      // 2000dps
     
     i2cSimpleWrite(GYRO_ADDR, initbuf, 5, 1000);
+
+    chThdSleepMilliseconds(GYRO_INIT_TIME);
 
     calculateGyroError(gyro_mean_error);
 
@@ -109,7 +114,6 @@ msg_t readGyroscope(int16_t *axis_values)
 {
     uint8_t gyro_temp[6] = {0, 0, 0, 0, 0, 0};
     msg_t msg = i2cRegisterRead(GYRO_ADDR, GYRO_DATA_REG, gyro_temp, 6, 10000);
-
     
     uint8_t i = 0;
     for(i = 0; i < 3; i++)
@@ -162,7 +166,6 @@ msg_t calculateGyroError(float *buf)
                 temp_buf[i][j] = super_temp[j];
             }
     }
-
 
     for(i = 0; i < 10; i++)
     {

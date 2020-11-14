@@ -16,10 +16,10 @@ float                   wheelSpeedPrevError_A = 0;
 float                   wheelSpeedIntg_A      = 0;
 
 pidControllerValue_t    wheelController_A = {
-    .kp = 10,
+    .kp = 50,
     .ki = 3,
     .kd = 0,
-    .intgSaturation = 80,
+    .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
     .controlDeadZone = 5
 };
@@ -30,10 +30,10 @@ float                   wheelSpeedPrevError_B = 0;
 float                   wheelSpeedIntg_B      = 0;
 
 pidControllerValue_t    wheelController_B = {
-    .kp = 10,
+    .kp = 50,
     .ki = 3,
     .kd = 0,
-    .intgSaturation = 80,
+    .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
     .controlDeadZone = 5
 };
@@ -44,10 +44,10 @@ float                   wheelSpeedPrevError_C = 0;
 float                   wheelSpeedIntg_C      = 0;
 
 pidControllerValue_t    wheelController_C = {
-    .kp = 10,
+    .kp = 50,
     .ki = 3,
     .kd = 0,
-    .intgSaturation = 80,
+    .intgSaturation = LLD_MOTOR_MAX_PRC,
     .propDeadZone = 0,
     .controlDeadZone = 5
 };
@@ -208,6 +208,30 @@ void wheelControlSetSpeed( wheelSpeedValue_t speed_val, motorNumberValue_t numbe
 }
 
 /**
+ * @brief       Set reference value of for all wheel
+ */
+void wheelControlSetSpeedAllWheels( wheelSpeedValue_t speed_val, odometrySpeedUnit_t unit )
+{
+    speed_val = CLIP_VALUE( speed_val, WHEEL_SPEED_MIN_RPS, WHEEL_SPEED_MAX_RPS);
+
+    switch( unit )
+    {
+        case REVS_PER_SEC:
+            wheelSpeedRefValuesPRS[0] = speed_val; // A wheel
+            wheelSpeedRefValuesPRS[1] = speed_val; // B wheel
+            wheelSpeedRefValuesPRS[2] = speed_val; // C wheel
+            break;
+
+        default:
+            wheelSpeedRefValuesPRS[0] = 0; // temporary maybe
+            wheelSpeedRefValuesPRS[1] = 0; // temporary maybe
+            wheelSpeedRefValuesPRS[2] = 0; // temporary maybe
+            break;
+    }
+
+}
+
+/**
  * @brief       Get calculated control value of speed in percent
  *              for specified wheel in specified units
  */
@@ -224,18 +248,18 @@ lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odomet
     }
 }
 
+
 /*
  * @brief       Stop all wheels
  *              - PID config is not reseted
  *              - permeation flag is not reseted
  */
-void wheelControlStopWheels( void )
+void wheelControlStopAllWheels( void )
 {
     wheelSpeedRefValuesPRS[0] = 0;
     wheelSpeedRefValuesPRS[1] = 0;
     wheelSpeedRefValuesPRS[2] = 0;
 }
-
 
 
 /*

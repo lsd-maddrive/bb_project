@@ -40,11 +40,6 @@ void testMotorControlRoutine( void );
  */
 void testMatlabFrequency( void );
 
-/**
- * @brief   Temporary test with PWM spam (Motor A)
- */
-void testSpamPWM( void );
-
 /*============================================================================*/
 /* Encoder Tests                                                              */
 /*============================================================================*/
@@ -94,6 +89,18 @@ void testRobotOdometry ( void );
  */
 void testWheelControlMatlab( void );
 
+
+/*
+ * @brief   Test wheel control system with matlab
+ * @note    Send two packages with float value (4-byte)
+ *          only wheel A data are send to matlab
+ */
+void testOneWheelControllerMatlab( void );
+
+/*============================================================================*/
+/* Gyroscope Tests                                                            */
+/*============================================================================*/
+
 /*
  * @brief   Test gyroscope L3GD20H library
  */
@@ -107,5 +114,22 @@ void testGyroscope(void);
  * @brief   Simple joystick test (without control system)
  */
 void testJoystick( void );
+
+
+/*
+ * @brief   Test control robot via joystick
+ * @note    Data transferring via USB (SD3)
+ * */
+void testRobotWithJoystick( void );
+
+/*============================================================================*/
+/* Logger Tests                                                               */
+/*============================================================================*/
+
+/*
+ * @brief   Test sending log data to Python
+ * @note    Data transferring via UART (SD6)
+ * */
+void testLogger(void);
 
 #endif /* INCLUDE_TESTS_H_ */
