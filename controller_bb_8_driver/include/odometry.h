@@ -4,8 +4,6 @@
 #include "common.h"
 #include "lld_encoder.h"
 
-
-
 #define MS_2_SEC        100   // 10 ms -> 1 s
 // #define MS_2_SEC     200   // 5 ms  -> 1 s
 // #define MS_2_SEC     1000  // 1 ms  -> 1 s
@@ -47,8 +45,5 @@ odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t motor_name, odome
  *              [REVS_PER_SEC]    - revolutions per second
  */
 odometrySpeedValue_t odometryGetWheelSpeedRaw( motorNumberValue_t number, odometrySpeedUnit_t unit );
-
-
-float odometryGetRawSpeedA( void );
 
 #endif 

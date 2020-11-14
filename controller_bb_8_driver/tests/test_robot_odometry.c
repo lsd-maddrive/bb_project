@@ -31,13 +31,11 @@ void testRobotOdometry ( void )
               test_w = 0;
               break;
 
-
             case 'm':  // change only test_v_x (minus)
               test_v_x = -test_speed;
               test_v_y = 0;
               test_w = 0;
               break;
-
 
             case 'y':  // change only test_v_y
               test_v_x = 0;
@@ -50,7 +48,6 @@ void testRobotOdometry ( void )
               test_v_y = -test_speed;
               test_w = 0;
               break;
-
 
             case 'w':  // change only test_w (plus)
               test_v_x = 0;

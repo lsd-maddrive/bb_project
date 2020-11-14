@@ -56,8 +56,6 @@ static void odom_update_vt_cb( void *arg )
     odometryEncRevPerSec[1] = (encCurRevsNumberB - encPrevRevsNumberB) * MS_2_SEC;
     encPrevRevsNumberB      = encCurRevsNumberB;
 
-
-
 // LPF Filter
     odometryWheelSpeedRPS_LPF[1]     = (odometryEncRevPerSec[1] / MOTOR_GAIN) * (1 - ENC_B_LPF) + odometryWheelPrevSpeedRPS_B_LPF * ENC_B_LPF;
     odometryWheelPrevSpeedRPS_B_LPF  = odometryWheelSpeedRPS_LPF[1];

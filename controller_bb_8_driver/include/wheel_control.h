@@ -49,7 +49,7 @@ lldControlValue_t wheelControlGetControlSpeed( motorNumberValue_t number, odomet
  *              - PID config is not reseted
  *              - permeation flag is not reseted
  */
-void wheelControlStopWheels( void );
+void wheelControlStopAllWheels( void );
 
 /*
  * @brief       Reset all components for PID-controller

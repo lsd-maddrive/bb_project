@@ -13,6 +13,7 @@ struct package_t logData = {
      .data = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
+// TODO: add comments!
 void sendLog(SerialDriver *sdp, float *log_data, uint8_t log_quantity)
 {
     // Update struct

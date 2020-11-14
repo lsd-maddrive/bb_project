@@ -162,32 +162,59 @@ void robotOdometryInit( void )
 
 /************ Just bunch of getters ****************/
 
-float getSetAngle()
+/**
+ * @brief      Get value of angle's integral
+ * @note       Getter for logger purpose
+ */
+float robotOdometryGetAngleIntegral( void )
 {
     return angleIntegral;
 }
 
-float getVelocityXLocal()
+/**
+ * @brief      Get value of local robot velocity (x-axle)
+ * @note       Getter for logger purpose
+ */
+float robotOdometryGetVelocityXLocal( void )
 {
     return v_x;
 }
 
-float getVelocityYLocal()
+/**
+ * @brief      Get value of local robot velocity (y-axle)
+ * @note       Getter for logger purpose
+ */
+float robotOdometryGetVelocityYLocal()
 {
     return v_y;
 }
 
-float getWheelASpeed()
+// TODO: create function with args as wheel name
+//       one function instead of three
+
+/**
+ * @brief      Get value of wheel A velocity
+ * @note       Getter for logger purpose
+ */
+float robotOdometryGetWheelASpeed()
 {
     return wheel_speed_A;
 }
 
-float getWheelBSpeed()
+/**
+ * @brief      Get value of wheel B velocity
+ * @note       Getter for logger purpose
+ */
+float robotOdometryGetWheelBSpeed()
 {
     return wheel_speed_B;
 }
 
-float getWheelCSpeed()
+/**
+ * @brief      Get value of wheel C velocity
+ * @note       Getter for logger purpose
+ */
+float robotOdometryGetWheelCSpeed()
 {
     return wheel_speed_C;
 }

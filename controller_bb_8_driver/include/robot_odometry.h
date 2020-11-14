@@ -26,34 +26,40 @@ void robotOdometryInit( void );
 void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, float k );
 
 /**
- * @brief       getter for logger purpose
+ * @brief      Get value of angle's integral
+ * @note       Getter for logger purpose
  */
-float getSetAngle( void );
+float robotOdometryGetAngleIntegral( void );
 
 /**
- * @brief       getter for logger purpose
+ * @brief      Get value of local robot velocity (x-axle)
+ * @note       Getter for logger purpose
  */
-float getVelocityXLocal( void );
+float robotOdometryGetVelocityXLocal( void );
 
 /**
- * @brief       getter for logger purpose
+ * @brief      Get value of local robot velocity (y-axle)
+ * @note       Getter for logger purpose
  */
-float getVelocityYLocal( void );
+float robotOdometryGetVelocityYLocal( void );
 
 /**
- * @brief       getter for logger purpose
+ * @brief      Get value of wheel A velocity
+ * @note       Getter for logger purpose
  */
-float getWheelASpeed( void );
+float robotOdometryGetWheelASpeed( void );
 
 /**
- * @brief       getter for logger purpose
+ * @brief      Get value of wheel B velocity
+ * @note       Getter for logger purpose
  */
-float getWheelBSpeed( void );
+float robotOdometryGetWheelBSpeed( void );
 
 /**
- * @brief       getter for logger purpose
+ * @brief      Get value of wheel C velocity
+ * @note       Getter for logger purpose
  */
-float getWheelCSpeed( void );
+float robotOdometryGetWheelCSpeed( void );
 
 
 #endif /* INCLUDE_ROBOT_ODOMETRY_H_ */

@@ -19,6 +19,7 @@ struct package_t log_data = {
 
 float buff[3] = {0, 0, 0};
 
+// TODO: add comments!
 void testLogger(void)
 {
     sdStart( &SD6, &sdcfg );
@@ -39,6 +40,5 @@ void testLogger(void)
             log_data.data[i] = buff[i];
         }
         time = chThdSleepUntilWindowed(time, time + MS2ST(100));
-
     }
 }

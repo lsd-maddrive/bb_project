@@ -18,7 +18,6 @@ typedef enum {
 
 /**
  * @brief   Read gyroscope axis values in XYZ order
- *
  * @param
  *          *axis_values         Array where to store read data
  */
@@ -27,7 +26,6 @@ msg_t readGyroscope(int16_t *axis_values);
 
 /**
  * @brief   Read gyroscope and represent values as int16
- *
  * @param
  *          *axis_speed         Array where to store axial rotational speed values
  */
@@ -37,17 +35,14 @@ msg_t readGyroSpeed(float *axis_speed);
 /**
  * @brief   Calculate static error
  * @details Calculates average value of each axis data over ten readings
- *
  * @param
  *          *axis_speed         Array where to store static error values
  */
 msg_t calculateGyroError(float *buf);
 
 
-
 /**
  * @brief   Get current angle value, [deg]
- *
  * @param
  *          axis        Number of axis to return. 0 through 2 for XYZ
  */
@@ -56,7 +51,6 @@ float getGyroAngle(gyroAxis_t axis);
 
 /**
  * @brief   Get current angular speed value, [deg/s]
- *
  * @param
  *          axis        Number of axis to return. 0 through 2 for XYZ
  */

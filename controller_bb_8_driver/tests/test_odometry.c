@@ -40,7 +40,7 @@ static const SerialConfig sdcfg = {
 
 
 /*
- * @brief   Test wheel speed
+ * @brief   Test wheel speed (A!)
  * @note    Two options are available:
  *              - debug via Terminal (comment   define WHEEL_SPEED_MATLAB)
  *              - debug via Matlab   (uncomment define WHEEL_SPEED_MATLAB)
@@ -57,8 +57,6 @@ void testWheelSpeed( void )
     debug_stream_init( );
 
     odometrySpeedValue_t    test_wheel_A        = 0;
-//    odometrySpeedValue_t    test_wheel_B        = 0;
-//    odometrySpeedValue_t    test_wheel_C        = 0;
 
 #ifdef WHEEL_SPEED_MATLAB
 
@@ -82,8 +80,6 @@ void testWheelSpeed( void )
         test_wheel_A_raw  = odometryGetWheelSpeedRaw( A, REVS_PER_SEC );
 #endif
         test_wheel_A      = odometryGetWheelSpeed( A, REVS_PER_SEC );
-//        test_wheel_B      = odometryGetWheelSpeed( B, REVS_PER_SEC );
-//        test_wheel_C      = odometryGetWheelSpeed( C, REVS_PER_SEC );
 
 
 #ifdef WHEEL_SPEED_MATLAB

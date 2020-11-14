@@ -7,7 +7,8 @@ float                   gyro_mean_error[3]  = {0, 0, 0};
 
 
 /*
- * @brief   Gyroscope thread. Read gyroscope data and integrate it to get angle value
+ * @brief   Gyroscope thread.
+ *          Read gyroscope data and integrate it to get angle value
  */
 static THD_WORKING_AREA(gyroThread, 256); // 256 - stack size
 static THD_FUNCTION(Gyro, arg)
@@ -165,7 +166,6 @@ msg_t calculateGyroError(float *buf)
                 temp_buf[i][j] = super_temp[j];
             }
     }
-
 
     for(i = 0; i < 10; i++)
     {
