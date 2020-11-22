@@ -129,6 +129,9 @@ async def robot_control(csv_logger):
 
             joy.update_buttons()
 
+            if joy.x_button():
+                voice.say('Yay!')
+
             ang_speed = calc_angle_speed(joy.right_y_axis())
 
             velocity_x, velocity_y = calc_velocity(joy.left_x_axis(),
