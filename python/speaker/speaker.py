@@ -5,18 +5,17 @@ import pyttsx3
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
 class Speaker:
     def __init__(self):
         self.tts = pyttsx3.init()  # initialization of speach engine 
         self.voices = self.tts.getProperty('voices')
 
-        
         # Default configuration
         self.current_voice = 'english'
         self.tts.setProperty('voice',  self.current_voice)
         self.tts.setProperty('rate', 150)
         self.tts.setProperty('volume', 0.8)
-
 
     def say(self, msg):
         """TTS will say the string [robotic voice]
@@ -26,7 +25,6 @@ class Speaker:
         """
         self.tts.say(msg)
         self.tts.runAndWait()
-
 
     def show_all_voices(self):
         """Get the list of all available voices
@@ -39,7 +37,6 @@ class Speaker:
                   f'Gender: {voice.gender}',
                   f'Age: {voice.age}'
                   )
-
 
     def change_voice(self, voice_name):
         """Change the property of choosen voice for TTS
@@ -57,8 +54,7 @@ class Speaker:
         if not flag:
             logger.debug(f"Voice {voice_name} not found. Changing - faild!")
         
-
-    def change_rate(self, new_rate): 
+    def change_rate(self, new_rate):
         """Change the rate (speed) of voice 
 
         Args:
@@ -66,7 +62,6 @@ class Speaker:
         """
         # rate in %, >100 
         self.tts.setProperty('rate', new_rate)
-
 
     def __str__(self):
         return f"Hi, I'm a Speaker! I speak {self.current_voice}."

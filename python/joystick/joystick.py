@@ -1,4 +1,4 @@
-import logging 
+import logging
 import math
 import asyncio
 import serial
@@ -9,6 +9,10 @@ from datetime import datetime
 from datetime import timedelta
 
 from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES
+
+import sys
+sys.path.append("../")
+from speaker.speaker import Speaker
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -113,24 +117,28 @@ async def robot_control(csv_logger):
         # Instantiate the controller
         joy = Joystick()
 
+        # Instantiate the speaker
+        voice = Speaker()
+
         # Maybe not necessary. Gamepad store old values for some reason. Maybe only 360
         # await asyncio.sleep(3)
 
         logger.debug("Connected to %s", joy.device.name)
         time = datetime.now()
-        while joy.leftTrigger() < 0.8:
+        while joy.left_trigger() < 0.8:
 
-            time = time + timedelta(milliseconds=100)
+            joy.update_buttons()
 
-            ang_speed = calc_angle_speed(joy.rightYAxis())
+            ang_speed = calc_angle_speed(joy.right_y_axis())
 
-            velocity_x, velocity_y = calc_velocity(joy.leftXAxis(),
-                                                   joy.leftYAxis(),
-                                                   joy.rightTrigger())
+            velocity_x, velocity_y = calc_velocity(joy.left_x_axis(),
+                                                   joy.left_y_axis(),
+                                                   joy.right_trigger())
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
             read_line(port, csv_logger)
 
+            time = time + timedelta(milliseconds=100)
             await wait_until(time)
 
     except (FileNotFoundError, serial.serialutil.SerialException):
