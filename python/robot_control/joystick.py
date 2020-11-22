@@ -14,7 +14,6 @@ import sys
 sys.path.append("../")
 from speaker.speaker import Speaker
 
-
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 

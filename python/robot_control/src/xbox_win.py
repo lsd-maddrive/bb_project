@@ -14,6 +14,7 @@ pip install --upgrade http://pyglet.googlecode.com/archive/tip.zip
 import ctypes
 import sys
 import time
+import asyncio
 from operator import itemgetter, attrgetter
 from itertools import count, starmap
 from pyglet import event

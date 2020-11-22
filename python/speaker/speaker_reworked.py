@@ -1,5 +1,5 @@
 import logging
-
+import sys
 import pyttsx3
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -67,10 +67,7 @@ class Speaker:
         return f"Hi, I'm a Speaker! I speak {self.current_voice}."
 
 
-if __name__ == '__main__':
-    test = Speaker()
-    test.change_voice('Microsoft David Desktop - English (United States)')
-    test.show_all_voices()
-    test.say('I am the danger')
 
-    print(test)
+test = Speaker()
+test.change_voice('Microsoft David Desktop - English (United States)')
+test.say(sys.argv[1])
