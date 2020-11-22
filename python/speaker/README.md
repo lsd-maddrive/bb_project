@@ -46,3 +46,16 @@ espeak-ng "Hello World" 2>/dev/null
 
 
 You should hear “Hello World” from the speakers.  Your Raspberry Pi is speaking!
+
+
+Windows setup
+
+1. Скачать установочник https://github.com/espeak-ng/espeak-ng/releases (*.msi файл).
+
+2. Запустить установочник. Вероятнее всего винда будет уговаривать отказаться. Можно выбрать необходимые язоковые пакеты.
+
+3. Добавить переменную среды. По умолчанию необходимо добавить в Path строчку C:\Program Files\eSpeak NG.
+
+4. Перезапустить компьютер.
+
+5. Для проверки ввести в командную строку espeak-ng "This is a test". Должна прозвучать фраза "This is a test".

@@ -53,7 +53,7 @@ class Speaker:
                 break 
         if not flag:
             logger.debug(f"Voice {voice_name} not found. Changing - faild!")
-        
+
     def change_rate(self, new_rate):
         """Change the rate (speed) of voice 
 
@@ -69,6 +69,7 @@ class Speaker:
 
 if __name__ == '__main__':
     test = Speaker()
+    # test.change_voice('Microsoft David Desktop - English (United States)')
     # test.show_all_voices()
     test.say('I am the danger')
 
