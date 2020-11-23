@@ -1,3 +1,0 @@
-num2words==0.5.10
-py-espeak-ng==0.1.8
-pyttsx3==2.90
