@@ -117,7 +117,7 @@ async def robot_control(csv_logger):
         joy = Joystick()
 
         # Instantiate the speaker
-        voice = Speaker()
+        # voice = Speaker()
 
         # Maybe not necessary. Gamepad store old values for some reason. Maybe only 360
         # await asyncio.sleep(3)
@@ -129,7 +129,7 @@ async def robot_control(csv_logger):
             joy.update_buttons()
 
             if joy.x_button():
-                voice.say('Yay!')
+                os.popen(f'espeak-ng -v "en-us" -a 100 -s 150 "Silence! I\'ll kill you!"')
 
             ang_speed = calc_angle_speed(joy.right_y_axis())
 
