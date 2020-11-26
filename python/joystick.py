@@ -3,18 +3,17 @@ import logging
 import math
 import os
 import sys 
-sys.path.append("../")
 
 import asyncio
 import serial
 import struct
 
 
-from src.xbox_one import Joystick
-from src.robot_logging import CsvLogger
-from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES
-import src.tools as tools
-from speaker.speaker import Speaker
+from robot_control.xbox_one import Joystick
+from robot_control.robot_logging import CsvLogger
+import robot_control.tools as tools
+#sys.path.append('../')
+#from speaker.speaker import Speaker
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -41,7 +40,7 @@ async def robot_control(csv_logger):
         
         # Instantiate the controller
         joy = Joystick()
-        bbSpeaker = Speaker()
+        #bbSpeaker = Speaker()
 
         logger.debug("Connected to %s", joy.device.name)
         time = datetime.now()
@@ -50,8 +49,8 @@ async def robot_control(csv_logger):
             joy.update_buttons()
 
             if joy.x_button():
-                Speaker.say("Hi there! General Kenoby")
-                # os.popen(f'espeak-ng -v "en-us" -a 100 -s 150 "Hi there! General Kenoby"')
+                #Speaker.say("Hello there! General Kenoby")
+                os.popen(f'sudo espeak-ng -v "en-us" -a 100 -s 150 "Hello there! General Kenoby"')
 
             ang_speed = tools.calc_angle_speed(joy.right_y_axis())
 
