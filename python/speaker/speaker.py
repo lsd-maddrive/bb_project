@@ -13,7 +13,6 @@ class Speaker:
     class __Speaker:
         def __init__(self):
             self._logger = logging.getLogger(__name__)
-            self._logger.info('I am here!')
             self.tts = pyttsx3.init()  # initialization of speach engine 
             self.voices = self.tts.getProperty('voices')
 
