@@ -1,7 +1,6 @@
 import logging
 from subprocess import call 
 
-from google_speech import Speech
 import pyttsx3
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
