@@ -45,7 +45,7 @@ void testRobotWithJoystick( void )
     robotOdometryInit();
     debug_stream_init();
 
-    float log[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    float log[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     float buf[3] = {0, 0, 0};
     uint16_t    time_delta  = 100;
     float       time_k      = (float)time_delta * 0.001;
@@ -61,17 +61,19 @@ void testRobotWithJoystick( void )
       //Send all data to python
       log[0] = (float)chVTGetSystemTimeX( );
       log[1] = robotOdometryGetAngleIntegral();
-      log[2] = getGyroAngle( GYRO_AXIS_Z );
-      log[3] = buf[0];
-      log[4] = buf[1];
-      log[5] = buf[2];
-      log[6] = robotOdometryGetVelocityXLocal();
-      log[7] = robotOdometryGetVelocityYLocal();
-      log[8] = odometryGetWheelSpeed(A, REVS_PER_SEC);
-      log[9] = odometryGetWheelSpeed(B, REVS_PER_SEC);
-      log[10] = odometryGetWheelSpeed(C, REVS_PER_SEC);
+      log[2] = getGyroAngle( GYRO_AXIS_X );
+      log[3] = getGyroAngle( GYRO_AXIS_Y );
+      log[4] = getGyroAngle( GYRO_AXIS_Z );
+      log[5] = buf[0];
+      log[6] = buf[1];
+      log[7] = buf[2];
+      log[8] = robotOdometryGetVelocityXLocal();
+      log[9] = robotOdometryGetVelocityYLocal();
+      log[10] = odometryGetWheelSpeed(A, REVS_PER_SEC);
+      log[11] = odometryGetWheelSpeed(B, REVS_PER_SEC);
+      log[12] = odometryGetWheelSpeed(C, REVS_PER_SEC);
 
-      sendLog( &SD3, log, 11);
+      sendLog( &SD3, log, 13);
 
       time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
     }
