@@ -24,7 +24,7 @@ void testGyroscope(void)
     systime_t time = chVTGetSystemTime();
     while (true)
     {
-        float axis = getGyroAngle(GYRO_AXIS_Z);
+        float axis = getGyroAngle(GYRO_AXIS_X);
 
 #ifdef MATLAB_TEST
         sdWrite(&SD6, (uint8_t*) &axis, 4);
