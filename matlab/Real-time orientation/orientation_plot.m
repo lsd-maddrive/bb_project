@@ -1,4 +1,4 @@
-close all; clear; clc
+ close all; clear; clc
 
 deg2rad = pi / 180;
 
@@ -57,7 +57,7 @@ while(1)
     
     % around Y
     x1 = cos(angY * deg2rad) * x - sin(angY * deg2rad) * z1;
-    z2 = +sin(angY * deg2rad) * x + cos(angY * deg2rad) * z1;
+    z2 = sin(angY * deg2rad) * x + cos(angY * deg2rad) * z1;
     
     % around Z
     x2 = cos(angZ * deg2rad) * x1 + sin(angZ * deg2rad) * y1;

@@ -123,6 +123,9 @@ async def robot_control(csv_logger):
         # await asyncio.sleep(3)
 
         logger.debug("Connected to %s", joy.device.name)
+
+        port.write(struct.pack('B', 185))
+
         time = datetime.now()
         while joy.leftTrigger() < 0.8:
 
