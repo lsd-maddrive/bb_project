@@ -5,10 +5,11 @@ float   angularSpeedControl = 0;
 float   angleIntgController = 0;
 float   v_x = 0;
 float   v_y = 0;
-float   wheel_speed_A = 0;
-float   wheel_speed_B = 0;
-float   wheel_speed_C = 0;
+float   wheel_speed_A       = 0;
+float   wheel_speed_B       = 0;
+float   wheel_speed_C       = 0;
 
+bool    odom_permeation_flag = false;
 
 /**
  * @brief       Integral of (input) d_phi
@@ -38,32 +39,34 @@ static void angle_vt_cb( void *arg )
 {
     arg = arg;
 
-    float realAngle_Z = getGyroAngle( GYRO_AXIS_Z );
-
-    float anglePropError = angleIntegral - realAngle_Z;
-
-
-    if( anglePropError > 180 )
-      anglePropError -= 360;
-    else if( anglePropError < -180 )
-      anglePropError += 360;
-
-
-    angleIntgController += angleController.ki * anglePropError;
-    angleIntgController = CLIP_VALUE(
-        angleIntgController,
-        -angleController.intgSaturation,
-        angleController.intgSaturation
-    );
-
-    angularSpeedControl = angleController.kp * anglePropError + angleIntgController;
-
-    if( abs(anglePropError) <= angleController.propDeadZone )
+    if( odom_permeation_flag )
     {
-        angularSpeedControl = 0;
-        angleIntgController = 0;
-    }
+        float realAngle_Z = getGyroAngle( GYRO_AXIS_Z );
 
+        float anglePropError = angleIntegral - realAngle_Z;
+
+
+        if( anglePropError > 180 )
+        anglePropError -= 360;
+        else if( anglePropError < -180 )
+        anglePropError += 360;
+
+
+        angleIntgController += angleController.ki * anglePropError;
+        angleIntgController = CLIP_VALUE(
+            angleIntgController,
+            -angleController.intgSaturation,
+            angleController.intgSaturation
+        );
+
+        angularSpeedControl = angleController.kp * anglePropError + angleIntgController;
+
+        if( abs(anglePropError) <= angleController.propDeadZone )
+        {
+            angularSpeedControl = 0;
+            angleIntgController = 0;
+        }
+    }
 
     chSysLockFromISR();
     chVTSetI( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
@@ -90,36 +93,38 @@ float       k_C[3]  = {0, 0, 0};
  */
 void robotOdometrySetSpeed( float v_x_glob, float v_y_glob, float angle_glob, float k )
 {
-
-    robotOdometryAddAngle( angle_glob, k );
-
-
-    float real_z_angle  = getGyroAngle( GYRO_AXIS_Z );
-    float angle_cos     = cosf(real_z_angle * GRAD_2_RAD);
-    float angle_sin     = sinf(real_z_angle * GRAD_2_RAD);
-
-    // convert global v_x_glob, v_y_glob to local
-    v_x = -(angle_cos * v_x_glob + angle_sin * v_y_glob);
-
-    v_y = -(-angle_sin * v_x_glob + angle_cos * v_y_glob);
+    if( odom_permeation_flag )
+    {
+        robotOdometryAddAngle( angle_glob, k );
 
 
+        float real_z_angle  = getGyroAngle( GYRO_AXIS_Z );
+        float angle_cos     = cosf(real_z_angle * GRAD_2_RAD);
+        float angle_sin     = sinf(real_z_angle * GRAD_2_RAD);
 
-    wheel_speed_A = k_A[0] * v_x +
-                    k_A[1] * v_y +
-                    k_A[2] * angularSpeedControl;
+        // convert global v_x_glob, v_y_glob to local
+        v_x = -(angle_cos * v_x_glob + angle_sin * v_y_glob);
 
-    wheel_speed_B = k_B[0] * v_x +
-                    k_B[1] * v_y +
-                    k_B[2] * angularSpeedControl;
+        v_y = -(-angle_sin * v_x_glob + angle_cos * v_y_glob);
 
-    wheel_speed_C = k_C[0] * v_x +
-                    k_C[1] * v_y +
-                    k_C[2] * angularSpeedControl;
 
-    wheelControlSetSpeed( wheel_speed_A, A, REVS_PER_SEC );
-    wheelControlSetSpeed( wheel_speed_B, B, REVS_PER_SEC );
-    wheelControlSetSpeed( wheel_speed_C, C, REVS_PER_SEC );
+
+        wheel_speed_A = k_A[0] * v_x +
+                        k_A[1] * v_y +
+                        k_A[2] * angularSpeedControl;
+
+        wheel_speed_B = k_B[0] * v_x +
+                        k_B[1] * v_y +
+                        k_B[2] * angularSpeedControl;
+
+        wheel_speed_C = k_C[0] * v_x +
+                        k_C[1] * v_y +
+                        k_C[2] * angularSpeedControl;
+
+        wheelControlSetSpeed( wheel_speed_A, A, REVS_PER_SEC );
+        wheelControlSetSpeed( wheel_speed_B, B, REVS_PER_SEC );
+        wheelControlSetSpeed( wheel_speed_C, C, REVS_PER_SEC );
+    }
 }
 
 
@@ -158,6 +163,24 @@ void robotOdometryInit( void )
     chVTSet( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
 
     isInitialized = true;
+}
+
+/**
+ * @brief       Permeation is enabled,
+ *              control system is enabled
+ */
+void robotOdometrySetPermeation( void )
+{
+    odom_permeation_flag = true;
+}
+
+/**
+ * @brief       Permeation is disabled,
+ *              control system is disabled
+ */
+void robotOdometryResetPermeation( void )
+{
+    odom_permeation_flag = false;
 }
 
 /************ Just bunch of getters ****************/

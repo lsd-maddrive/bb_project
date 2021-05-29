@@ -1,7 +1,8 @@
-#include <tests.h>
+#include "tests.h"
 #include "robot_odometry.h"
 #include "lld_gyroscope.h"
 #include "logger.h"
+#include "lld_control.h"
 
 static const SerialConfig sdcfg = {
   .speed = 115200,
@@ -44,26 +45,24 @@ void testJoystick( void )
 void testRobotWithJoystick( void )
 {
     debug_stream_init();
+    robotOdometryInit();
 
     uint16_t    time_delta  = 100;
     uint8_t     start_cmd = 0;
 
-    systime_t   time = chVTGetSystemTime( );
     while( (int)start_cmd != 185 )
     {
-        start_cmd = sdGetTimeout( &SD3, TIME_IMMEDIATE );
-        time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
+        start_cmd = sdGet( &SD3 );
     }
 
-    robotOdometryInit();
-
+    robotOdometrySetPermeation( );
 
     float log[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     float buf[3] = {0, 0, 0};
 
     float       time_k      = (float)time_delta * 0.001;
 
-    time = chVTGetSystemTime( );
+    systime_t   time = chVTGetSystemTime( );
     while( true )
     {
       sdReadTimeout( &SD3, (uint8_t*) &buf, 12, TIME_IMMEDIATE );
