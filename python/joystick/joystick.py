@@ -113,7 +113,7 @@ async def robot_control(csv_logger):
         port = serial.Serial('/dev/ttyACM0', 115200)
         logger.debug(f"USB is connected successfully!")
 
-        tcp_client = TcpLog('192.168.90.101', 8081)
+        tcp_client = TcpLog('10.139.1.133', 8081)
         tcp_client.open()
         
         # Instantiate the controller
