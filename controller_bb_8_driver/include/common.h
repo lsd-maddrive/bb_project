@@ -41,7 +41,7 @@ extern "C" {
 //  LOGGER TEST
 #define     PROGRAM_LOGGER_TEST                         15
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROBOT_WITH_JOYSTICK_TEST
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_GYROSCOPE_TEST
 
 
 /*============================================================================*/

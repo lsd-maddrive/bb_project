@@ -2,6 +2,7 @@
 #include "robot_odometry.h"
 #include "lld_gyroscope.h"
 #include "logger.h"
+#include <lld_control.h>
 
 static const SerialConfig sdcfg = {
   .speed = 115200,
@@ -44,6 +45,7 @@ void testJoystick( void )
 void testRobotWithJoystick( void )
 {
     debug_stream_init();
+    lldControlInit();
 
     uint16_t    time_delta  = 100;
     uint8_t     start_cmd = 0;
@@ -51,10 +53,11 @@ void testRobotWithJoystick( void )
     systime_t   time = chVTGetSystemTime( );
     while( (int)start_cmd != 185 )
     {
-        start_cmd = sdGetTimeout( &SD3, TIME_IMMEDIATE );
+        start_cmd = sdGet( &SD3 );
+
         time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
     }
-
+    palSetLine(LINE_LED3);
     robotOdometryInit();
 
 
