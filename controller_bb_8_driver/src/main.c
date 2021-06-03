@@ -76,6 +76,6 @@ int main(void)
         testsRoutines();
 
     #else
-        // main routine
+        mainUnitsInit();
     #endif
 }

@@ -8,6 +8,8 @@
 void testRobotOdometry ( void )
 {
     robotOdometryInit();
+    robotOdometrySetPermeation( );
+
     debug_stream_init();
 
     float       test_v_x    = 0;
