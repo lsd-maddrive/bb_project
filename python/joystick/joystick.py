@@ -9,7 +9,7 @@ from src.tcp import TcpLog
 from datetime import datetime
 from datetime import timedelta
 
-from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES
+from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES, TCP_FLAG
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -91,7 +91,8 @@ def handle_package(port, csv_logger, tcp_client):
             csv_logger.new_file()
         elif package[3] == 0:
             csv_logger.log_line(package[4:])
-        tcp_client.send(package[12:24])
+        if TCP_FLAG:
+            tcp_client.send(package[12:24])
     port.reset_input_buffer()
 
 
@@ -113,8 +114,9 @@ async def robot_control(csv_logger):
         port = serial.Serial('/dev/ttyACM0', 115200)
         logger.debug(f"USB is connected successfully!")
 
-        tcp_client = TcpLog('192.168.90.101', 8081)
-        tcp_client.open()
+        if TCP_FLAG:
+            tcp_client = TcpLog('192.168.90.101', 8081)
+            tcp_client.open()
         
         # Instantiate the controller
         joy = Joystick()
