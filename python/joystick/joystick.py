@@ -116,6 +116,8 @@ async def robot_control(csv_logger):
         if TCP_FLAG:
             tcp_client = TcpLog('192.168.90.101', 8081)
             tcp_client.open()
+        else:
+            tcp_client = None                
         
         # Instantiate the controller
         joy = Joystick()
