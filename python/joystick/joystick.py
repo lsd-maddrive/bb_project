@@ -91,7 +91,7 @@ def handle_package(port, csv_logger, tcp_client):
             csv_logger.new_file()
         elif package[3] == 0:
             csv_logger.log_line(package[4:])
-        if TCP_FLAG:
+        if tcp_client is not None:
             tcp_client.send(package[12:24])
     port.reset_input_buffer()
 
