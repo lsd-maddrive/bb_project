@@ -15,6 +15,18 @@
 void robotOdometryInit( void );
 
 /**
+ * @brief       Permeation is enabled,
+ *              control system is enabled
+ */
+void robotOdometrySetPermeation( void );
+
+/**
+ * @brief       Permeation is disabled,
+ *              control system is disabled
+ */
+void robotOdometryResetPermeation( void );
+
+/**
  * @brief       Set linera speed of robot 
  * @args
  *              v_x_glob - linear speed x-axis [m/s]

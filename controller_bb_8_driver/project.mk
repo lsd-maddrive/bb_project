@@ -8,6 +8,7 @@ PROJECT_MODULES = 	src/lld_control.c			\
 					src/lcd.c					\
 					src/lld_gyroscope.c			\
 					src/logger.c				\
+					src/main_control_unit.c 	\
 
 				  
 PROJECT_TESTS   =	tests/test_lld_control.c	\

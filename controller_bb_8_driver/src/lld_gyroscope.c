@@ -50,7 +50,7 @@ static bool             isInitialized       = false;
 /**
  * @brief   Initialize gyroscope
  * @args
- *          priopity - NORMALPRIO +/- numbers
+ *          priority - NORMALPRIO +/- numbers
  */
 void gyroscopeInit( tprio_t priority )
 {

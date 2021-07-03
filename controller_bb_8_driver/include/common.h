@@ -34,7 +34,7 @@ extern "C" {
 #define     PROGRAM_LINEAR_SPEED_MATLAB_TEST            10
 #define     PROGRAM_ROBOT_ODOMETRY_TEST                 11
 //  GYROSCOPE TEST
-#define		PROGRAM_GYROSCOPE_TEST						12
+#define		  PROGRAM_GYROSCOPE_TEST				    12
 //  JOYSTICK TESTS
 #define     PROGRAM_JOYSTICK_TEST                       13
 #define     PROGRAM_ROBOT_WITH_JOYSTICK_TEST            14
@@ -113,6 +113,17 @@ typedef struct {
  * @note    Must be called before EXT driver work
  */
 void commonExtDriverInit ( void );
+
+
+/**
+ * @brief   Initialization of base units for main programm
+ */
+void mainUnitsInit( void );
+
+/**
+ * @brief   Main control program
+ */
+void mainControlTask( void );
 
 
 #ifdef __cplusplus

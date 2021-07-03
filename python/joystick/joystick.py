@@ -5,10 +5,11 @@ import serial
 import struct
 from src.xbox_one import Joystick
 from src.robot_logging import CsvLogger
+from src.tcp import TcpLog
 from datetime import datetime
 from datetime import timedelta
 
-from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES
+from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES, TCP_FLAG
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -76,19 +77,22 @@ def calc_angle_speed(omega):
     return omega * ANG_SPEED_MAX
 
 
-def read_line(port, csv_logger):
+def handle_package(port, csv_logger, tcp_client):
     """
-    Reading of data from mcu. If everything is fine, saving it to csv
+    Reading of data from mcu. If everything is fine, save it to csv and send via tcp to matlab
     :param port: Serial port to read. Need to do because of async: can't see from outer space
     :param csv_logger: logger class exemplar. Need to do because of async: can't see from outer space
+    :param tcp_client: tcp client class exemplar. Need to do because of async: can't see from outer space
     """
-    package = port.read(48)
+    package = port.read(56)
     if [package[i] for i in range(3)] == START_BYTES:
         if package[3] == 1:
             csv_logger.flush()
             csv_logger.new_file()
         elif package[3] == 0:
             csv_logger.log_line(package[4:])
+        if tcp_client is not None:
+            tcp_client.send(package[12:24])
     port.reset_input_buffer()
 
 
@@ -108,7 +112,12 @@ async def robot_control(csv_logger):
         joy = 0
         port = 0
         port = serial.Serial('/dev/ttyACM0', 115200)
-        logger.debug(f"USB is connected successfully!")
+        logger.debug(f"USB is connected")
+        if TCP_FLAG:
+            tcp_client = TcpLog('192.168.90.101', 8081)
+            tcp_client.open()
+        else:
+            tcp_client = None                
         
         # Instantiate the controller
         joy = Joystick()
@@ -117,6 +126,9 @@ async def robot_control(csv_logger):
         # await asyncio.sleep(3)
 
         logger.debug("Connected to %s", joy.device.name)
+
+        port.write(struct.pack('B', 185))
+
         time = datetime.now()
         while joy.leftTrigger() < 0.8:
 
@@ -129,7 +141,7 @@ async def robot_control(csv_logger):
                                                    joy.rightTrigger())
             # Usart data transmit
             port.write(struct.pack('<fff', float(velocity_x), float(velocity_y), float(ang_speed)))
-            read_line(port, csv_logger)
+            handle_package(port, csv_logger, tcp_client)
 
             await wait_until(time)
 
