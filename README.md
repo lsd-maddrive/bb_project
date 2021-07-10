@@ -6,7 +6,12 @@
 
 ## Development 
 
-
+* создать и активировать виртуальное окружение `python -m venv venv`
+* установить необходимые пакеты `pip3 install -r python/joystick/requirements`
+* установить pre-commit (на Windows не работает, так что этот пункт можно пропустить)
+```bash
+pre-commit install 
+```
 
 ## Полезные ссылки
 
