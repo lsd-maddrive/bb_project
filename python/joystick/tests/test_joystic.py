@@ -1,5 +1,5 @@
+import sys
 
-import sys 
 sys.path.append("../")
 import time
 
@@ -10,5 +10,5 @@ joy.close()
 joy = Joystick()
 # time.sleep(5)
 for i in range(20):
-	time.sleep(0.1)
-	print(joy.leftTrigger())
+    time.sleep(0.1)
+    print(joy.leftTrigger())

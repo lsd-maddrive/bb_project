@@ -1,10 +1,20 @@
 # BB-8 project
 
-Проект под командной разработкой, направленный на создание прикольной зверюхи из Звёздных войн   
+Проект под командной разработкой, направленный на создание прикольной зверюхи a-ля BB-8 Звёздных войн, но с блэкджеком и силовыми драйверами. 
 
 Некоторые [правила оформления](https://github.com/serykhelena/bb-8_project/blob/develop/controller_bb_8_driver/docs/dev_rules.md)
 
-Полезные ссылки:
+## Development 
+
+* создать и активировать виртуальное окружение `python -m venv venv`
+* установить необходимые пакеты `pip3 install -r python/joystick/requirements`
+* установить pre-commit (на Windows не работает, так что этот пункт можно пропустить)
+```bash
+pre-commit install 
+```
+
+## Полезные ссылки
+
 * [F767ZI Reference manual (RM)](http://www.st.com/content/ccc/resource/technical/document/reference_manual/group0/96/8b/0d/ec/16/22/43/71/DM00224583/files/DM00224583.pdf/jcr:content/translations/en.DM00224583.pdf)
 * [F767ZI Datasheet (DS)](http://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf)
 * [F767ZI Nucleo pinout](https://os.mbed.com/platforms/ST-Nucleo-F767ZI/)
@@ -23,7 +33,6 @@
 ./pi_load_stm.sh 
 ``` 
 
-## Составляющие робота 
+## Кладезь информации про робота 
 
-* [Моторы 1:27](https://aliexpress.ru/item/32966475558.html?spm=a2g0s.9042311.0.0.27424c4dTAVrdP)
-* [Колёса 100 мм](https://aliexpress.ru/item/32944892463.html?spm=a2g0o.productlist.0.0.2af044a2reCWox&algo_pvid=ed7e1e0c-f34e-4549-a6df-6152c8292dc4&algo_expid=ed7e1e0c-f34e-4549-a6df-6152c8292dc4-26&btsid=fe606a04-0aec-413d-965f-b56420586fb7&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_55)
+* [Slite](https://leti-acs-dep.slite.com/app/channels/lDx08uK0Zx)
