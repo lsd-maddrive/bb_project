@@ -1,15 +1,8 @@
 import logging
-
-logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
-
-import math
 import asyncio
 import serial
 import struct
-from src.xbox_one import Joystick
+from src.xbox_one import Gamepad, GamepadButtons, GamepadAxis
 from src.robot_logging import CsvLogger
 from src.tcp import TcpLog
 from datetime import datetime
@@ -17,6 +10,11 @@ from datetime import timedelta
 
 from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES, TCP_FLAG
 from utils import calc_angle, calc_velocity, calc_angle_speed
+
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 
 def handle_package(port, csv_logger, tcp_client):
@@ -49,9 +47,14 @@ async def wait_until(dt):
         await asyncio.sleep(delta)
 
 
-async def robot_control(csv_logger):
+async def gamepad_loop(dev, event):
+    while not event.is_set():
+        dev.update_buttons()
+        await asyncio.sleep(0.05)
+
+
+async def robot_control(dev, csv_logger, event):
     try:
-        joy = 0
         port = 0
         port = serial.Serial("/dev/ttyACM0", 115200)
         logger.debug("USB is connected")
@@ -61,25 +64,20 @@ async def robot_control(csv_logger):
         else:
             tcp_client = None
 
-        # Instantiate the controller
-        joy = Joystick()
-
-        # Maybe not necessary. Gamepad store old values for some reason. Maybe only 360
-        # await asyncio.sleep(3)
-
-        logger.debug("Connected to %s", joy.device.name)
+        logger.debug("Connected to %s", dev.device.name)
 
         port.write(struct.pack("B", 185))
 
         time = datetime.now()
-        while joy.leftTrigger() < 0.8:
+        while not dev.read_button(GamepadButtons.LB.value):
 
             time = time + timedelta(milliseconds=100)
 
-            ang_speed = calc_angle_speed(joy.rightYAxis(), ANG_SPEED_MAX)
+            ang_speed = calc_angle_speed(dev.get_axis_value(GamepadAxis.RIGHT_Y_AXIS), ANG_SPEED_MAX)
 
             velocity_x, velocity_y = calc_velocity(
-                joy.leftXAxis(), joy.leftYAxis(), joy.rightTrigger(), V_MAX
+                dev.get_axis_value(GamepadAxis.LEFT_X_AXIS), dev.get_axis_value(GamepadAxis.LEFT_Y_AXIS),
+                dev.get_axis_value(GamepadAxis.RIGHT_TRIGGER), V_MAX
             )
             # Usart data transmit
             port.write(
@@ -90,41 +88,51 @@ async def robot_control(csv_logger):
             handle_package(port, csv_logger, tcp_client)
 
             await wait_until(time)
+        event.set()
 
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error("USB port is not correct. Connection failed!")
     except AttributeError:
         # to avoid exception in joy.close()
-        joy = 0
+        dev = 0
         logger.error("Joystick is turned off. Check it, please!")
     except OSError:
         logger.error("Joystick fell asleep!")
     finally:
         csv_logger.stop()
         # Close out when done
-        if joy != 0:
-            joy.close()
+        if dev != 0:
+            dev.close()
             logger.debug("Joystick is closed successfully")
         if port != 0:
             port.close()
             logger.debug("Serial port is closed successfully")
+        event.set()
 
 
-async def log(csv_logger):
-    while csv_logger.run:
+async def log(csv_logger, event):
+    while event.is_set():
         csv_logger.flush()
         await asyncio.sleep(5)
 
 
 def main():
-    csv_logger = CsvLogger("Logs")
-    loop = asyncio.get_event_loop()
-    tasks = [
-        loop.create_task(robot_control(csv_logger)),
-        loop.create_task(log(csv_logger)),
-    ]
-    loop.run_until_complete(asyncio.wait(tasks))
-    loop.close()
+    try:
+        dev = Gamepad()
+        csv_logger = CsvLogger("Logs")
+        event = asyncio.Event()
+        loop = asyncio.get_event_loop()
+        tasks = [
+            loop.create_task(robot_control(dev, csv_logger, event)),
+            loop.create_task(log(csv_logger, event)),
+            loop.create_task(gamepad_loop(dev, event)),
+        ]
+        loop.run_until_complete(asyncio.wait(tasks))
+        loop.close()
+    except AttributeError:
+        # to avoid exception in joy.close()
+        joy = 0
+        logger.error("Joystick is turned off. Check it, please!")
 
 
 if __name__ == "__main__":
