@@ -72,14 +72,15 @@ async def robot_control(dev, csv_logger, event):
 
         time = datetime.now()
         while not dev.read_button(GamepadButtons.LB.value):
+            
 
             time = time + timedelta(milliseconds=100)
 
-            ang_speed = calc_angle_speed(dev.get_axis_value(GamepadAxis.RIGHT_Y_AXIS), ANG_SPEED_MAX)
+            ang_speed = calc_angle_speed(dev.get_axis_value(GamepadAxis.RIGHT_Y_AXIS.value), ANG_SPEED_MAX)
 
             velocity_x, velocity_y = calc_velocity(
-                dev.get_axis_value(GamepadAxis.LEFT_X_AXIS), dev.get_axis_value(GamepadAxis.LEFT_Y_AXIS),
-                dev.get_axis_value(GamepadAxis.RIGHT_TRIGGER), V_MAX
+                dev.get_axis_value(GamepadAxis.LEFT_X_AXIS.value), dev.get_axis_value(GamepadAxis.LEFT_Y_AXIS.value),
+                dev.get_axis_value(GamepadAxis.RIGHT_TRIGGER.value), V_MAX
             )
             # Usart data transmit
             port.write(
@@ -113,7 +114,7 @@ async def robot_control(dev, csv_logger, event):
 
 
 async def log(csv_logger, event):
-    while event.is_set():
+    while not event.is_set():
         csv_logger.flush()
         await asyncio.sleep(5)
 
