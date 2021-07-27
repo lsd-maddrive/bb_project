@@ -1,6 +1,10 @@
 import evdev
-import time
+import logging
 from enum import IntEnum
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 
 class GamepadAxis(IntEnum):
@@ -45,11 +49,15 @@ class Gamepad(object):
     """
 
     def __init__(self):
+        self.name = None
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         for i in devices:
             if ("Xbox" in i.name) or ("X-Box" in i.name):
                 self.device = i
+                self.name = self.device.name
                 break
+        if self.name is None:
+            return
         self.key_states = {}
         for i in GamepadButtons:
             self.key_states[i.name] = {}
@@ -98,7 +106,8 @@ class Gamepad(object):
             if not self.key_states[GamepadButtons(key).name]['status']:
                 self.key_states[GamepadButtons(key).name]['value'] = True
                 self.key_states[GamepadButtons(key).name]['status'] = True
-        elif not self.key_states[GamepadButtons(key).name]['value'] and self.key_states[GamepadButtons(key).name]['status']:
+        elif not self.key_states[GamepadButtons(key).name]['value']\
+                and self.key_states[GamepadButtons(key).name]['status']:
             self.key_states[GamepadButtons(key).name]['status'] = False
 
     def update_buttons(self):
@@ -157,20 +166,3 @@ class Gamepad(object):
                 return self._normalize(axis)
         raise ValueError('Not an axis')
 
-
-def main():
-    """
-    Test of the device
-    """
-    dev = Gamepad()
-    while not dev.read_button(GamepadButtons.B.value):
-        dev.update_buttons()
-        if dev.read_button(GamepadButtons.RIGHT_ARROW.value):
-            dev.vibrate()
-        if dev.read_button(GamepadButtons.A.value):
-            print('A')
-        time.sleep(0.05)
-
-
-if __name__ == "__main__":
-    main()

@@ -1,5 +1,7 @@
 import logging
 import asyncio
+import time
+
 import serial
 import struct
 from src.xbox_one import Gamepad, GamepadButtons, GamepadAxis
@@ -55,7 +57,7 @@ async def gamepad_loop(dev, event):
 
 async def robot_control(dev, csv_logger, event):
     try:
-        port = 0
+        port = None
         port = serial.Serial("/dev/ttyACM0", 115200)
         logger.debug("USB is connected")
         if TCP_FLAG:
@@ -94,17 +96,17 @@ async def robot_control(dev, csv_logger, event):
         logger.error("USB port is not correct. Connection failed!")
     except AttributeError:
         # to avoid exception in joy.close()
-        dev = 0
-        logger.error("Joystick is turned off. Check it, please!")
+        dev = None
+        logger.error("Gamepad is turned off. Check it, please!")
     except OSError:
-        logger.error("Joystick fell asleep!")
+        logger.error("Gamepad fell asleep!")
     finally:
         csv_logger.stop()
         # Close out when done
-        if dev != 0:
+        if dev is not None:
             dev.close()
-            logger.debug("Joystick is closed successfully")
-        if port != 0:
+            logger.debug("Gamepad is closed successfully")
+        if port is not None:
             port.close()
             logger.debug("Serial port is closed successfully")
         event.set()
@@ -117,22 +119,27 @@ async def log(csv_logger, event):
 
 
 def main():
-    try:
+    for _ in range(5):
         dev = Gamepad()
-        csv_logger = CsvLogger("Logs")
-        event = asyncio.Event()
-        loop = asyncio.get_event_loop()
-        tasks = [
-            loop.create_task(robot_control(dev, csv_logger, event)),
-            loop.create_task(log(csv_logger, event)),
-            loop.create_task(gamepad_loop(dev, event)),
-        ]
-        loop.run_until_complete(asyncio.wait(tasks))
-        loop.close()
-    except AttributeError:
-        # to avoid exception in joy.close()
-        joy = 0
-        logger.error("Joystick is turned off. Check it, please!")
+        if dev.name is None:
+            logger.debug("Check the gamepad")
+            time.sleep(3)
+        else:
+            break
+    if dev.name is None:
+        logger.error("Gamepad is unavailable")
+        return
+    logger.debug("%s is connected", dev.name)
+    csv_logger = CsvLogger("Logs")
+    event = asyncio.Event()
+    loop = asyncio.get_event_loop()
+    tasks = [
+        loop.create_task(robot_control(dev, csv_logger, event)),
+        loop.create_task(log(csv_logger, event)),
+        loop.create_task(gamepad_loop(dev, event)),
+    ]
+    loop.run_until_complete(asyncio.wait(tasks))
+    loop.close()
 
 
 if __name__ == "__main__":
