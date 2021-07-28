@@ -59,7 +59,7 @@ class Gamepad(object):
                 break
         if self.name is None:
             raise ExternalDeviceNotFound("No gamepad found")
-        self.logger.debug("%s is connected", self.name)
+        self._logger.debug("%s is connected", self.name)
         self.key_states = {}
         for i in GamepadButtons:
             self.key_states[i.name] = {}

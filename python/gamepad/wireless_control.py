@@ -11,7 +11,7 @@ from datetime import datetime
 from datetime import timedelta
 
 from src.config import V_MAX, ANG_SPEED_MAX, START_BYTES, TCP_FLAG
-from utils import calc_angle, calc_velocity, calc_angle_speed
+from utils import calc_velocity, calc_angle_speed
 
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -65,16 +65,13 @@ async def robot_control(dev, csv_logger, event):
             tcp_client.open()
         else:
             tcp_client = None
-
-        logger.debug("Connected to %s", dev.device.name)
-
+        # Start flag for STM
         port.write(struct.pack("B", 185))
 
-        time = datetime.now()
+        time_to_sleep = datetime.now()
         while not dev.read_button(GamepadButtons.LB.value):
             
-
-            time = time + timedelta(milliseconds=100)
+            time_to_sleep = time_to_sleep + timedelta(milliseconds=100)
 
             ang_speed = calc_angle_speed(dev.get_axis_value(GamepadAxis.RIGHT_Y_AXIS.value), ANG_SPEED_MAX)
 
@@ -90,15 +87,11 @@ async def robot_control(dev, csv_logger, event):
             )
             handle_package(port, csv_logger, tcp_client)
 
-            await wait_until(time)
-        event.set()
+            await wait_until(time_to_sleep)
+        # Stop other asyncio loops
 
     except (FileNotFoundError, serial.serialutil.SerialException):
         logger.error("USB port is not correct. Connection failed!")
-    except AttributeError:
-        # to avoid exception in joy.close()
-        dev = None
-        logger.error("Gamepad is turned off. Check it, please!")
     except OSError:
         logger.error("Gamepad fell asleep!")
     finally:
@@ -110,6 +103,7 @@ async def robot_control(dev, csv_logger, event):
         if port is not None:
             port.close()
             logger.debug("Serial port is closed successfully")
+        # Stop other asyncio loops
         event.set()
 
 
