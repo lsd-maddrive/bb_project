@@ -1,10 +1,10 @@
 import evdev
 import logging
 from enum import IntEnum
-logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
+
+
+class ExternalDeviceNotFound(IOError):
+    pass
 
 
 class GamepadAxis(IntEnum):
@@ -49,6 +49,7 @@ class Gamepad(object):
     """
 
     def __init__(self):
+        self._logger = self._logger = logging.getLogger(self.__class__.__name__)
         self.name = None
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         for i in devices:
@@ -57,7 +58,8 @@ class Gamepad(object):
                 self.name = self.device.name
                 break
         if self.name is None:
-            return
+            raise ExternalDeviceNotFound("No gamepad found")
+        self.logger.debug("%s is connected", self.name)
         self.key_states = {}
         for i in GamepadButtons:
             self.key_states[i.name] = {}

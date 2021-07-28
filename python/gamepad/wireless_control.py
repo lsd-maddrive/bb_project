@@ -4,7 +4,7 @@ import time
 
 import serial
 import struct
-from src.xbox_one import Gamepad, GamepadButtons, GamepadAxis
+from src.xbox_one import Gamepad, GamepadButtons, GamepadAxis, ExternalDeviceNotFound
 from src.robot_logging import CsvLogger
 from src.tcp import TcpLog
 from datetime import datetime
@@ -120,17 +120,18 @@ async def log(csv_logger, event):
 
 
 def main():
+    dev = None
     for _ in range(5):
-        dev = Gamepad()
-        if dev.name is None:
-            logger.debug("Check the gamepad")
+        try:
+            dev = Gamepad()
+        except ExternalDeviceNotFound:
+            logger.debug("Please check the gamepad")
             time.sleep(3)
         else:
             break
-    if dev.name is None:
+    if dev is None:
         logger.error("Gamepad is unavailable")
         return
-    logger.debug("%s is connected", dev.name)
     csv_logger = CsvLogger("Logs")
     event = asyncio.Event()
     loop = asyncio.get_event_loop()
