@@ -118,11 +118,10 @@ def main():
     for _ in range(5):
         try:
             dev = Gamepad()
+            break
         except ExternalDeviceNotFound:
             logger.debug("Please check the gamepad")
             time.sleep(3)
-        else:
-            break
     if dev is None:
         logger.error("Gamepad is unavailable")
         return

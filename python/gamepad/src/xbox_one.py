@@ -49,7 +49,7 @@ class Gamepad(object):
     """
 
     def __init__(self):
-        self._logger = self._logger = logging.getLogger(self.__class__.__name__)
+        self._logger = logging.getLogger(self.__class__.__name__)
         self.name = None
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         for i in devices:
