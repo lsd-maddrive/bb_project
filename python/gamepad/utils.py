@@ -1,5 +1,5 @@
-from typing import Union
 import math
+from typing import Tuple
 
 
 def calc_angle(x: float, y: float) -> float:
@@ -24,12 +24,13 @@ def calc_angle(x: float, y: float) -> float:
     return angle
 
 
-def calc_velocity(x: float, y: float, velocity: float, v_max) -> Union(float, float):
+def calc_velocity(x: float, y: float, velocity: float, v_max: float) -> Tuple[float, float]:
     """
     Calculation of axial velocities based on two axial values and vector velocity
     :param x:   x axis value [-1 1]
     :param y:   y axis value [-1 1]
-    :param velocity:    linear velocity [0 V_MAX], m/s
+    :param velocity:    normalized linear velocity [0 1]
+    :param v_max: velocity maximum value, m/s
     :return:    axial velocities [-V_MAX V_MAX], m/s
     """
     if math.sqrt(x ** 2 + y ** 2) < 0.15:
@@ -55,7 +56,8 @@ def calc_velocity(x: float, y: float, velocity: float, v_max) -> Union(float, fl
 def calc_angle_speed(omega: float, ang_speed_max: float) -> float:
     """
     Calculation of angular speed
-    :param omega: input value [-1 1]
+    :param omega: normalized angular speed [-1 1]
+    :param ang_speed_max: angular speed maximum value, deg/s
     :return: Angular speed [0 360] grad/s
     """
     if abs(omega) < 0.15:

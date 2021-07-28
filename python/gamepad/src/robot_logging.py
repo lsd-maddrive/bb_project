@@ -27,7 +27,8 @@ class CsvLogger:
             "wB",
             "wC",
         ]
-        self.run = 1
+        if not os.path.exists(self.folder):
+            os.makedirs(self.folder)
 
     def flush(self):
         if not self.buff:
@@ -51,7 +52,3 @@ class CsvLogger:
         )
         with open(self.current_file, "w", newline="") as log_file:
             csv.writer(log_file).writerow(self.header)
-
-    def stop(self):
-        self.flush()
-        self.run = 0

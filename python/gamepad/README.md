@@ -34,5 +34,5 @@ pip3 install -r requirements.txt
 4. Run python-script 
 
 ```bash
-python3 joystick.py 
+python3 gamepad.py 
 ```
