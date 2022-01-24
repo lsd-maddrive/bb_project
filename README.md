@@ -1,17 +1,10 @@
-# BB-8 project
+# BB-ka project
 
 Проект под командной разработкой, направленный на создание прикольной зверюхи a-ля BB-8 Звёздных войн, но с блэкджеком и силовыми драйверами. 
 
 Некоторые [правила оформления](https://github.com/serykhelena/bb-8_project/blob/develop/controller_bb_8_driver/docs/dev_rules.md)
 
-## Development 
-
-* создать и активировать виртуальное окружение `python -m venv venv`
-* установить необходимые пакеты `pip3 install -r python/joystick/requirements`
-* установить pre-commit (на Windows не работает, так что этот пункт можно пропустить)
-```bash
-pre-commit install 
-```
+## Development
 
 ## Полезные ссылки
 
@@ -32,7 +25,3 @@ pre-commit install
 ```bash
 ./pi_load_stm.sh 
 ``` 
-
-## Кладезь информации про робота 
-
-* [Slite](https://leti-acs-dep.slite.com/app/channels/lDx08uK0Zx)
