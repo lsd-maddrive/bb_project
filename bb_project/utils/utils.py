@@ -24,7 +24,9 @@ def calc_angle(x: float, y: float) -> float:
     return angle
 
 
-def calc_velocity(x: float, y: float, velocity: float, v_max: float) -> Tuple[float, float]:
+def calc_velocity(
+    x: float, y: float, velocity: float, v_max: float
+) -> Tuple[float, float]:
     """
     Calculation of axial velocities based on two axial values and vector velocity
     :param x:   x axis value [-1 1]

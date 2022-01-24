@@ -1,12 +1,14 @@
 import time
 import logging
-from src.xbox_one import Gamepad, GamepadButtons, GamepadAxis
+from bb_project.gamepad.xbox_one import Gamepad, GamepadButtons, GamepadAxis
+
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
 
+# TODO: remove into scripts
 def main():
     for _ in range(5):
         dev = Gamepad()
@@ -24,9 +26,9 @@ def main():
         if dev.read_button(GamepadButtons.RIGHT_ARROW.value):
             dev.vibrate()
         if dev.read_button(GamepadButtons.A.value):
-            print('A')
+            print("A")
         time.sleep(0.05)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

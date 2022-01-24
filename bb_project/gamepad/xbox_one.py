@@ -8,9 +8,10 @@ class ExternalDeviceNotFound(IOError):
 
 
 class GamepadAxis(IntEnum):
-    """"
+    """ "
     Enum for analog axes of XBOX One gamepad
     """
+
     LEFT_Y_AXIS = 0
     LEFT_X_AXIS = 1
     LEFT_TRIGGER = 2
@@ -23,6 +24,7 @@ class GamepadButtons(IntEnum):
     """
     Enum for buttons of XBOX One gamepad
     """
+
     A = 304
     B = 305
     X = 307
@@ -63,22 +65,24 @@ class Gamepad(object):
         self.key_states = {}
         for i in GamepadButtons:
             self.key_states[i.name] = {}
-            self.key_states[i.name]['value'] = False
-            self.key_states[i.name]['status'] = False
+            self.key_states[i.name]["value"] = False
+            self.key_states[i.name]["status"] = False
         self._setup_vibration()
 
     def _setup_vibration(self, duration=500):
         """
         Sets the type and duration of vibration
         """
-        rumble = evdev.ff.Rumble(strong_magnitude=0x0000, weak_magnitude=0xffff)
+        rumble = evdev.ff.Rumble(strong_magnitude=0x0000, weak_magnitude=0xFFFF)
         effect_type = evdev.ff.EffectType(ff_rumble_effect=rumble)
         duration_ms = duration
         effect = evdev.ff.Effect(
-            evdev.ecodes.FF_RUMBLE, -1, 0,
+            evdev.ecodes.FF_RUMBLE,
+            -1,
+            0,
             evdev.ff.Trigger(0, 0),
             evdev.ff.Replay(duration_ms, 0),
-            effect_type
+            effect_type,
         )
         self.effect_id = self.device.upload_effect(effect)
 
@@ -105,12 +109,14 @@ class Gamepad(object):
         Check and update button state preventing multiple presses if button is on hold
         """
         if key in self.device.active_keys():
-            if not self.key_states[GamepadButtons(key).name]['status']:
-                self.key_states[GamepadButtons(key).name]['value'] = True
-                self.key_states[GamepadButtons(key).name]['status'] = True
-        elif not self.key_states[GamepadButtons(key).name]['value']\
-                and self.key_states[GamepadButtons(key).name]['status']:
-            self.key_states[GamepadButtons(key).name]['status'] = False
+            if not self.key_states[GamepadButtons(key).name]["status"]:
+                self.key_states[GamepadButtons(key).name]["value"] = True
+                self.key_states[GamepadButtons(key).name]["status"] = True
+        elif (
+            not self.key_states[GamepadButtons(key).name]["value"]
+            and self.key_states[GamepadButtons(key).name]["status"]
+        ):
+            self.key_states[GamepadButtons(key).name]["status"] = False
 
     def update_buttons(self):
         """
@@ -121,39 +127,51 @@ class Gamepad(object):
                 self._check_button_state(i)
 
         if self.device.absinfo(17).value == -1:
-            if not self.key_states[GamepadButtons(0).name]['status']:
-                self.key_states[GamepadButtons(0).name]['value'] = True
-                self.key_states[GamepadButtons(0).name]['status'] = True
-        elif not self.key_states[GamepadButtons(0).name]['value'] and self.key_states[GamepadButtons(0).name]['status']:
-            self.key_states[GamepadButtons(0).name]['status'] = False
+            if not self.key_states[GamepadButtons(0).name]["status"]:
+                self.key_states[GamepadButtons(0).name]["value"] = True
+                self.key_states[GamepadButtons(0).name]["status"] = True
+        elif (
+            not self.key_states[GamepadButtons(0).name]["value"]
+            and self.key_states[GamepadButtons(0).name]["status"]
+        ):
+            self.key_states[GamepadButtons(0).name]["status"] = False
 
         if self.device.absinfo(17).value == 1:
-            if not self.key_states[GamepadButtons(1).name]['status']:
-                self.key_states[GamepadButtons(1).name]['value'] = True
-                self.key_states[GamepadButtons(1).name]['status'] = True
-        elif not self.key_states[GamepadButtons(1).name]['value'] and self.key_states[GamepadButtons(1).name]['status']:
-            self.key_states[GamepadButtons(1).name]['status'] = False
+            if not self.key_states[GamepadButtons(1).name]["status"]:
+                self.key_states[GamepadButtons(1).name]["value"] = True
+                self.key_states[GamepadButtons(1).name]["status"] = True
+        elif (
+            not self.key_states[GamepadButtons(1).name]["value"]
+            and self.key_states[GamepadButtons(1).name]["status"]
+        ):
+            self.key_states[GamepadButtons(1).name]["status"] = False
 
         if self.device.absinfo(16).value == -1:
-            if not self.key_states[GamepadButtons(2).name]['status']:
-                self.key_states[GamepadButtons(2).name]['value'] = True
-                self.key_states[GamepadButtons(2).name]['status'] = True
-        elif not self.key_states[GamepadButtons(2).name]['value'] and self.key_states[GamepadButtons(2).name]['status']:
-            self.key_states[GamepadButtons(2).name]['status'] = False
+            if not self.key_states[GamepadButtons(2).name]["status"]:
+                self.key_states[GamepadButtons(2).name]["value"] = True
+                self.key_states[GamepadButtons(2).name]["status"] = True
+        elif (
+            not self.key_states[GamepadButtons(2).name]["value"]
+            and self.key_states[GamepadButtons(2).name]["status"]
+        ):
+            self.key_states[GamepadButtons(2).name]["status"] = False
 
         if self.device.absinfo(16).value == 1:
-            if not self.key_states[GamepadButtons(3).name]['status']:
-                self.key_states[GamepadButtons(3).name]['value'] = True
-                self.key_states[GamepadButtons(3).name]['status'] = True
-        elif not self.key_states[GamepadButtons(3).name]['value'] and self.key_states[GamepadButtons(3).name]['status']:
-            self.key_states[GamepadButtons(3).name]['status'] = False
+            if not self.key_states[GamepadButtons(3).name]["status"]:
+                self.key_states[GamepadButtons(3).name]["value"] = True
+                self.key_states[GamepadButtons(3).name]["status"] = True
+        elif (
+            not self.key_states[GamepadButtons(3).name]["value"]
+            and self.key_states[GamepadButtons(3).name]["status"]
+        ):
+            self.key_states[GamepadButtons(3).name]["status"] = False
 
     def read_button(self, key):
         """
         Read state of the button and unset it
         """
-        if self.key_states[GamepadButtons(key).name]['value']:
-            self.key_states[GamepadButtons(key).name]['value'] = False
+        if self.key_states[GamepadButtons(key).name]["value"]:
+            self.key_states[GamepadButtons(key).name]["value"] = False
             return True
         return False
 
@@ -163,8 +181,10 @@ class Gamepad(object):
         """
         if type(axis) is int:
             if 0 <= axis < 6:
-                if axis == GamepadAxis.LEFT_X_AXIS.value or axis == GamepadAxis.RIGHT_X_AXIS.value:
+                if (
+                    axis == GamepadAxis.LEFT_X_AXIS.value
+                    or axis == GamepadAxis.RIGHT_X_AXIS.value
+                ):
                     return -self._normalize(axis)
                 return self._normalize(axis)
-        raise ValueError('Not an axis')
-
+        raise ValueError("Not an axis")
