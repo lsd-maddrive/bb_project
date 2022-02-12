@@ -151,7 +151,7 @@ static bool         isInitialized       = false;
 void lldEncoderInit( void )
 {
     if( isInitialized )
-        return; 
+        return;
 
     commonExtDriverInit();
 

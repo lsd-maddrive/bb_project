@@ -1,7 +1,7 @@
 close all
 clear, clc
 
-% TODO: clear all nasty if-s 
+% TODO: clear all nasty if-s
 % TODO: create common interface for comfortable usage
 
 % Init buffer
@@ -19,7 +19,7 @@ fopen(port);
 set(port, 'ByteOrder', 'littleEndian');
 disp('Connection is ready!');
 
-% TODO: change to float 
+% TODO: change to float
 desired_speed = 1; % Speed setting ([-3 3], rps)
 fwrite(port, cast(desired_speed * 100, 'int16'), 'int16');   % Send command to mcu
 
@@ -28,20 +28,20 @@ start_time = clock;
 
 while x_axis < time_length
     new_values = fread(port, [4, 1], 'int16');
-    
+
     % Break from the loop if timeout occured
     if (strcmp(lastwarn,'Unsuccessful read: A timeout occurred before the Terminator was reached or SIZE values were available..'))
         disp('Timeout');
         break;
     end
-    
+
     % Add new points to the plot
     x_axis = [x_axis etime(clock, start_time)];
     speed_setting_axis = [speed_setting_axis (new_values(1) / 100)];
     speed_A_axis = [speed_A_axis (new_values(2) / 100)];
     speed_B_axis = [speed_B_axis (new_values(3) / 100)];
     speed_C_axis = [speed_C_axis (new_values(4) / 100)];
-    
+
 end
 
 desired_speed = 0; % Speed setting ([-3 3], rps)
@@ -49,20 +49,20 @@ fwrite(port, cast(desired_speed * 100, 'int16'), 'int16');   % Send command to m
 
 while x_axis < time_length + 0.5
     new_values = fread(port, [4, 1], 'int16');
-    
+
     % Break from the loop if timeout occured
     if (strcmp(lastwarn,'Unsuccessful read: A timeout occurred before the Terminator was reached or SIZE values were available..'))
         disp('Timeout');
         break;
     end
-    
+
     % Add new points to the plot
     x_axis = [x_axis etime(clock, start_time)];
     speed_setting_axis = [speed_setting_axis (new_values(1) / 100)];
     speed_A_axis = [speed_A_axis (new_values(2) / 100)];
     speed_B_axis = [speed_B_axis (new_values(3) / 100)];
     speed_C_axis = [speed_C_axis (new_values(4) / 100)];
-    
+
 end
 
 desired_speed = -1; % Speed setting ([-3 3], rps)
@@ -70,20 +70,20 @@ fwrite(port, cast(desired_speed * 100, 'int16'), 'int16');   % Send command to m
 
 while x_axis < (time_length * 2 + 0.5)
     new_values = fread(port, [4, 1], 'int16');
-    
+
     % Break from the loop if timeout occured
     if (strcmp(lastwarn,'Unsuccessful read: A timeout occurred before the Terminator was reached or SIZE values were available..'))
         disp('Timeout');
         break;
     end
-    
+
     % Add new points to the plot
     x_axis = [x_axis etime(clock, start_time)];
     speed_setting_axis = [speed_setting_axis (new_values(1) / 100)];
     speed_A_axis = [speed_A_axis (new_values(2) / 100)];
     speed_B_axis = [speed_B_axis (new_values(3) / 100)];
     speed_C_axis = [speed_C_axis (new_values(4) / 100)];
-    
+
 end
 
 

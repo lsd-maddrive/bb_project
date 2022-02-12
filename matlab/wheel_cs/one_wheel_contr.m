@@ -4,18 +4,18 @@ delete(instrfind);
 dat = serial('COM11', 'BaudRate', 115200);
 dat.InputBufferSize = 4096;
 
-fopen(dat); 
-set(dat, 'ByteOrder', 'littleEndian'); 
+fopen(dat);
+set(dat, 'ByteOrder', 'littleEndian');
 
 disp 'Connection is ready!'
 
-% send start command 
+% send start command
 disp 'start!'
-fwrite(dat, 's', 'uint8'); 
+fwrite(dat, 's', 'uint8');
 
-cur = []; 
+cur = [];
 total = [];
-ref = []; 
+ref = [];
 
 
 iter = 6;
@@ -47,8 +47,8 @@ end
 
 
 plot(time, real_v, 'DisplayName', 'real-v', 'LineWidth', 2)
-grid on 
-hold on 
-plot(time, ref, 'DisplayName', 'ref-v', 'LineWidth', 1) 
+grid on
+hold on
+plot(time, ref, 'DisplayName', 'ref-v', 'LineWidth', 1)
 xlabel('t, s')
 legend

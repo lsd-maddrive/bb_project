@@ -42,7 +42,7 @@ odometrySpeedValue_t    odometryWheelPrevSpeedRPS_C_LPF     = 0;
 
 static void odom_update_vt_cb( void *arg )
 {
-    arg = arg; 
+    arg = arg;
 /**************** ENCODER A ********************/
     encCurRevsNumberA       = lldGetEncoderRevs( A );
     odometryEncRevPerSec[0] = (encCurRevsNumberA - encPrevRevsNumberA) * MS_2_SEC;
@@ -73,7 +73,7 @@ static void odom_update_vt_cb( void *arg )
     chSysUnlockFromISR();
 }
 
-static bool isInitialized   = false; 
+static bool isInitialized   = false;
 
 /**
  * @brief   Initialize periphery connected to encoder for odometry
@@ -82,20 +82,20 @@ static bool isInitialized   = false;
 void odometryInit( void )
 {
     if( isInitialized )
-        return; 
+        return;
 
     chVTObjectInit(&odom_update_vt);
     chVTSet( &odom_update_vt, MS2ST( VT_ODOM_MS ), odom_update_vt_cb, NULL );
 
-    lldEncoderInit( ); 
+    lldEncoderInit( );
 
-    isInitialized = true; 
+    isInitialized = true;
 }
 
 /**
- * @brief   Get speed of rotation of motor 
- * @args    Units of speed 
- *              [REVS_PER_SEC]    - revolutions per second 
+ * @brief   Get speed of rotation of motor
+ * @args    Units of speed
+ *              [REVS_PER_SEC]    - revolutions per second
  */
 odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t unit )
 {

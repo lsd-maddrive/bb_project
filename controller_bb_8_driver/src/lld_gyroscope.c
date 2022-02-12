@@ -65,7 +65,7 @@ void gyroscopeInit( tprio_t priority )
     initbuf[2] = 0x00;                      // High pass filter default configuration
     initbuf[3] = 0x00;                      // Too smart for me
     initbuf[4] = 0x30;                      // 2000dps
-    
+
     i2cSimpleWrite(GYRO_ADDR, initbuf, 5, 1000);
 
     chThdSleepMilliseconds(GYRO_INIT_TIME);
@@ -114,7 +114,7 @@ msg_t readGyroscope(int16_t *axis_values)
 {
     uint8_t gyro_temp[6] = {0, 0, 0, 0, 0, 0};
     msg_t msg = i2cRegisterRead(GYRO_ADDR, GYRO_DATA_REG, gyro_temp, 6, 10000);
-    
+
     uint8_t i = 0;
     for(i = 0; i < 3; i++)
     {

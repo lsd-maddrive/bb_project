@@ -15,7 +15,7 @@ while loop < 0.5
     if abs(w) < 0.2
         w = 0;
     end
-    
+
     x = x * 0.5;    % linear velocity, m/s
     set(plothandle, 'XData', [0 x(1)], 'YData', [0 -x(2)])
     drawnow;

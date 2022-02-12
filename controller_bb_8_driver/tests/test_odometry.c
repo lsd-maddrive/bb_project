@@ -5,12 +5,12 @@
 
 
 /*
- * @brief   Test motor speed 
+ * @brief   Test motor speed
  */
 void testMotorSpeed( void )
 {
-    debug_stream_init( ); 
-    odometryInit( ); 
+    debug_stream_init( );
+    odometryInit( );
 
     float   test_motor1_speed    = 0;
     float   test_motor2_speed    = 0;

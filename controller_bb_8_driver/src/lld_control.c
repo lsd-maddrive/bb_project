@@ -1,4 +1,4 @@
-#include <lld_control.h> 
+#include <lld_control.h>
 
 /*============================================================================*/
 /* PWM CONFIGURATION PINS                                                     */
@@ -106,10 +106,10 @@ static void lldDisableAllChannels( void )
     // Motor 1
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN1 );
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN1 );  // not working
-    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 ); 
+    pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_HIN2 );
     pwmDisableChannel( pwm1Driver, MOTOR1_PWM1CH_LIN2 );  // not working
 
-    //Motor 2 
+    //Motor 2
     pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN1 );
     pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_LIN1 );  // not working
     pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN2 );
@@ -123,7 +123,7 @@ static void lldDisableAllChannels( void )
 }
 
 /**
- * @brief   Configure all lines to be used for PWM 
+ * @brief   Configure all lines to be used for PWM
  */
 static void lldConfigureLineMode( void )
 {
@@ -147,10 +147,10 @@ static void lldConfigureLineMode( void )
 }
 
 
-static bool isInitialized   = false; 
+static bool isInitialized   = false;
 
-static float motor_b        = 0; 
-static float motor_k        = 0; 
+static float motor_b        = 0;
+static float motor_k        = 0;
 
 
 /**
@@ -160,9 +160,9 @@ static float motor_k        = 0;
 void lldControlInit( void )
 {
     if( isInitialized )
-        return; 
-    
-    motor_b = LLD_DUTY_MIN; 
+        return;
+
+    motor_b = LLD_DUTY_MIN;
     motor_k = ( PWM_PERIOD - motor_b ) / 100;
 
     /*** PWM pins configuration ***/
@@ -170,11 +170,11 @@ void lldControlInit( void )
 
     pwmStart( pwm1Driver, &pwm1conf );
     pwmStart( pwm8Driver, &pwm8conf );
-    
+
     // to avoid noise in contacts
     lldDisableAllChannels();
 
-    isInitialized = true; 
+    isInitialized = true;
 }
 
 
@@ -202,12 +202,12 @@ void lldControlSetRawMotorPower( motorNumberValue_t motor_num, uint32_t duty, ll
             case B:
                 pwmEnableChannel ( pwm8Driver, MOTOR2_PWM8CH_HIN1, duty );
                 pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN2 );
-                break; 
+                break;
 
             case C:
                 pwmEnableChannel ( pwm8Driver, MOTOR3_PWM8CH_HIN1, duty );
                 pwmDisableChannel( pwm1Driver, MOTOR3_PWM1CH_HIN2 );
-                break; 
+                break;
 
             default:
                 break;
@@ -225,7 +225,7 @@ void lldControlSetRawMotorPower( motorNumberValue_t motor_num, uint32_t duty, ll
             case B:
                 pwmEnableChannel ( pwm8Driver, MOTOR2_PWM8CH_HIN2, duty );
                 pwmDisableChannel( pwm8Driver, MOTOR2_PWM8CH_HIN1 );
-                break; 
+                break;
 
             case C:
                 pwmEnableChannel ( pwm1Driver, MOTOR3_PWM1CH_HIN2, duty );
@@ -248,7 +248,7 @@ void lldControlSetMotorPower( motorNumberValue_t motor_num, lldControlValue_t in
     inputPrc = CLIP_VALUE( inputPrc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
 //    motor_num = CLIP_VALUE( motor_num, 1, 3 );
 
-    uint32_t duty = abs(inputPrc) * motor_k + motor_b; 
+    uint32_t duty = abs(inputPrc) * motor_k + motor_b;
 
     if( inputPrc >= 0 )       // forward (clock-wise) rotation
     {

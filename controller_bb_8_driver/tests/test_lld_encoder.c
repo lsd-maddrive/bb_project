@@ -4,12 +4,12 @@
 
 // #define WITH_MOTOR
 /**
- * @brief   Test common encoder routine 
+ * @brief   Test common encoder routine
  * @note    Print number of ticks, (int)revs and state of direction
- *          0   - clockwise 
- *          1   - counterclockwise 
- *          
- *          #define WITH_MOTOR enable you to use motor 
+ *          0   - clockwise
+ *          1   - counterclockwise
+ *
+ *          #define WITH_MOTOR enable you to use motor
  */
 void testEncoderRoutine( void )
 {
@@ -23,7 +23,7 @@ void testEncoderRoutine( void )
     lldControlValue_t   test_duty2_prc    = 0;
     lldControlValue_t   test_duty3_prc    = 0;
     lldControlValue_t   test_delta_prc    = 10;
-#endif 
+#endif
     // Motor 1
     encoderTicksValue_t test_ticks1  = 0;
     encoderRevsValue_t  test_revs1   = 0;
@@ -55,7 +55,7 @@ void testEncoderRoutine( void )
         test_dir3    = lldGetEncoderDirection( C );
 
 #ifdef WITH_MOTOR
-        char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE ); 
+        char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE );
 
         switch( rcv_data )
         {
@@ -69,8 +69,8 @@ void testEncoderRoutine( void )
 
             case 'a':   // Motor B
                 test_duty2_prc += test_delta_prc;
-                break; 
-            
+                break;
+
             case 's':   // Motor B
                 test_duty2_prc -= test_delta_prc;
                 break;
@@ -87,10 +87,10 @@ void testEncoderRoutine( void )
                 test_duty1_prc  = 0;
                 test_duty2_prc  = 0;
                 test_duty3_prc  = 0;
-                break; 
-            
+                break;
+
             default:
-                break; 
+                break;
         }
         lldControlSetMotorPower( A, test_duty1_prc );
         lldControlSetMotorPower( B, test_duty2_prc );
@@ -112,9 +112,8 @@ void testEncoderRoutine( void )
                    test_ticks1, test_ticks2, test_ticks3,
                    (int32_t)test_revs1, (int32_t)test_revs2, (int32_t)test_revs3,
                    test_dir1, test_dir2, test_dir3 );
-#endif 
+#endif
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 600 ) );
     }
 }
-

@@ -9,7 +9,7 @@
 
 </div>
 
-Проект под командной разработкой, направленный на создание прикольной зверюхи a-ля BB-8 Звёздных войн, но с блэкджеком и силовыми драйверами. 
+Проект под командной разработкой, направленный на создание прикольной зверюхи a-ля BB-8 Звёздных войн, но с блэкджеком и силовыми драйверами.
 
 <p align=center>
 <img src="docs/images/bb1.jpg" width=300/>
@@ -19,6 +19,41 @@
 
 - Версия Python: 3.8
 - Операционная система: Ubuntu 20.04
+
+## Настройка проекта
+
+1. Установка 'make'
+
+    * Windows - Установите [chocolatey](https://chocolatey.org/install) и установите 'make' командой:
+    ```
+    choco install make
+    ```
+    * Linux
+    ```
+    sudo apt-get install build-essential
+    ```
+
+2. Установите Python 3.8
+    * Windows - Установите с [официального сайта](https://www.python.org/downloads/)
+    * Linux
+    ```
+    sudo apt install python3.8-dev
+    ```
+3. Установите `poetry`
+   * Windows - Используйте [официальные инструкции](https://python-poetry.org/docs/#windows-powershell-install-instructions) или команду powershell:
+   ```
+   (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
+   ```
+   * Linux
+    ```
+    make poetry-download
+    ```
+4. Установите форматтеры и другие инструменты для разработки
+    ```
+    make tools-install
+    ```
+5. При работе с Jupyter-ноутбуками используйте виртуальное окружение, созданное `poetry` - `.venv`
+
 
 ## Полезные ссылки
 

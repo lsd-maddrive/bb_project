@@ -32,7 +32,7 @@ surf([0 min(x)*3 max(x)*3], [0 min(y)*4 max(y)*4], [0 0 0; 0 0 0; 0 0 0], 'FaceA
 Tx = text(-500, 0, 100, "X:", 'FontSize', 50);
 Ty = text(-500, 0, 0, "Y:", 'FontSize', 50);
 Tz = text(-500, 0, -100, "Z:", 'FontSize', 50);
-% set frequency of plot 
+% set frequency of plot
 r = rateControl(10);
 reset(r)
 
@@ -50,23 +50,23 @@ while(1)
     angX = -buf(1);
     angY = -buf(2);
     angZ = buf(3);
-    
+
     % delete object before redraw
     delete(p);
-    
+
     % rotate object
     % around X
     y1 = cos(angX * deg2rad) * y - sin(angX * deg2rad) * z;
     z1 = sin(angX * deg2rad) * y + cos(angX * deg2rad) * z;
-    
+
     % around Y
     x1 = cos(angY * deg2rad) * x - sin(angY * deg2rad) * z1;
     z2 = sin(angY * deg2rad) * x + cos(angY * deg2rad) * z1;
-    
+
     % around Z
     x2 = cos(angZ * deg2rad) * x1 + sin(angZ * deg2rad) * y1;
     y2 = -sin(angZ * deg2rad) * x1 + cos(angZ * deg2rad) * y1;
-    
+
     % redraw plot
     fv.vertices = [x2, y2, z2];
     p = patch(fv,'FaceColor',       [0.8 0.8 1.0], ...

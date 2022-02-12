@@ -25,7 +25,7 @@ static THD_FUNCTION(StateGetter, arg)
 
         if( cmd == 185 )
         {
-            cur_system_state = RUN; 
+            cur_system_state = RUN;
         }
         else if( cmd == 186 )
         {

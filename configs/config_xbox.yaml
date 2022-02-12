@@ -1,11 +1,11 @@
 # Max linear velocity [m/s]
-v_max: 0.2 
+v_max: 0.2
 
 # Max angular speed [grad/s]
-ANG_SPEED_MAX: 80.0 
+ANG_SPEED_MAX: 80.0
 
 # Start bytes of log data transmission
-START_BYTES: [150, 139, 57]  
+START_BYTES: [150, 139, 57]
 
 # Enable TCP connection
-TCP_FLAG: False 
+TCP_FLAG: False

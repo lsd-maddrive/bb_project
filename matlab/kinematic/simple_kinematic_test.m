@@ -10,7 +10,7 @@ time_length = 10;           % Time window to be shown on figure, sec
 
 
 V_x = 0;  % Linear velocity, m/s
-V_y = 0; 
+V_y = 0;
 w = 1;      % angular velocity, rad/s
 [w_A, w_B, w_C] = inverse_kinematic(V_x, V_y, w);   % Get wheels speed
 
@@ -29,19 +29,19 @@ start_time = clock;
 
 while x_axis < time_length
     new_values = fread(port, [3, 1], 'int16');
-    
+
     % Break from the loop if timeout occured
     if (strcmp(lastwarn,'Unsuccessful read: A timeout occurred before the Terminator was reached or SIZE values were available..'))
         disp('Timeout');
         break;
     end
-    
+
     % Add new points to the plot
     x_axis = [x_axis etime(clock, start_time)];
     speed_A_axis = [speed_A_axis (new_values(1) / 100)];
     speed_B_axis = [speed_B_axis (new_values(2) / 100)];
     speed_C_axis = [speed_C_axis (new_values(3) / 100)];
-    
+
 end
 
 % Stop motor and close port

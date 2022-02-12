@@ -42,7 +42,7 @@ class GamepadButtons(IntEnum):
     RIGHT_ARROW = 3
 
 
-class Gamepad(object):
+class Gamepad:
     """
     Class of the gamepad. Search for device with 'Xbox' in name.
     It's assumed that there'll be only one such device and it'd be gamepad.

@@ -26,7 +26,7 @@ xlim([0 time_window]);
 ylim([-4 4]);
 ylabel('Speed, rps');
 xlabel('Time');
-grid on 
+grid on
 pause(0.5);
 % Usart settings
 port = serial('COM11', 'BaudRate', 115200);
@@ -43,13 +43,13 @@ fwrite(port, cast(([0 0 0] * 100), 'int16'), 'int16');
 while stop_check < 0.5
     counter = counter + 1;
     new_values = fread(port, [3, 1], 'int16');
-    
+
     % Break from the loop if timeout occured
     if (strcmp(lastwarn,'Unsuccessful read: A timeout occurred before the Terminator was reached or SIZE values were available..'))
         disp('Timeout');
         break;
     end
-    
+
     % Add new points to the plot and forget last one if necessary
     if x_axis(end) >= time_window
         x_axis = [x_axis(2:end) etime(clock, start_time)];
@@ -62,7 +62,7 @@ while stop_check < 0.5
         speed_B_axis = [speed_B_axis (new_values(2) / 100)];
         speed_C_axis = [speed_C_axis (new_values(3) / 100)];
     end
-    
+
     % Update plot
     if counter == update_period
         set(plotHandle(1), 'XData', x_axis, 'YData', speed_A_axis);
@@ -74,14 +74,14 @@ while stop_check < 0.5
         drawnow;
         counter = 0;
     end
-    
+
     % Stop loop from keyboard
     k = get(gcf,'CurrentCharacter');
     if k ~= '@'
         disp('Stopped by user');
         break;
     end
-    
+
     gamepad_vals = axis(joy, [1 2 3 4]);    % get data from gamepad
     V_xy_set = gamepad_vals(1:2);
     if abs(V_xy_set(1)) < 0.2 && abs(V_xy_set(2)) < 0.2

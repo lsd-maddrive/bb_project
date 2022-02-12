@@ -17,7 +17,7 @@ typedef float   odometrySpeedValue_t;
 
 typedef enum {
     REVS_PER_SEC
-} odometrySpeedUnit_t; 
+} odometrySpeedUnit_t;
 
 /**
  * @brief   Initialize periphery connected to encoder for odometry
@@ -26,9 +26,9 @@ typedef enum {
 void odometryInit( void );
 
 /**
- * @brief   Get speed of rotation of motor 
- * @args    Units of speed 
- *              [REVS_PER_SEC]    - revolutions per second 
+ * @brief   Get speed of rotation of motor
+ * @args    Units of speed
+ *              [REVS_PER_SEC]    - revolutions per second
  */
 odometrySpeedValue_t odometryGetEncoderSpeed ( motorNumberValue_t number, odometrySpeedUnit_t unit );
 
@@ -46,4 +46,4 @@ odometrySpeedValue_t odometryGetWheelSpeed( motorNumberValue_t motor_name, odome
  */
 odometrySpeedValue_t odometryGetWheelSpeedRaw( motorNumberValue_t number, odometrySpeedUnit_t unit );
 
-#endif 
+#endif

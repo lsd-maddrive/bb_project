@@ -1,6 +1,6 @@
 *.dep
 *build*
-*.vscode 
+*.vscode
 *.asv
 venv/
 __pycache__/

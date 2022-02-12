@@ -1,6 +1,6 @@
 import time
 import logging
-from bb_project.gamepad.xbox_one import Gamepad, GamepadButtons, GamepadAxis
+from bb_project.gamepad.xbox_one import Gamepad, GamepadButtons
 
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"

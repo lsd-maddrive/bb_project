@@ -83,7 +83,7 @@ float       k_C[3]  = {0, 0, 0};
 
 
 /**
- * @brief       Set linera speed of robot 
+ * @brief       Set linera speed of robot
  * @args
  *              v_x_glob - linear speed x-axis [m/s]
  *              v_y_glob - linear speed y-axis [m/s]

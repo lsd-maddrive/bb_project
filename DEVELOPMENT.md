@@ -102,13 +102,13 @@ make install
 Некоторые [правила оформления](https://github.com/serykhelena/bb-8_project/blob/develop/controller_bb_8_driver/docs/dev_rules.md)
 
 
-## Как изменить код на винде, но прошить через малину 
+## Как изменить код на винде, но прошить через малину
 
 1. После того, как проект собран - запустить батник `move_bin.bat` - он переместит файл `ch.bin` в расшаренную папку (убедитесь, что она есть и креды правильные, иначе доступа не будет).
 
 2. В малине запустить скрипт `pi_load_stm.sh`
 
 ```bash
-./pi_load_stm.sh 
-``` 
+./pi_load_stm.sh
+```
 [Table of contents](#table-of-contents)

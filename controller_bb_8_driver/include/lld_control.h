@@ -10,16 +10,16 @@
 typedef int32_t lldControlValue_t;
 
 typedef enum motor_dir {
-    FORWARD     = 1, 
+    FORWARD     = 1,
     BACKWARD    = 0
-} lldMotorDirection_t; 
+} lldMotorDirection_t;
 
 
 /**
  * @brief   Initialize periphery connected to driver control
  * @note    Stable for repeated calls
  */
-void lldControlInit( void ); 
+void lldControlInit( void );
 
 /**
  * @brief   Set power (in ticks) for motor
@@ -42,4 +42,4 @@ void lldControlSetMotorPower( motorNumberValue_t motor_num, lldControlValue_t in
  */
 void lldControlStopAllMotors( void );
 
-#endif 
+#endif

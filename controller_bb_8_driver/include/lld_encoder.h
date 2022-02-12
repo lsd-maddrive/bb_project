@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-typedef int32_t     encoderTicksValue_t; 
+typedef int32_t     encoderTicksValue_t;
 typedef float       encoderRevsValue_t;
 
 
@@ -41,4 +41,4 @@ encoderRevsValue_t lldGetEncoderRevs( motorNumberValue_t number );
  */
 void lldEncoderReset( motorNumberValue_t number );
 
-#endif 
+#endif

@@ -96,4 +96,3 @@ msg_t i2cRegisterRead(uint8_t address, uint8_t register_addr, uint8_t *rxbuf, ui
     msg_t msg = i2cMasterTransmitTimeout( i2cDriver, address, register_address, 1, rxbuf, length, timeout );
     return msg;
 }
-

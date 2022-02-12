@@ -17,7 +17,7 @@ static inline void testsRoutines( void )
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ENCODER_TEST )
 
-    testEncoderRoutine( ); 
+    testEncoderRoutine( );
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_MOTOR_MATLAB_FREQ_TEST )
 

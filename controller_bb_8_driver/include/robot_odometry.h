@@ -27,7 +27,7 @@ void robotOdometrySetPermeation( void );
 void robotOdometryResetPermeation( void );
 
 /**
- * @brief       Set linera speed of robot 
+ * @brief       Set linera speed of robot
  * @args
  *              v_x_glob - linear speed x-axis [m/s]
  *              v_y_glob - linear speed y-axis [m/s]

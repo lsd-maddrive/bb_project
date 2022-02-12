@@ -1,4 +1,4 @@
-# How to deal with Xbox joystick 
+# How to deal with Xbox joystick
 
 
 1. Check available software
@@ -8,7 +8,7 @@ sudo apt-get update
 sudo apt-get upgrade
 ```
 
-2. Install xow driver 
+2. Install xow driver
 
 * 2.1. Install libusb
 
@@ -31,8 +31,8 @@ sudo apt-get install cabextract
 pip3 install -r requirements.txt
 ```
 
-4. Run python-script 
+4. Run python-script
 
 ```bash
-python3 gamepad.py 
+python3 gamepad.py
 ```

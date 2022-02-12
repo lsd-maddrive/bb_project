@@ -2,16 +2,16 @@
 #include <lld_control.h>
 
 /*
- * @brief   Test motor direction control 
- * @note    Duty cycle is constant 
+ * @brief   Test motor direction control
+ * @note    Duty cycle is constant
  */
 void testRawMotorDirectionControlRoutine( void )
 {
     debug_stream_init( );
     lldControlInit();
 
-    lldMotorDirection_t test_dir    = FORWARD; 
-    uint32_t            test_duty   = 5000;  
+    lldMotorDirection_t test_dir    = FORWARD;
+    uint32_t            test_duty   = 5000;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
@@ -43,15 +43,15 @@ void testRawMotorDirectionControlRoutine( void )
 //#define MOTOR_BACKWARD
 
 /*
- * @brief   Test raw motor control 
+ * @brief   Test raw motor control
  * @note    Duty cycle could be changed [0, 20000]
- *          Stable for incorrect value of duty cycle 
+ *          Stable for incorrect value of duty cycle
  *          Direction is controlled via defines
- *          MOTOR_FORWARD || MOTOR_BACKWARD 
+ *          MOTOR_FORWARD || MOTOR_BACKWARD
  */
 void testRawMotorControlRoutine( void )
 {
-    debug_stream_init( ); 
+    debug_stream_init( );
     lldControlInit( );
 
     uint32_t test_duty1  = 0;
@@ -63,7 +63,7 @@ void testRawMotorControlRoutine( void )
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE ); 
+        char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE );
         switch( rcv_data )
         {
             case 'q':
@@ -76,7 +76,7 @@ void testRawMotorControlRoutine( void )
 
             case 'a':
                 test_duty2 += test_duty_delta;
-                break; 
+                break;
 
             case 's':
                 test_duty2 -= test_duty_delta;
@@ -84,7 +84,7 @@ void testRawMotorControlRoutine( void )
 
             case 'z':
                 test_duty3 += test_duty_delta;
-                break; 
+                break;
 
             case 'x':
                 test_duty3 -= test_duty_delta;
@@ -95,7 +95,7 @@ void testRawMotorControlRoutine( void )
                 test_duty2 = 0;
                 test_duty3 = 0;
                 break;
-            
+
             default:
                 break;
         }
@@ -110,7 +110,7 @@ void testRawMotorControlRoutine( void )
 
         dbgprintf("F D1:%d\tD2:%d\tD3:%d\n\r",
                   test_duty1, test_duty2, test_duty3);
-#endif 
+#endif
 
 #ifdef MOTOR_BACKWARD
         lldControlSetRawMotorPower( 1, test_duty1, BACKWARD );
@@ -118,80 +118,80 @@ void testRawMotorControlRoutine( void )
         lldControlSetRawMotorPower( 3, test_duty3, BACKWARD );
         dbgprintf("B D1:%d\tD2:%d\tD3:%d\n\r",
                   test_duty1, test_duty2, test_duty3);
-#endif 
- 
+#endif
+
         time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
     }
 }
 
 /*
- * @brief   Test motor control in percents  
+ * @brief   Test motor control in percents
  * @note    Duty cycle could be changed [-100, 100]
- *          Stable for incorrect value of duty cycle 
- *          >= 0        FORWARD     
+ *          Stable for incorrect value of duty cycle
+ *          >= 0        FORWARD
  *           < 0        BACKWARD
  */
 void testMotorControlRoutine( void )
 {
-    debug_stream_init( ); 
+    debug_stream_init( );
     lldControlInit( );
 
-    lldControlValue_t   test_duty1_prc   = 0; 
-    lldControlValue_t   test_duty2_prc   = 0; 
-    lldControlValue_t   test_duty3_prc   = 0; 
+    lldControlValue_t   test_duty1_prc   = 0;
+    lldControlValue_t   test_duty2_prc   = 0;
+    lldControlValue_t   test_duty3_prc   = 0;
 
     lldControlValue_t   test_delta_prc   = 1;
 
     systime_t   time = chVTGetSystemTimeX( );
     while( true )
     {
-        char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE ); 
+        char rcv_data   = sdGetTimeout( &SD3, TIME_IMMEDIATE );
 
         switch( rcv_data )
         {
             case 'q':   // Motor 1
                 test_duty1_prc += test_delta_prc;
-                break; 
-            
+                break;
+
             case 'w':   // Motor 1
                 test_duty1_prc -= test_delta_prc;
                 break;
 
             case 'a':   // Motor 2
                 test_duty2_prc += test_delta_prc;
-                break; 
-            
+                break;
+
             case 's':   // Motor 2
                 test_duty2_prc -= test_delta_prc;
                 break;
-            
+
             case 'z':   // Motor 3
                 test_duty3_prc  += test_delta_prc;
-                break; 
-            
+                break;
+
             case 'x':   // Motor 3
                 test_duty3_prc  -= test_delta_prc;
-                break; 
+                break;
 
             case ' ':
                 test_duty1_prc  = 0;
                 test_duty2_prc  = 0;
-                test_duty3_prc  = 0; 
-                break; 
-            
+                test_duty3_prc  = 0;
+                break;
+
             default:
-                break; 
+                break;
         }
-        test_duty1_prc = CLIP_VALUE( test_duty1_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
+        test_duty1_prc = CLIP_VALUE( test_duty1_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
         lldControlSetMotorPower( A, test_duty1_prc );
-        
-        test_duty2_prc = CLIP_VALUE( test_duty2_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
+
+        test_duty2_prc = CLIP_VALUE( test_duty2_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
         lldControlSetMotorPower( B, test_duty2_prc );
 
-        test_duty3_prc = CLIP_VALUE( test_duty3_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC ); 
+        test_duty3_prc = CLIP_VALUE( test_duty3_prc, LLD_MOTOR_MIN_PRC, LLD_MOTOR_MAX_PRC );
         lldControlSetMotorPower( C, test_duty3_prc );
-        
-        dbgprintf( "M1: (%d)\tM2: (%d)\tM3: (%d)\n\r", 
+
+        dbgprintf( "M1: (%d)\tM2: (%d)\tM3: (%d)\n\r",
             test_duty1_prc, test_duty2_prc, test_duty3_prc );
 
         time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );

@@ -10,7 +10,7 @@ PROJECT_MODULES = 	src/lld_control.c			\
 					src/logger.c				\
 					src/main_control_unit.c 	\
 
-				  
+
 PROJECT_TESTS   =	tests/test_lld_control.c	\
 					tests/test_lld_encoder.c	\
 					tests/test_odometry.c		\
@@ -20,7 +20,7 @@ PROJECT_TESTS   =	tests/test_lld_control.c	\
           			tests/test_robot_odometry.c \
           			tests/test_lld_gyroscope.c	\
           			tests/test_logger.c			\
-				  		
+
 PROJECT_CSRC    = src/main.c src/common.c src/debug.c \
 					$(PROJECT_MODULES) $(PROJECT_TESTS)
 
@@ -29,4 +29,3 @@ PROJECT_INCDIR	= include
 PROJECT_LIBS	= -lm
 
 PROJECT_OPTS	= -specs=nosys.specs
-

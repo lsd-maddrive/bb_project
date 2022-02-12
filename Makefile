@@ -2,8 +2,6 @@
 SHELL := /usr/bin/env bash
 PYTHON := python
 
-
-
 #* Poetry
 .PHONY: poetry-download
 poetry-download:
@@ -46,16 +44,8 @@ tests:
 	poetry run pytest -c pyproject.toml
 
 
-
 #* Cleaning
 .PHONY: pycache-remove
 pycache-remove:
 	find . | grep -E "(__pycache__|\.pyc|\.pyo$$)" | xargs rm -rf
 	find . | grep -E "(.ipynb_checkpoints$$)" | xargs rm -rf
-
-.PHONY: build-remove
-build-remove:
-	rm -rf build/
-
-.PHONY: clean-all
-clean-all: pycache-remove build-remove 

@@ -4,20 +4,20 @@ delete(instrfind);
 dat = serial('COM11', 'BaudRate', 115200);
 dat.InputBufferSize = 4096;
 
-fopen(dat); 
-set(dat, 'ByteOrder', 'littleEndian'); 
+fopen(dat);
+set(dat, 'ByteOrder', 'littleEndian');
 
 disp 'Connection is ready!'
 
 start = 's';
-fwrite(dat, start, 'uint8'); 
+fwrite(dat, start, 'uint8');
 
-pool = []; 
-total = []; 
+pool = [];
+total = [];
 
 iter = 3;
 for i = 1:iter
-    % increase dutycycle 
+    % increase dutycycle
     fwrite(dat, 'f', 'uint8');
     disp 'Increase speed!'
     pool = fread(dat, [200, 1], 'int16');

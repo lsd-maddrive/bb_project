@@ -8,25 +8,25 @@
 /*============================================================================*/
 
 /*
- * @brief   Test motor direction control 
- * @note    Duty cycle is constant 
+ * @brief   Test motor direction control
+ * @note    Duty cycle is constant
  */
 void testRawMotorDirectionControlRoutine( void );
 
 /*
- * @brief   Test raw motor control 
+ * @brief   Test raw motor control
  * @note    Duty cycle could be changed [0, 20000]
- *          Stable for incorrect value of duty cycle 
+ *          Stable for incorrect value of duty cycle
  *          Direction is controlled via defines
- *          MOTOR_FORWARD || MOTOR_BACKWARD 
+ *          MOTOR_FORWARD || MOTOR_BACKWARD
  */
 void testRawMotorControlRoutine( void );
 
 /*
- * @brief   Test motor control in percents  
+ * @brief   Test motor control in percents
  * @note    Duty cycle could be changed [-100, 100]
- *          Stable for incorrect value of duty cycle 
- *          >= 0        FORWARD     
+ *          Stable for incorrect value of duty cycle
+ *          >= 0        FORWARD
  *           < 0        BACKWARD
  */
 void testMotorControlRoutine( void );
@@ -45,10 +45,10 @@ void testMatlabFrequency( void );
 /*============================================================================*/
 
 /**
- * @brief   Test common encoder routine 
+ * @brief   Test common encoder routine
  * @note    Print number of ticks, (int)revs and state of direction
- *          0   - clockwise 
- *          1   - counterclockwise  
+ *          0   - clockwise
+ *          1   - counterclockwise
  */
 void testEncoderRoutine( void );
 
@@ -57,7 +57,7 @@ void testEncoderRoutine( void );
 /*============================================================================*/
 
 /*
- * @brief   Test motor speed 
+ * @brief   Test motor speed
  */
 void testMotorSpeed( void );
 
