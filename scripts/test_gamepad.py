@@ -8,7 +8,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# TODO: remove into scripts
 def main():
     for _ in range(5):
         dev = Gamepad()
