@@ -38,7 +38,7 @@
 	<variableList>
 		<variable>
 			<name>CHIBIOS</name>
-			<value>$%7BPARENT-1-ECLIPSE_HOME%7D/chibios176</value>
+			<value>$%7BPARENT-1-ECLIPSE_HOME%7D/chibios203</value>
 		</variable>
 	</variableList>
 </projectDescription>
