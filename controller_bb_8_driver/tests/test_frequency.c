@@ -62,6 +62,6 @@ void testMatlabFrequency( void )
             sdWrite(&SD6, (uint8_t*) &matlab_motor1_speed, 2);
         }
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 10 ) );
     }
 }

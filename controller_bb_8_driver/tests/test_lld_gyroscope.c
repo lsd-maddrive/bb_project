@@ -32,7 +32,7 @@ void testGyroscope(void)
 #ifdef MATLAB_TEST
         sdWrite(&SD3, (uint8_t*) &flag, 1);
         sdWrite(&SD3, (uint8_t*) &axis, 12);
-        time = chThdSleepUntilWindowed(time, time + MS2ST(100));
+        time = chThdSleepUntilWindowed(time, time + TIME_MS2I(100));
 #else
         //dbgprintf("X: %d\tY: %d\tZ: %d\n\r", (int)(getGyroAngle(GYRO_AXIS_X)), (int)(getGyroAngle(GYRO_AXIS_Y)), (int)(getGyroAngle(GYRO_AXIS_Z)));
         dbgprintf("%d%d%d", (int)(getGyroAngle(GYRO_AXIS_X)), (int)(getGyroAngle(GYRO_AXIS_Y)), (int)(getGyroAngle(GYRO_AXIS_Z)));

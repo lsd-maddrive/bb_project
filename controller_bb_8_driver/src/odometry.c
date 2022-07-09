@@ -69,7 +69,7 @@ static void odom_update_vt_cb( void *arg )
     odometryWheelPrevSpeedRPS_C_LPF  = odometryWheelSpeedRPS_LPF[2];
 
     chSysLockFromISR();
-    chVTSetI(&odom_update_vt, MS2ST( VT_ODOM_MS ), odom_update_vt_cb, NULL);
+    chVTSetI(&odom_update_vt, TIME_MS2I( VT_ODOM_MS ), odom_update_vt_cb, NULL);
     chSysUnlockFromISR();
 }
 
@@ -85,7 +85,7 @@ void odometryInit( void )
         return;
 
     chVTObjectInit(&odom_update_vt);
-    chVTSet( &odom_update_vt, MS2ST( VT_ODOM_MS ), odom_update_vt_cb, NULL );
+    chVTSet( &odom_update_vt, TIME_MS2I( VT_ODOM_MS ), odom_update_vt_cb, NULL );
 
     lldEncoderInit( );
 

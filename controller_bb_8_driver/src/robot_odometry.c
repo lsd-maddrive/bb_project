@@ -61,7 +61,7 @@ static void angle_vt_cb( void *arg )
 
         angularSpeedControl = angleController.kp * anglePropError + angleIntgController;
 
-        if( abs(anglePropError) <= angleController.propDeadZone )
+        if( fabs(anglePropError) <= angleController.propDeadZone )
         {
             angularSpeedControl = 0;
             angleIntgController = 0;
@@ -69,7 +69,7 @@ static void angle_vt_cb( void *arg )
     }
 
     chSysLockFromISR();
-    chVTSetI( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
+    chVTSetI( &angle_vt, TIME_MS2I( ANGLE_VT_MS ), angle_vt_cb, NULL );
     chSysUnlockFromISR();
 }
 
@@ -160,7 +160,7 @@ void robotOdometryInit( void )
     wheelControlSetPermeation();
 
     chVTObjectInit(&angle_vt);
-    chVTSet( &angle_vt, MS2ST( ANGLE_VT_MS ), angle_vt_cb, NULL );
+    chVTSet( &angle_vt, TIME_MS2I( ANGLE_VT_MS ), angle_vt_cb, NULL );
 
     isInitialized = true;
 }

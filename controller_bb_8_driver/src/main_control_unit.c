@@ -32,7 +32,7 @@ static THD_FUNCTION(StateGetter, arg)
             cur_system_state = IDLE;
         }
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 50 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 50 ) );
     }
 }
 
@@ -65,6 +65,6 @@ void mainControlTask( void )
             robotOdometrySetPermeation( );
         }
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 25 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 25 ) );
     }
 }

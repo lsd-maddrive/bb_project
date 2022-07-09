@@ -146,7 +146,7 @@ static void wheel_control_vt_cb( void *arg )
     }
 
     chSysLockFromISR();
-    chVTSetI(&wheel_control_vt, MS2ST( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL);
+    chVTSetI(&wheel_control_vt, TIME_MS2I( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL);
     chSysUnlockFromISR();
 }
 
@@ -183,7 +183,7 @@ void wheelControlInit( void )
     permeation_flag = false;
 
     chVTObjectInit(&wheel_control_vt);
-    chVTSet( &wheel_control_vt, MS2ST( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL );
+    chVTSet( &wheel_control_vt, TIME_MS2I( VT_WHEEL_CONTROL_MS ), wheel_control_vt_cb, NULL );
 
     isInitialized = true;
 }

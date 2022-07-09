@@ -27,7 +27,7 @@ void testMotorSpeed( void )
                    (int)test_motor1_speed, (int)test_motor2_speed,
                    (int)test_motor3_speed );
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 300 ) );
     }
 }
 
@@ -136,7 +136,7 @@ void testWheelSpeed( void )
             sdWrite( &SD3, (uint8_t*) &matlab_wheel_A, 2 );
             sdWrite( &SD3, (uint8_t*) &matlab_wheel_A_raw, 2 );
         }
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 10 ) );
 #else
         dbgprintf( "A: %d\tB: %d\tC: %d\n\r",
                    (int)test_wheel_A,
@@ -237,6 +237,6 @@ void testLinearSpeedMatlab( void )
             sdWrite(&SD6, (uint8_t*) &matlab_odom_speed_C, 2);
         }
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 10 ) );
     }
 }

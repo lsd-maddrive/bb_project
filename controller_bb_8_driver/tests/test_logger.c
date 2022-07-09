@@ -39,6 +39,6 @@ void testLogger(void)
         {
             log_data.data[i] = buff[i];
         }
-        time = chThdSleepUntilWindowed(time, time + MS2ST(100));
+        time = chThdSleepUntilWindowed(time, time + TIME_MS2I(100));
     }
 }

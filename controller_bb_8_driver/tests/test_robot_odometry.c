@@ -76,6 +76,6 @@ void testRobotOdometry ( void )
 
         robotOdometrySetSpeed( test_v_x, test_v_y, test_w, time_k );
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( time_delta ) );
     }
 }
