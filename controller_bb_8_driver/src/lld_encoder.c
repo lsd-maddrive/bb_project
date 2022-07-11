@@ -46,10 +46,9 @@ bool                    enc3_dir_state   = 0;
 /*============================================================================*/
 
 // Motor 1
-static void extcb_base1(EXTDriver *extp, expchannel_t channel)
+static void cb_base_enc1(void* args)
 {
-    (void)extp;
-    (void)channel;
+    (void)args;
 
     /***    To define direction of encoder rotation  ***/
     if( palReadLine( ENC1_WHITE_LINE ) == 0 )
@@ -78,10 +77,9 @@ static void extcb_base1(EXTDriver *extp, expchannel_t channel)
 }
 
 // Motor 2
-static void extcb_base2(EXTDriver *extp, expchannel_t channel)
+static void cb_base_enc2(void* args)
 {
-    (void)extp;
-    (void)channel;
+    (void)args;
 
     /***    To define direction of encoder rotation  ***/
     if( palReadLine( ENC2_WHITE_LINE ) == 0 )
@@ -110,10 +108,9 @@ static void extcb_base2(EXTDriver *extp, expchannel_t channel)
 }
 
 // Motor 3
-static void extcb_base3(EXTDriver *extp, expchannel_t channel)
+static void cb_base_enc3(void* args)
 {
-    (void)extp;
-    (void)channel;
+    (void)args;
 
     /***    To define direction of encoder rotation  ***/
     if( palReadLine( ENC3_WHITE_LINE ) == 0 )
@@ -153,28 +150,21 @@ void lldEncoderInit( void )
     if( isInitialized )
         return;
 
-    commonExtDriverInit();
 
     // Motor 1
-    EXTChannelConfig base1_conf = {
-        .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
-        .cb = extcb_base1
-    };
-    extSetChannelMode( &EXTD1, ENC1_BASE, &base1_conf );
+    palSetLineMode(ENC1_GREEN_LINE, PAL_MODE_INPUT_PULLDOWN);
+    palEnableLineEvent(ENC1_GREEN_LINE, PAL_EVENT_MODE_RISING_EDGE);
+    palSetLineCallback(ENC1_GREEN_LINE, cb_base_enc1, NULL);
 
     // Motor 2
-    EXTChannelConfig base2_conf = {
-        .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
-        .cb = extcb_base2
-    };
-    extSetChannelMode( &EXTD1, ENC2_BASE, &base2_conf );
+    palSetLineMode(ENC2_GREEN_LINE, PAL_MODE_INPUT_PULLDOWN);
+    palEnableLineEvent(ENC2_GREEN_LINE, PAL_EVENT_MODE_RISING_EDGE);
+    palSetLineCallback(ENC2_GREEN_LINE, cb_base_enc2, NULL);
 
     // Motor 3
-    EXTChannelConfig base3_conf = {
-        .mode = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD,
-        .cb = extcb_base3
-    };
-    extSetChannelMode( &EXTD1, ENC3_BASE, &base3_conf );
+    palSetLineMode(ENC3_GREEN_LINE, PAL_MODE_INPUT_PULLDOWN);
+    palEnableLineEvent(ENC3_GREEN_LINE, PAL_EVENT_MODE_RISING_EDGE);
+    palSetLineCallback(ENC3_GREEN_LINE, cb_base_enc3, NULL);
 
     isInitialized = true;
 }

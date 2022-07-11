@@ -26,7 +26,7 @@ static THD_FUNCTION(Gyro, arg)
             {
                 angular_speed[i] -= gyro_mean_error[i];
 
-                if (abs(angular_speed[i]) < 0.01)
+                if (fabs(angular_speed[i]) < 0.01)
                     angular_speed[i] = 0;
 
                 gyro_angle_xyz[i] += angular_speed[i] * GYRO_INT_PERIOD / 1000;
@@ -40,7 +40,7 @@ static THD_FUNCTION(Gyro, arg)
                     }
             }
         }
-        time = chThdSleepUntilWindowed( time, time + MS2ST( GYRO_INT_PERIOD ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( GYRO_INT_PERIOD ) );
     }
 }
 

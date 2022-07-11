@@ -114,6 +114,6 @@ void testEncoderRoutine( void )
                    test_dir1, test_dir2, test_dir3 );
 #endif
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 600 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 600 ) );
     }
 }

@@ -73,7 +73,7 @@ void testWheelControlMatlab( void )
             lldControlSetMotorPower( C, 0 );
         }
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 10 ) );
     }
 }
 
@@ -143,6 +143,6 @@ void testOneWheelControllerMatlab( void )
             lldControlStopAllMotors();
         }
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 10 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 10 ) );
     }
 }

@@ -135,8 +135,5 @@ void lcdSendHalfByte( uint8_t byte )
 void lcdWriteByte( uint8_t byte )
 {
     buf[0] = byte;
-    // TODO: think how to remove unused variable msg here
-    //       maybe change return type in i2cSimpleWrite
-    //       from msg_t to void
-    msg_t msg = i2cSimpleWrite(lcd_address, buf, 1, 1000);
+    i2cSimpleWrite(lcd_address, buf, 1, 1000);
 }

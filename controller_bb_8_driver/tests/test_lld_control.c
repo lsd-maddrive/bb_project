@@ -35,7 +35,7 @@ void testRawMotorDirectionControlRoutine( void )
         lldControlSetRawMotorPower(C, test_duty, test_dir );
         dbgprintf( "DIR: (%d)\n\r", test_dir );
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 500 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 500 ) );
     }
 }
 
@@ -120,7 +120,7 @@ void testRawMotorControlRoutine( void )
                   test_duty1, test_duty2, test_duty3);
 #endif
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 300 ) );
     }
 }
 
@@ -194,6 +194,6 @@ void testMotorControlRoutine( void )
         dbgprintf( "M1: (%d)\tM2: (%d)\tM3: (%d)\n\r",
             test_duty1_prc, test_duty2_prc, test_duty3_prc );
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 300 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 300 ) );
     }
 }

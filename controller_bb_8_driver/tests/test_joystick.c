@@ -33,7 +33,7 @@ void testJoystick( void )
                   (int32_t)(buf[2] * 100)
                   );
 
-        time = chThdSleepUntilWindowed( time, time + MS2ST( 100 ) );
+        time = chThdSleepUntilWindowed( time, time + TIME_MS2I( 100 ) );
     }
 }
 
@@ -87,6 +87,6 @@ void testRobotWithJoystick( void )
 
       sendLog( &SD3, log, 13);
 
-      time = chThdSleepUntilWindowed( time, time + MS2ST( time_delta ) );
+      time = chThdSleepUntilWindowed( time, time + TIME_MS2I( time_delta ) );
     }
 }
